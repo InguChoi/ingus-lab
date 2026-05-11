@@ -1,0 +1,52 @@
+---
+import type { CollectionEntry } from "astro:content";
+import BaseHead from "./BaseHead.astro";
+import Header from "./Header.astro";
+import Footer from "./Footer.astro";
+import PostList from "./PostList.astro";
+import { SITE_TITLE } from "../consts";
+
+interface Props {
+	title: string;
+	description: string;
+	posts: CollectionEntry<"blog">[];
+}
+
+const { title, description, posts } = Astro.props;
+---
+
+<!doctype html>
+<html lang="ko">
+	<head>
+		<BaseHead title={`${title} | ${SITE_TITLE}`} description={description} />
+	</head>
+	<body>
+		<Header />
+		<main>
+			<section class="page-heading">
+				<p>Ingus Lab</p>
+				<h1>{title}</h1>
+				<p>{description}</p>
+			</section>
+			<PostList posts={posts} />
+		</main>
+		<Footer />
+	</body>
+</html>
+
+<style>
+	.page-heading {
+		margin-bottom: 2.5rem;
+	}
+	.page-heading > p:first-child {
+		color: var(--accent);
+		font-size: 0.85em;
+		font-weight: 700;
+		letter-spacing: 0;
+		margin-bottom: 0.5rem;
+		text-transform: uppercase;
+	}
+	.page-heading h1 {
+		margin-bottom: 0.75rem;
+	}
+</style>

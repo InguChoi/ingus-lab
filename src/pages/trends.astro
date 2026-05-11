@@ -1,0 +1,14 @@
+---
+import { getCollection } from "astro:content";
+import SectionPage from "../components/SectionPage.astro";
+
+const posts = (await getCollection("blog", ({ data }) => data.category === "trends")).sort(
+	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+);
+---
+
+<SectionPage
+	title="Trends"
+	description="AI, 제품, 개발 도구, 시장의 변화를 관찰하고 다음 실험의 단서로 남깁니다."
+	posts={posts}
+/>

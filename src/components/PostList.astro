@@ -1,0 +1,78 @@
+---
+import type { CollectionEntry } from "astro:content";
+import FormattedDate from "./FormattedDate.astro";
+
+interface Props {
+	posts: CollectionEntry<"blog">[];
+}
+
+const { posts } = Astro.props;
+---
+
+<ul class="post-list">
+	{
+		posts.map((post) => (
+			<li>
+				<a href={`/blog/${post.id}/`}>
+					{post.data.heroImage && (
+						<img width={720} height={360} src={post.data.heroImage} alt="" />
+					)}
+					<div>
+						<p class="meta">
+							<FormattedDate date={post.data.pubDate} />
+						</p>
+						<h2>{post.data.title}</h2>
+						<p>{post.data.description}</p>
+					</div>
+				</a>
+			</li>
+		))
+	}
+</ul>
+
+<style>
+	.post-list {
+		display: grid;
+		gap: 1.5rem;
+		list-style: none;
+		margin: 0;
+		padding: 0;
+	}
+	.post-list li {
+		border-top: 1px solid rgb(var(--gray-light));
+		padding-top: 1.5rem;
+	}
+	.post-list a {
+		display: grid;
+		grid-template-columns: minmax(160px, 240px) 1fr;
+		gap: 1.25rem;
+		color: rgb(var(--gray-dark));
+		text-decoration: none;
+	}
+	.post-list img {
+		aspect-ratio: 2 / 1;
+		height: 100%;
+		object-fit: cover;
+		width: 100%;
+	}
+	.post-list h2 {
+		font-size: 1.25em;
+		margin-bottom: 0.25rem;
+	}
+	.post-list p {
+		margin: 0;
+	}
+	.post-list .meta {
+		color: rgb(var(--gray));
+		font-size: 0.85em;
+		margin-bottom: 0.25rem;
+	}
+	.post-list a:hover h2 {
+		color: var(--accent);
+	}
+	@media (max-width: 720px) {
+		.post-list a {
+			grid-template-columns: 1fr;
+		}
+	}
+</style>

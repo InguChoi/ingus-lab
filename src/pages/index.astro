@@ -1,0 +1,96 @@
+---
+import BaseHead from "../components/BaseHead.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import PostList from "../components/PostList.astro";
+import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
+import { getCollection } from "astro:content";
+
+const posts = (await getCollection("blog"))
+	.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+	.slice(0, 4);
+---
+
+<!doctype html>
+<html lang="ko">
+	<head>
+		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+	</head>
+	<body>
+		<Header />
+		<main>
+			<section class="hero">
+				<p>Research notes for curious builders</p>
+				<h1>Ingus Lab</h1>
+				<p>
+					논문을 읽고, 기술 트렌드를 관찰하고, 아직 이름 붙지 않은 아이디어를 실험 가능한
+					개념으로 정리하는 개인 연구 노트입니다.
+				</p>
+			</section>
+			<section class="sections">
+				<a href="/papers">
+					<span>Papers</span>
+					논문과 리서치에서 얻은 핵심 아이디어를 짧고 실행 가능한 메모로 정리합니다.
+				</a>
+				<a href="/trends">
+					<span>Trends</span>
+					AI, 제품, 개발 도구 흐름을 관찰하고 다음 실험으로 이어질 신호를 기록합니다.
+				</a>
+				<a href="/concept">
+					<span>Concept</span>
+					서비스, 인터페이스, 학습 방식에 대한 초기 개념과 설계 가설을 모읍니다.
+				</a>
+			</section>
+			<section>
+				<h2>Latest Notes</h2>
+				<PostList posts={posts} />
+			</section>
+		</main>
+		<Footer />
+	</body>
+</html>
+
+<style>
+	.hero {
+		margin-bottom: 3rem;
+	}
+	.hero > p:first-child {
+		color: var(--accent);
+		font-size: 0.85em;
+		font-weight: 700;
+		margin-bottom: 0.5rem;
+		text-transform: uppercase;
+	}
+	.hero h1 {
+		font-size: 3.5em;
+		margin-bottom: 0.5rem;
+	}
+	.sections {
+		display: grid;
+		gap: 1rem;
+		grid-template-columns: repeat(3, 1fr);
+		margin-bottom: 3rem;
+	}
+	.sections a {
+		border-top: 3px solid var(--accent);
+		color: rgb(var(--gray-dark));
+		display: block;
+		padding-top: 0.75rem;
+		text-decoration: none;
+	}
+	.sections span {
+		color: rgb(var(--black));
+		display: block;
+		font-size: 1.25em;
+		font-weight: 700;
+		margin-bottom: 0.35rem;
+	}
+	@media (max-width: 720px) {
+		.hero h1 {
+			font-size: 2.5em;
+		}
+		.sections {
+			grid-template-columns: 1fr;
+		}
+	}
+</style>
