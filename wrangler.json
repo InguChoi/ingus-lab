@@ -11,6 +11,10 @@
 		{
 			"pattern": "inguslab.cloud",
 			"custom_domain": true
+		},
+		{
+			"pattern": "www.inguslab.cloud",
+			"custom_domain": true
 		}
 	],
 	"observability": {
