@@ -22,8 +22,14 @@ const { posts } = Astro.props;
 							<p class="meta">
 								<FormattedDate date={post.data.pubDate} />
 							</p>
-							<h2>{post.data.title}</h2>
-							<p>{post.data.description}</p>
+							<h2>
+								<span data-lang="ko">{post.data.titleKo ?? post.data.title}</span>
+								<span data-lang="en">{post.data.titleEn ?? post.data.title}</span>
+							</h2>
+							<p>
+								<span data-lang="ko">{post.data.descriptionKo ?? post.data.description}</span>
+								<span data-lang="en">{post.data.descriptionEn ?? post.data.description}</span>
+							</p>
 						</div>
 					</a>
 				</li>

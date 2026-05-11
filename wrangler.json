@@ -7,6 +7,12 @@
 		"directory": "./dist",
 		"binding": "ASSETS"
 	},
+	"routes": [
+		{
+			"pattern": "inguslab.cloud",
+			"custom_domain": true
+		}
+	],
 	"observability": {
 		"enabled": true
 	},

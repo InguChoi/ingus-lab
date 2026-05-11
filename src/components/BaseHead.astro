@@ -7,16 +7,37 @@ interface Props {
 	title: string;
 	description: string;
 	image?: string;
+	heroImage?: string;
 }
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 
-const { title, description, image = '/blog-placeholder-1.jpg' } = Astro.props;
+const { title, description, image, heroImage } = Astro.props;
+const socialImage = heroImage ?? image ?? '/blog-placeholder-1.jpg';
 ---
 
 <!-- Global Metadata -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
+<script is:inline>
+	const setIngusLanguage = (language) => {
+		document.documentElement.dataset.lang = language;
+		document.documentElement.lang = language === "ko" ? "ko" : "en";
+		localStorage.setItem("ingus-language", language);
+		document.querySelectorAll("[data-set-lang]").forEach((button) => {
+			button.setAttribute("aria-pressed", String(button.dataset.setLang === language));
+		});
+	};
+	const savedLanguage = localStorage.getItem("ingus-language");
+	const browserLanguage = navigator.language?.toLowerCase().startsWith("ko") ? "ko" : "en";
+	setIngusLanguage(savedLanguage || browserLanguage);
+	document.addEventListener("DOMContentLoaded", () => {
+		document.querySelectorAll("[data-set-lang]").forEach((button) => {
+			button.addEventListener("click", () => setIngusLanguage(button.dataset.setLang));
+		});
+		setIngusLanguage(document.documentElement.dataset.lang || "ko");
+	});
+</script>
 <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 <meta name="generator" content={Astro.generator} />
 
@@ -37,11 +58,11 @@ const { title, description, image = '/blog-placeholder-1.jpg' } = Astro.props;
 <meta property="og:url" content={Astro.url} />
 <meta property="og:title" content={title} />
 <meta property="og:description" content={description} />
-<meta property="og:image" content={new URL(image, Astro.url)} />
+<meta property="og:image" content={new URL(socialImage, Astro.url)} />
 
 <!-- Twitter -->
 <meta property="twitter:card" content="summary_large_image" />
 <meta property="twitter:url" content={Astro.url} />
 <meta property="twitter:title" content={title} />
 <meta property="twitter:description" content={description} />
-<meta property="twitter:image" content={new URL(image, Astro.url)} />
+<meta property="twitter:image" content={new URL(socialImage, Astro.url)} />

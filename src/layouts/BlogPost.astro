@@ -7,12 +7,14 @@ import FormattedDate from '../components/FormattedDate.astro';
 
 type Props = CollectionEntry<'blog'>['data'];
 
-const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
+const { title, description, titleKo, titleEn, pubDate, updatedDate, heroImage } = Astro.props;
+const koreanTitle = titleKo ?? title;
+const englishTitle = titleEn ?? title;
 ---
 
 <html lang="ko">
 	<head>
-		<BaseHead title={title} description={description} />
+		<BaseHead title={title} description={description} heroImage={heroImage} />
 		<style>
 			main {
 				width: calc(100% - 2em);
@@ -51,6 +53,10 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
 			.last-updated-on {
 				font-style: italic;
 			}
+			:global(html[data-lang="ko"] [data-lang="en"]),
+			:global(html[data-lang="en"] [data-lang="ko"]) {
+				display: none;
+			}
 		</style>
 	</head>
 
@@ -73,7 +79,10 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
 								)
 							}
 						</div>
-						<h1>{title}</h1>
+						<h1>
+							<span data-lang="ko">{koreanTitle}</span>
+							<span data-lang="en">{englishTitle}</span>
+						</h1>
 						<hr />
 					</div>
 					<slot />

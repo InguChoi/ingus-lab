@@ -9,6 +9,10 @@ const blog = defineCollection({
 	schema: z.object({
 		title: z.string(),
 		description: z.string(),
+		titleKo: z.string().optional(),
+		titleEn: z.string().optional(),
+		descriptionKo: z.string().optional(),
+		descriptionEn: z.string().optional(),
 		category: z.enum(["papers", "trends", "concept"]),
 		// Transform string to Date object
 		pubDate: z.coerce.date(),

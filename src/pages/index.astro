@@ -23,26 +23,39 @@ const posts = (await getCollection("blog"))
 				<p>Research notes for curious builders</p>
 				<h1>Ingus Lab</h1>
 				<p>
-					논문을 읽고, 기술 트렌드를 관찰하고, 아직 이름 붙지 않은 아이디어를 실험 가능한
-					개념으로 정리하는 개인 연구 노트입니다.
+					<span data-lang="ko">
+						논문을 읽고, 기술 트렌드를 관찰하고, AI와 로봇에서 반복해서 쓰이는 핵심 개념을 정리하는 개인 연구 노트입니다.
+					</span>
+					<span data-lang="en">
+						A personal research notebook for reading papers, tracking technology trends, and reviewing core concepts in AI and robotics.
+					</span>
 				</p>
 			</section>
 			<section class="sections">
 				<a href="/papers">
-					<span>Papers</span>
-					논문과 리서치에서 얻은 핵심 아이디어를 짧고 실행 가능한 메모로 정리합니다.
+					<span class="section-title" data-lang="ko">논문</span>
+					<span class="section-title" data-lang="en">Papers</span>
+					<span data-lang="ko">논문과 연구 자료에서 핵심 질문, 방법론, 실험 아이디어를 정리합니다.</span>
+					<span data-lang="en">Notes on research papers, methods, and experiment ideas worth carrying forward.</span>
 				</a>
 				<a href="/trends">
-					<span>Trends</span>
-					AI, 제품, 개발 도구 흐름을 관찰하고 다음 실험으로 이어질 신호를 기록합니다.
+					<span class="section-title" data-lang="ko">트렌드</span>
+					<span class="section-title" data-lang="en">Trends</span>
+					<span data-lang="ko">AI, 제품, 개발 도구, 시장 변화에서 다음 실험으로 이어질 신호를 기록합니다.</span>
+					<span data-lang="en">Signals from AI, product, developer-tool, and market changes.</span>
 				</a>
 				<a href="/concept">
-					<span>Concept</span>
-					서비스, 인터페이스, 학습 방식에 대한 초기 개념과 설계 가설을 모읍니다.
+					<span class="section-title" data-lang="ko">기술 개념</span>
+					<span class="section-title" data-lang="en">Technical Concepts</span>
+					<span data-lang="ko">AI와 로봇에서 전반적으로 쓰이는 기술, 개념, 방법론을 리뷰합니다.</span>
+					<span data-lang="en">Reviews of technologies, concepts, and methods used across AI and robotics.</span>
 				</a>
 			</section>
 			<section>
-				<h2>Latest Notes</h2>
+				<h2>
+					<span data-lang="ko">최근 노트</span>
+					<span data-lang="en">Latest Notes</span>
+				</h2>
 				<PostList posts={posts} />
 			</section>
 		</main>
@@ -78,7 +91,7 @@ const posts = (await getCollection("blog"))
 		padding-top: 0.75rem;
 		text-decoration: none;
 	}
-	.sections span {
+	.sections .section-title {
 		color: rgb(var(--black));
 		display: block;
 		font-size: 1.25em;

@@ -8,7 +8,11 @@ const posts = (await getCollection("blog", ({ data }) => data.category === "conc
 ---
 
 <SectionPage
-	title="Concept"
-	description="제품, 인터페이스, 학습 방식에 대한 초기 가설과 아직 실험 중인 개념을 모읍니다."
+	title="Technical Concepts"
+	description="AI와 로봇 분야에서 반복해서 쓰이는 핵심 기술, 개념, 방법론을 정리합니다."
+	titleKo="기술 개념"
+	titleEn="Technical Concepts"
+	descriptionKo="AI와 로봇 분야에서 반복해서 쓰이는 핵심 기술, 개념, 방법론을 정리합니다."
+	descriptionEn="Reviews of core technologies, concepts, and methods used across AI and robotics."
 	posts={posts}
 />

@@ -10,7 +10,14 @@ import { SITE_TITLE } from '../consts';
 			<HeaderLink href="/">Home</HeaderLink>
 			<HeaderLink href="/papers">Papers</HeaderLink>
 			<HeaderLink href="/trends">Trends</HeaderLink>
-			<HeaderLink href="/concept">Concept</HeaderLink>
+			<HeaderLink href="/concept">
+				<span data-lang="ko">기술 개념</span>
+				<span data-lang="en">Technical Concepts</span>
+			</HeaderLink>
+		</div>
+		<div class="language-switch" aria-label="Language">
+			<button type="button" data-set-lang="ko" aria-pressed="true">한국어</button>
+			<button type="button" data-set-lang="en" aria-pressed="false">EN</button>
 		</div>
 	</nav>
 </header>
@@ -39,11 +46,39 @@ import { SITE_TITLE } from '../consts';
 		display: flex;
 		gap: 0.25em;
 	}
+	.language-switch {
+		display: inline-flex;
+		gap: 0.25rem;
+		margin-left: 0.5rem;
+		padding: 0.2rem;
+		border: 1px solid rgb(var(--gray-light));
+		border-radius: 8px;
+		background: #fff;
+	}
+	.language-switch button {
+		min-width: 3.25rem;
+		border: 0;
+		border-radius: 6px;
+		background: transparent;
+		color: rgb(var(--gray));
+		cursor: pointer;
+		font: inherit;
+		font-size: 0.8rem;
+		font-weight: 700;
+		line-height: 1;
+		padding: 0.55rem 0.75rem;
+	}
+	:global(html[data-lang="ko"] .language-switch button[data-set-lang="ko"]),
+	:global(html[data-lang="en"] .language-switch button[data-set-lang="en"]) {
+		background: rgb(var(--black));
+		color: #fff;
+	}
 	nav a {
 		padding: 1em 0.5em;
 		color: var(--black);
 		border-bottom: 4px solid transparent;
 		text-decoration: none;
+		white-space: nowrap;
 	}
 	nav a.active {
 		text-decoration: none;
@@ -54,6 +89,9 @@ import { SITE_TITLE } from '../consts';
 			align-items: flex-start;
 			flex-direction: column;
 			padding: 0.75em 0;
+		}
+		.language-switch {
+			margin: 0.5rem 0 0;
 		}
 		nav a {
 			padding: 0.35em 0.5em;

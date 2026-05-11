@@ -21,8 +21,16 @@ const posts = (await getCollection("blog")).sort(
 		<main>
 			<section class="page-heading">
 				<p>Ingus Lab</p>
-				<h1>All Notes</h1>
-				<p>{SITE_DESCRIPTION}</p>
+				<h1>
+					<span data-lang="ko">전체 노트</span>
+					<span data-lang="en">All Notes</span>
+				</h1>
+				<p>
+					<span data-lang="ko">{SITE_DESCRIPTION}</span>
+					<span data-lang="en">
+						Research notes on papers, technology trends, and core concepts in AI and robotics.
+					</span>
+				</p>
 			</section>
 			<PostList posts={posts} />
 		</main>

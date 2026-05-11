@@ -9,6 +9,10 @@ const posts = (await getCollection("blog", ({ data }) => data.category === "tren
 
 <SectionPage
 	title="Trends"
-	description="AI, 제품, 개발 도구, 시장의 변화를 관찰하고 다음 실험의 단서로 남깁니다."
+	description="AI, 제품, 개발 도구, 시장의 변화를 관찰하고 다음 실험으로 이어질 신호를 기록합니다."
+	titleKo="트렌드"
+	titleEn="Trends"
+	descriptionKo="AI, 제품, 개발 도구, 시장의 변화를 관찰하고 다음 실험으로 이어질 신호를 기록합니다."
+	descriptionEn="Observations on AI, products, developer tools, and market shifts that may lead to the next experiment."
 	posts={posts}
 />

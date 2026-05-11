@@ -9,6 +9,10 @@ const posts = (await getCollection("blog", ({ data }) => data.category === "pape
 
 <SectionPage
 	title="Papers"
-	description="논문과 리서치 자료에서 건질 수 있는 핵심 질문, 방법론, 실험 아이디어를 정리합니다."
+	description="논문과 연구 자료에서 건질 수 있는 핵심 질문, 방법론, 실험 아이디어를 정리합니다."
+	titleKo="논문"
+	titleEn="Papers"
+	descriptionKo="논문과 연구 자료에서 건질 수 있는 핵심 질문, 방법론, 실험 아이디어를 정리합니다."
+	descriptionEn="Paper and research notes focused on core questions, methods, and experiment ideas."
 	posts={posts}
 />

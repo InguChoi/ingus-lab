@@ -1,0 +1,116 @@
+---
+title: "RLDX-1: 로봇 손을 위한 Dexterity-First 모델"
+description: "RLWRLD의 RLDX-1이 로봇 파운데이션 모델 경쟁에서 보여주는 새로운 방향을 정리합니다."
+titleKo: "RLDX-1: 로봇 손을 위한 Dexterity-First 모델"
+titleEn: "RLDX-1: A Dexterity-First Model for Robot Hands"
+descriptionKo: "RLWRLD의 RLDX-1이 로봇 파운데이션 모델 경쟁에서 보여주는 새로운 방향을 정리합니다."
+descriptionEn: "A look at what RLWRLD's RLDX-1 signals for dexterous robot foundation models."
+category: "trends"
+pubDate: "May 11 2026"
+heroImage: "https://www.rlwrld.ai/resource/images/sub/rldx/figure_img_1.jpg"
+---
+
+<figure>
+	<img src="https://www.rlwrld.ai/resource/images/sub/rldx/figure_img_1.jpg" alt="RLDX-1 at a glance figure from RLWRLD" />
+	<figcaption>
+		<span data-lang="ko">Figure: RLWRLD 공식 페이지의 RLDX-1 at a Glance.</span>
+		<span data-lang="en">Figure: RLDX-1 at a Glance from the official RLWRLD page.</span>
+	</figcaption>
+</figure>
+
+<section data-lang="ko">
+
+RLWRLD가 공개한 [RLDX-1](https://www.rlwrld.ai/en/rldx-1)은 고자유도 로봇 손을 위한 dexterity-first 파운데이션 모델입니다. 기존 VLA(Vision-Language-Action) 모델이 시각과 언어 중심으로 일반화 능력을 키워왔다면, RLDX-1은 실제 산업 현장의 조작 과제에서 필요한 물리 신호를 모델 구조 안으로 끌어들입니다.
+
+핵심 메시지는 단순합니다. 로봇이 컵을 잡고, 커피를 따르고, 컨베이어 위 물체를 집고, 손가락 끝으로 물체를 돌리려면 “무엇을 해야 하는가”만 알아서는 부족합니다. 언제 접촉했는지, 힘이 어떻게 변하는지, 물체가 얼마나 빨리 움직이는지, 이전 단계에서 무엇을 끝냈는지를 함께 기억해야 합니다.
+
+## 무엇이 나왔나
+
+RLDX-1은 dexterous manipulation을 위해 설계된 로봇 파운데이션 모델입니다. RLWRLD는 이 모델을 단순히 더 큰 VLA로 소개하지 않습니다. vision-language, proprioception, action, memory, tactile, torque 같은 신호를 각각 별도 스트림으로 다루고, 이들이 self-attention을 통해 상호작용하도록 만든 점을 강조합니다.
+
+즉 RLDX-1의 방향은 “더 많은 이미지와 언어 데이터”가 아니라 “행동에 필요한 물리 신호를 모델의 1급 입력으로 올리는 것”에 가깝습니다.
+
+## 왜 중요한가
+
+로봇 파운데이션 모델의 주류 가정은 더 큰 모델과 더 많은 데이터가 dexterous manipulation까지 자연스럽게 열어줄 것이라는 쪽에 가까웠습니다. RLDX-1은 이 가정에 다른 질문을 던집니다. 픽셀에 들어 있지 않은 신호는 스케일만으로 복원할 수 없다는 것입니다.
+
+예를 들어 커피포트가 점점 가벼워지는 변화는 이미지보다 손목 토크에 더 잘 나타납니다. 컨베이어 위 물체를 집는 일은 한 장의 이미지보다 시간에 따른 움직임을 봐야 합니다. 여러 단계의 작업은 현재 프레임만으로는 충분하지 않고, 이전 상태를 기억해야 합니다.
+
+## 기술적 신호
+
+RLDX-1은 MSAT(Multi-Stream Action Transformer)를 사용해 vision-language, proprioception, action, memory, tactile, torque를 각각 별도 스트림으로 처리한 뒤 self-attention으로 상호작용하게 합니다. 하나의 큰 입력으로 뭉개기보다, 물리적으로 다른 성격의 신호를 독립적으로 보존하려는 설계입니다.
+
+또한 Qwen3-VL 8B를 로봇 VQA 데이터로 fine-tuning한 RLDX-1-VLM을 시각 추론 백본으로 사용합니다. 일반 VLM이 장면을 잘 설명하는 것과, 로봇 제어에 필요한 접촉 위치와 중간 하위 작업을 이해하는 것은 다르다는 판단입니다.
+
+RLDX-1의 또 다른 흥미로운 부분은 cognition token입니다. VLM의 풍부한 출력을 그대로 action model에 넘기지 않고 64개 cognition token으로 압축합니다. 이 표현은 추론 속도를 높이는 동시에, 과거 cognition feature를 저장하는 memory substrate로도 쓰입니다.
+
+## 데이터 전략
+
+RLDX-1은 실제 teleoperation만으로는 다섯 손가락 로봇 손의 조작 공간을 충분히 덮기 어렵다고 봅니다. 그래서 작은 실제 demonstration set에서 출발해 video generation model로 synthetic robot data를 늘리고, inverse dynamics model로 action label을 붙인 뒤 품질 필터를 통과시킵니다.
+
+또 하나의 축은 human hand data입니다. 사람이 맨손으로 수행한 조작을 추적하고, 3D Gaussian Splatting으로 작업 공간을 복원한 뒤, robot hand로 retargeting합니다. 하드웨어 장치를 사람 손에 붙이는 방식보다 소프트웨어 retargeting으로 morphology gap을 줄이려는 접근입니다.
+
+## 시장 또는 제품 관점
+
+RLWRLD는 RLDX-1이 RoboCasa Kitchen에서 70.6, RoboCasa GR-1 Tabletop에서 58.7, RoboCasa 365에서 32.1을 기록했다고 설명합니다. 특히 RoboCasa 계열은 장기 과제와 접촉이 많은 kitchen-scale benchmark라서, 단순한 visual generalization보다 memory, contact, embodiment 설계가 더 잘 드러나는 영역입니다.
+
+실제 로봇 평가에서도 ALLEX humanoid 기준 conveyor pick-and-place, object-in-box selection, pot-to-cup pouring에서 기존 VLA baseline 대비 큰 격차를 보였다고 제시합니다. 이 지점은 로봇 파운데이션 모델 경쟁이 “일반 지능”만이 아니라 특정 embodiment와 센서 구성을 얼마나 잘 품는가로 이동하고 있음을 보여줍니다.
+
+## Ingus Lab 댓글
+
+RLDX-1의 흥미로운 지점은 “로봇 모델도 결국 큰 멀티모달 모델이 된다”가 아니라, 어떤 모달리티를 모델 안에서 동등한 시민으로 대우할 것인가에 있습니다. vision-language는 여전히 중요하지만, 접촉과 힘, 시간, 기억은 물리 세계에서 행동하는 모델의 1차 신호입니다.
+
+이 흐름은 로봇뿐 아니라 AI agent 설계에도 힌트를 줍니다. 웹이나 코드 환경의 agent도 화면만 보는 모델보다 로그, 상태, 실패 이력, 도구 실행 결과를 구조적으로 분리해서 다루는 쪽이 더 강해질 가능성이 큽니다.
+
+</section>
+
+<section data-lang="en">
+
+[RLDX-1](https://www.rlwrld.ai/en/rldx-1), introduced by RLWRLD, is a dexterity-first foundation model for high-DoF robot hands. Where many VLA(Vision-Language-Action) systems have focused on scaling visual and language generalization, RLDX-1 pulls physical signals into the model design itself.
+
+The core message is simple. A robot that has to hold a cup, pour coffee, pick objects from a conveyor, or rotate an object with fingertips cannot rely only on knowing “what” to do. It also needs to know when contact happens, how force changes, how fast an object is moving, and what has already happened in the task.
+
+## What Changed
+
+RLDX-1 is a robot foundation model designed around dexterous manipulation. RLWRLD does not present it as merely a larger VLA. The model gives separate streams to signals such as vision-language, proprioception, action, memory, tactile input, and torque, then lets them interact through self-attention.
+
+That makes the direction fairly clear: RLDX-1 is less about adding more images and text, and more about treating physical signals as first-class inputs for action.
+
+## Why It Matters
+
+A common assumption in robot foundation models is that bigger models and larger datasets will eventually unlock dexterous manipulation. RLDX-1 challenges that assumption. If a signal is not present in pixels, scale alone cannot fully reconstruct it.
+
+For example, a coffee pot becoming lighter is often easier to read through wrist torque than through vision. Picking from a conveyor requires motion over time, not just a single frame. Multi-step tasks require memory of previous state, not only the current observation.
+
+## Technical Signals
+
+RLDX-1 uses MSAT(Multi-Stream Action Transformer), where vision-language, proprioception, action, memory, tactile, and torque are processed through dedicated streams before interacting through self-attention. Rather than flattening all inputs into one large stream, the design preserves the different physical character of each signal.
+
+It also uses RLDX-1-VLM, based on Qwen3-VL 8B fine-tuned with robot VQA data, as the visual reasoning backbone. The bet is that describing a scene and understanding action-relevant contact points or intermediate subtasks are not the same capability.
+
+Another notable piece is the cognition token interface. Instead of passing the full VLM output directly into the action model, RLDX-1 compresses it into 64 cognition tokens. The same representation improves inference efficiency and becomes a memory substrate by storing past cognition features.
+
+## Data Strategy
+
+RLDX-1 assumes that real teleoperation alone cannot cover the full manipulation space of a five-finger robot hand. It starts from a small real demonstration set, expands it with a video generation model, annotates actions with an inverse dynamics model, and filters the results for quality.
+
+The other axis is human hand data. RLWRLD tracks bare-hand human manipulation, reconstructs the workspace with 3D Gaussian Splatting, and retargets the motion to a robot hand. This is a software-side attempt to reduce the morphology gap instead of attaching a hardware rig to the human hand.
+
+## Market or Product View
+
+RLWRLD reports that RLDX-1 reaches 70.6 on RoboCasa Kitchen, 58.7 on RoboCasa GR-1 Tabletop, and 32.1 on RoboCasa 365. These kitchen-scale benchmarks are long-horizon and contact-heavy, so they reveal memory, contact, and embodiment design more clearly than simple visual generalization.
+
+The real-robot results are also important. On ALLEX humanoid tasks such as conveyor pick-and-place, object-in-box selection, and pot-to-cup pouring, RLWRLD reports a large gap over existing VLA baselines. This suggests that the competition in robot foundation models is moving from generic intelligence toward how well a model can absorb embodiment-specific sensors and control requirements.
+
+## Ingus Lab Comment
+
+The interesting part of RLDX-1 is not simply that robot models are becoming large multimodal models. It is the question of which modalities deserve equal status inside the model. Vision-language remains important, but contact, force, time, and memory are primary signals for models acting in the physical world.
+
+This also hints at AI agent design beyond robotics. Agents in web or code environments may become stronger when logs, state, failure history, and tool outputs are handled as structured signals rather than as incidental text around a screen.
+
+</section>
+
+## Source
+
+- RLWRLD, [RLDX-1: A Dexterity-First Foundation Model for Robot Hands](https://www.rlwrld.ai/en/rldx-1), 2026-05-07
+- Image source: RLWRLD official RLDX-1 page, Figure 1: RLDX-1 at a Glance

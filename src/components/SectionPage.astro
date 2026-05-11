@@ -9,10 +9,14 @@ import { SITE_TITLE } from "../consts";
 interface Props {
 	title: string;
 	description: string;
+	titleKo?: string;
+	titleEn?: string;
+	descriptionKo?: string;
+	descriptionEn?: string;
 	posts: CollectionEntry<"blog">[];
 }
 
-const { title, description, posts } = Astro.props;
+const { title, description, titleKo, titleEn, descriptionKo, descriptionEn, posts } = Astro.props;
 ---
 
 <!doctype html>
@@ -25,8 +29,14 @@ const { title, description, posts } = Astro.props;
 		<main>
 			<section class="page-heading">
 				<p>Ingus Lab</p>
-				<h1>{title}</h1>
-				<p>{description}</p>
+				<h1>
+					<span data-lang="ko">{titleKo ?? title}</span>
+					<span data-lang="en">{titleEn ?? title}</span>
+				</h1>
+				<p>
+					<span data-lang="ko">{descriptionKo ?? description}</span>
+					<span data-lang="en">{descriptionEn ?? description}</span>
+				</p>
 			</section>
 			<PostList posts={posts} />
 		</main>
