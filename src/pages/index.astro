@@ -19,23 +19,25 @@ const posts = (await getCollection("blog"))
 	<body>
 		<Header />
 		<main>
-			<section class="hero">
-				<p>Research notes for curious builders</p>
-				<h1>Ingus Lab</h1>
-				<p>
-					<span data-lang="ko">
-						논문을 읽고, 기술 트렌드를 관찰하고, AI와 로봇에서 반복해서 쓰이는 핵심 개념을 정리하는 개인 연구 노트입니다.
-					</span>
-					<span data-lang="en">
-						A personal research notebook for reading papers, tracking technology trends, and reviewing core concepts in AI and robotics.
-					</span>
-				</p>
+			<section class="hero" aria-label="Ingus Lab">
+				<div class="hero-content">
+					<p>Research notes for curious builders</p>
+					<h1>Ingus Lab</h1>
+					<p>
+						<span data-lang="ko">
+							논문을 읽고, 기술 트렌드를 관찰하며, AI와 로보틱스에서 반복해서 쓰이는 핵심 개념을 정리하는 개인 연구 노트입니다.
+						</span>
+						<span data-lang="en">
+							A personal research notebook for reading papers, tracking technology trends, and reviewing core concepts in AI and robotics.
+						</span>
+					</p>
+				</div>
 			</section>
 			<section class="sections">
 				<a href="/papers">
 					<span class="section-title" data-lang="ko">논문</span>
 					<span class="section-title" data-lang="en">Papers</span>
-					<span data-lang="ko">논문과 연구 자료에서 핵심 질문, 방법론, 실험 아이디어를 정리합니다.</span>
+					<span data-lang="ko">논문과 연구 자료에서 얻은 질문, 방법론, 실험 아이디어를 정리합니다.</span>
 					<span data-lang="en">Notes on research papers, methods, and experiment ideas worth carrying forward.</span>
 				</a>
 				<a href="/trends">
@@ -47,7 +49,7 @@ const posts = (await getCollection("blog"))
 				<a href="/concept">
 					<span class="section-title" data-lang="ko">기술 개념</span>
 					<span class="section-title" data-lang="en">Technical Concepts</span>
-					<span data-lang="ko">AI와 로봇에서 전반적으로 쓰이는 기술, 개념, 방법론을 리뷰합니다.</span>
+					<span data-lang="ko">AI와 로보틱스 전반에서 쓰이는 기술, 개념, 방법론을 리뷰합니다.</span>
 					<span data-lang="en">Reviews of technologies, concepts, and methods used across AI and robotics.</span>
 				</a>
 			</section>
@@ -65,18 +67,35 @@ const posts = (await getCollection("blog"))
 
 <style>
 	.hero {
-		margin-bottom: 3rem;
+		align-items: center;
+		background:
+			linear-gradient(90deg, rgba(12, 18, 28, 0.86), rgba(12, 18, 28, 0.42) 45%, rgba(12, 18, 28, 0.08)),
+			url("/images/hero-ai-robotics-fusion.png") center / cover no-repeat;
+		display: flex;
+		margin: -3em calc(50% - 50vw) 3rem;
+		min-height: clamp(360px, 56vw, 560px);
+		padding: 4rem max(2rem, calc((100vw - 720px) / 2 + 1rem));
 	}
-	.hero > p:first-child {
-		color: var(--accent);
+	.hero-content {
+		max-width: 620px;
+	}
+	.hero-content > p:first-child {
+		color: #8ee7ff;
 		font-size: 0.85em;
 		font-weight: 700;
 		margin-bottom: 0.5rem;
 		text-transform: uppercase;
 	}
 	.hero h1 {
-		font-size: 3.5em;
+		color: #fff;
+		font-size: clamp(3rem, 9vw, 5.4rem);
 		margin-bottom: 0.5rem;
+	}
+	.hero-content > p:last-child {
+		color: rgba(255, 255, 255, 0.9);
+		font-size: 1.1em;
+		line-height: 1.6;
+		max-width: 560px;
 	}
 	.sections {
 		display: grid;
@@ -99,8 +118,13 @@ const posts = (await getCollection("blog"))
 		margin-bottom: 0.35rem;
 	}
 	@media (max-width: 720px) {
-		.hero h1 {
-			font-size: 2.5em;
+		.hero {
+			background:
+				linear-gradient(180deg, rgba(12, 18, 28, 0.88), rgba(12, 18, 28, 0.48)),
+				url("/images/hero-ai-robotics-fusion.png") 62% center / cover no-repeat;
+			margin-top: -1em;
+			min-height: 420px;
+			padding: 3rem 1rem;
 		}
 		.sections {
 			grid-template-columns: 1fr;
