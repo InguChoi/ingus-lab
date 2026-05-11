@@ -9,26 +9,30 @@ interface Props {
 const { posts } = Astro.props;
 ---
 
-<ul class="post-list">
-	{
-		posts.map((post) => (
-			<li>
-				<a href={`/blog/${post.id}/`}>
-					{post.data.heroImage && (
-						<img width={720} height={360} src={post.data.heroImage} alt="" />
-					)}
-					<div>
-						<p class="meta">
-							<FormattedDate date={post.data.pubDate} />
-						</p>
-						<h2>{post.data.title}</h2>
-						<p>{post.data.description}</p>
-					</div>
-				</a>
-			</li>
-		))
-	}
-</ul>
+{
+	posts.length > 0 ? (
+		<ul class="post-list">
+			{posts.map((post) => (
+				<li>
+					<a href={`/blog/${post.id}/`}>
+						{post.data.heroImage && (
+							<img width={720} height={360} src={post.data.heroImage} alt="" />
+						)}
+						<div>
+							<p class="meta">
+								<FormattedDate date={post.data.pubDate} />
+							</p>
+							<h2>{post.data.title}</h2>
+							<p>{post.data.description}</p>
+						</div>
+					</a>
+				</li>
+			))}
+		</ul>
+	) : (
+		<p class="empty">아직 등록된 글이 없습니다.</p>
+	)
+}
 
 <style>
 	.post-list {
@@ -69,6 +73,12 @@ const { posts } = Astro.props;
 	}
 	.post-list a:hover h2 {
 		color: var(--accent);
+	}
+	.empty {
+		border-top: 1px solid rgb(var(--gray-light));
+		color: rgb(var(--gray));
+		margin: 0;
+		padding-top: 1.5rem;
 	}
 	@media (max-width: 720px) {
 		.post-list a {
