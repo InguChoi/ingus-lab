@@ -77,15 +77,15 @@ global:
       - 새 글은 titleKo, titleEn, descriptionKo, descriptionEn을 함께 작성합니다.
       - title과 description은 한국어 기본값으로 유지합니다.
       - heroImage에는 가능하면 참고 홈페이지의 대표 figure 또는 concept image를 사용합니다.
-      - 현재 Astro 스키마에서는 기술 개념 리뷰도 category 값으로 concept를 사용합니다.
-      - 화면이나 글 내부에서는 필요하면 Technical Concepts 또는 Concepts라는 표시명을 사용할 수 있습니다.
+      - 현재 Astro 스키마에서는 Background 글도 category 값으로 concept를 사용합니다.
+      - 화면이나 글 내부에서는 Background라는 표시명을 사용합니다.
 
 media:
   requirement: 모든 글은 참고 자료에서 가져온 대표 figure 또는 concept image를 포함합니다.
   priority:
     - 참고하는 공식 홈페이지, 논문 프로젝트 페이지, 기업 발표 페이지에 포함된 대표 figure
     - 논문이나 기술 설명에 직접 등장하는 architecture diagram, pipeline figure, benchmark figure
-    - 기술 개념을 설명하는 concept image, product screenshot, robot/demo image
+    - 배경 지식을 설명하는 concept image, product screenshot, robot/demo image
     - 위 자료가 없을 때만 직접 만든 보조 이미지 또는 기존 placeholder 사용
   usage:
     - 가능하면 대표 이미지를 heroImage로 지정합니다.
@@ -184,16 +184,16 @@ categories:
       - 최신성만 강조하고 구조적 의미를 놓치는 글
 
   concept:
-    label: Technical Concepts
+    label: Background
     aliases:
-      - Concepts
-      - Technical Concepts
-      - Core Technologies
+      - Background
+      - Background Notes
+      - Core Background
     purpose: AI 혹은 로봇 분야에서 전반적으로 쓰이는 핵심 기술, 개념, 방법론을 리뷰합니다.
     usage_note:
       - 기존 사이트 스키마와 URL을 유지하기 위해 frontmatter category 값은 concept를 사용합니다.
-      - 글의 표시명이나 섹션명은 Technical Concepts를 우선 사용합니다.
-      - 제품 아이디어 스케치가 아니라 기술 개념 리뷰로 작성합니다.
+      - 글의 표시명이나 섹션명은 Background를 우선 사용합니다.
+      - 제품 아이디어 스케치가 아니라 AI와 로봇을 이해하기 위한 배경 지식 리뷰로 작성합니다.
     required_focus:
       - 이 기술 또는 개념이 해결하려는 문제
       - AI나 로봇 시스템에서 쓰이는 맥락
@@ -241,7 +241,7 @@ workflow:
     - frontmatter가 src/content.config.ts 스키마와 맞는지 확인한다.
     - 새 글에는 titleKo, titleEn, descriptionKo, descriptionEn을 넣었는지 확인한다.
     - category 값이 papers, trends, concept 중 하나인지 확인한다.
-    - 기술 개념 리뷰는 표시명이 Technical Concepts여도 frontmatter category는 concept로 둔다.
+    - Background 글은 표시명이 Background여도 frontmatter category는 concept로 둔다.
     - heroImage 또는 본문 이미지가 참고 자료의 figure/concept image인지 확인한다.
     - 이미지 caption과 Source 섹션에 출처 링크가 있는지 확인한다.
     - Ingus Lab 댓글이 본문 분석과 분리되어 있고, 사용자가 직접 댓글처럼 수정할 수 있는 형태인지 확인한다.

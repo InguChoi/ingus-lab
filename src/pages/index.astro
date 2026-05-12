@@ -21,6 +21,7 @@ const posts = (await getCollection("blog"))
 		<main>
 			<section class="hero" aria-label="Ingus Lab">
 				<div class="hero-content">
+					<img class="hero-logo" src="/images/inguslab-logo.png" alt="" width="112" height="112" />
 					<p>Research notes for curious builders</p>
 					<h1>Ingus Lab</h1>
 					<p>
@@ -28,7 +29,7 @@ const posts = (await getCollection("blog"))
 							논문을 읽고, 기술 트렌드를 관찰하며, AI와 로보틱스에서 반복해서 쓰이는 핵심 개념을 정리하는 개인 연구 노트입니다.
 						</span>
 						<span data-lang="en">
-							A personal research notebook for reading papers, tracking technology trends, and reviewing core concepts in AI and robotics.
+							A personal research notebook for reading papers, tracking technology trends, and building background knowledge in AI and robotics.
 						</span>
 					</p>
 				</div>
@@ -47,10 +48,10 @@ const posts = (await getCollection("blog"))
 					<span data-lang="en">Signals from AI, product, developer-tool, and market changes.</span>
 				</a>
 				<a href="/concept">
-					<span class="section-title" data-lang="ko">기술 개념</span>
-					<span class="section-title" data-lang="en">Technical Concepts</span>
-					<span data-lang="ko">AI와 로보틱스 전반에서 쓰이는 기술, 개념, 방법론을 리뷰합니다.</span>
-					<span data-lang="en">Reviews of technologies, concepts, and methods used across AI and robotics.</span>
+					<span class="section-title" data-lang="ko">Background</span>
+					<span class="section-title" data-lang="en">Background</span>
+					<span data-lang="ko">AI와 로보틱스를 이해하는 데 필요한 배경 지식, 개념, 방법론을 정리합니다.</span>
+					<span data-lang="en">Background notes on concepts, methods, and context for understanding AI and robotics.</span>
 				</a>
 			</section>
 			<section>
@@ -78,6 +79,15 @@ const posts = (await getCollection("blog"))
 	}
 	.hero-content {
 		max-width: 620px;
+	}
+	.hero-logo {
+		border-radius: 24px;
+		box-shadow: 0 20px 60px rgba(0, 0, 0, 0.28);
+		display: block;
+		height: 112px;
+		margin-bottom: 1.25rem;
+		object-fit: cover;
+		width: 112px;
 	}
 	.hero-content > p:first-child {
 		color: #8ee7ff;
@@ -125,6 +135,10 @@ const posts = (await getCollection("blog"))
 			margin-top: -1em;
 			min-height: 420px;
 			padding: 3rem 1rem;
+		}
+		.hero-logo {
+			height: 88px;
+			width: 88px;
 		}
 		.sections {
 			grid-template-columns: 1fr;

@@ -5,14 +5,19 @@ import { SITE_TITLE } from '../consts';
 
 <header>
 	<nav>
-		<h2><a href="/">{SITE_TITLE}</a></h2>
+		<h2>
+			<a class="brand" href="/" aria-label={SITE_TITLE}>
+				<img src="/images/inguslab-logo.png" alt="" width="40" height="40" />
+				<span>{SITE_TITLE}</span>
+			</a>
+		</h2>
 		<div class="internal-links">
 			<HeaderLink href="/">Home</HeaderLink>
 			<HeaderLink href="/papers">Papers</HeaderLink>
 			<HeaderLink href="/trends">Trends</HeaderLink>
 			<HeaderLink href="/concept">
-				<span data-lang="ko">기술 개념</span>
-				<span data-lang="en">Technical Concepts</span>
+				<span data-lang="ko">Background</span>
+				<span data-lang="en">Background</span>
 			</HeaderLink>
 		</div>
 		<div class="language-switch" aria-label="Language">
@@ -36,6 +41,23 @@ import { SITE_TITLE } from '../consts';
 	h2 a,
 	h2 a.active {
 		text-decoration: none;
+	}
+	.brand {
+		align-items: center;
+		color: rgb(var(--black));
+		display: inline-flex;
+		gap: 0.65rem;
+		padding: 0.55rem 0.5rem 0.55rem 0;
+	}
+	.brand img {
+		border-radius: 10px;
+		display: block;
+		height: 40px;
+		object-fit: cover;
+		width: 40px;
+	}
+	.brand span {
+		white-space: nowrap;
 	}
 	nav {
 		display: flex;
