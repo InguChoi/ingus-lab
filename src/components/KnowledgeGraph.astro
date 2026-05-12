@@ -26,6 +26,11 @@ const tags = [...tagCounts.entries()]
 	.sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
 	.map(([name, count]) => ({ name, count }));
 
+const compactLabel = (value: string, maxLength = 28) => {
+	const normalized = value.replace(/\s+/g, " ").trim();
+	return normalized.length > maxLength ? `${normalized.slice(0, maxLength - 1)}...` : normalized;
+};
+
 const palette = ["#0ea5e9", "#14b8a6", "#f59e0b", "#6366f1", "#ef4444", "#22c55e"];
 const tagNodes = tags.map((tag, index) => {
 	const angle = (Math.PI * 2 * index) / Math.max(tags.length, 1) - Math.PI / 2;
@@ -50,8 +55,10 @@ const postNodes = taggedPosts.map((post, index) => {
 	return {
 		id: `post:${post.id}`,
 		kind: "post",
-		labelKo: post.titleKo,
-		labelEn: post.titleEn,
+		labelKo: compactLabel(post.titleKo, 24),
+		labelEn: compactLabel(post.titleEn, 28),
+		fullLabelKo: post.titleKo,
+		fullLabelEn: post.titleEn,
 		url: post.url,
 		tags: post.tags,
 		x: Math.cos(angle) * radius,
@@ -86,10 +93,6 @@ const graphData = {
 					<span data-lang="en">Connections Across Notes</span>
 				</h2>
 			</div>
-			<p>
-				<span data-lang="ko">Sigma.js로 키워드 태그와 글 사이의 연결을 시각화합니다. 글 노드를 클릭하면 해당 노트로 이동합니다.</span>
-				<span data-lang="en">Sigma.js visualizes the links between keyword tags and notes. Click a note node to open it.</span>
-			</p>
 		</div>
 		<div class="graph-shell">
 			<div class="graph-legend" aria-hidden="true">
@@ -129,6 +132,8 @@ const graphData = {
 				kind: "post" | "tag";
 				labelKo: string;
 				labelEn: string;
+				fullLabelKo?: string;
+				fullLabelEn?: string;
 				url?: string;
 				x: number;
 				y: number;
@@ -149,6 +154,37 @@ const graphData = {
 					language === "en" ? attributes.labelEn : attributes.labelKo,
 				);
 			});
+		};
+		const drawLabel = (
+			context: CanvasRenderingContext2D,
+			data: { label?: string; size: number; color: string },
+			settings: { labelSize: number; labelWeight: string },
+		) => {
+			if (!data.label) return;
+
+			const fontSize = settings.labelSize;
+			context.font = `${settings.labelWeight} ${fontSize}px var(--font-body), sans-serif`;
+			const paddingX = 6;
+			const paddingY = 3;
+			const x = data.size + 6;
+			const y = fontSize / 3;
+			const width = context.measureText(data.label).width + paddingX * 2;
+			const height = fontSize + paddingY * 2;
+
+			context.fillStyle = "rgba(255, 255, 255, 0.9)";
+			context.strokeStyle = "rgba(203, 213, 225, 0.95)";
+			context.lineWidth = 1;
+			context.beginPath();
+			if (typeof context.roundRect === "function") {
+				context.roundRect(x - paddingX, y - fontSize + 1 - paddingY, width, height, 5);
+			} else {
+				context.rect(x - paddingX, y - fontSize + 1 - paddingY, width, height);
+			}
+			context.fill();
+			context.stroke();
+
+			context.fillStyle = data.color === "#111827" ? "#111827" : "#0f172a";
+			context.fillText(data.label, x, y);
 		};
 
 		data.nodes.forEach((node) => {
@@ -174,9 +210,16 @@ const graphData = {
 			defaultNodeColor: "#111827",
 			edgeColor: "default",
 			labelColor: { color: "#111827" },
-			labelDensity: 0.12,
+			labelDensity: 0.08,
 			labelRenderedSizeThreshold: 8,
+			labelSize: 11,
+			labelWeight: "700",
 			renderEdgeLabels: false,
+			nodeReducer: (node, attributes) => ({
+				...attributes,
+				zIndex: attributes.kind === "post" ? 2 : 1,
+			}),
+			labelRenderer: drawLabel,
 			zIndex: true,
 		});
 
