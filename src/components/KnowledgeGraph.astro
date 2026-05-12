@@ -32,7 +32,7 @@ const tagNodes = tags.map((tag, index) => {
 	const radius = 1.08;
 	return {
 		id: `tag:${tag.name}`,
-		type: "tag",
+		kind: "tag",
 		labelKo: `#${tag.name}`,
 		labelEn: `#${tag.name}`,
 		tag: tag.name,
@@ -49,7 +49,7 @@ const postNodes = taggedPosts.map((post, index) => {
 	const radius = 0.35;
 	return {
 		id: `post:${post.id}`,
-		type: "post",
+		kind: "post",
 		labelKo: post.titleKo,
 		labelEn: post.titleEn,
 		url: post.url,
@@ -126,7 +126,7 @@ const graphData = {
 		const data = JSON.parse(dataScript.textContent) as {
 			nodes: Array<{
 				id: string;
-				type: "post" | "tag";
+				kind: "post" | "tag";
 				labelKo: string;
 				labelEn: string;
 				url?: string;
@@ -186,7 +186,7 @@ const graphData = {
 		});
 
 		renderer.on("enterNode", ({ node }) => {
-			container.style.cursor = graph.getNodeAttribute(node, "type") === "post" ? "pointer" : "default";
+			container.style.cursor = graph.getNodeAttribute(node, "kind") === "post" ? "pointer" : "default";
 		});
 
 		renderer.on("leaveNode", () => {
