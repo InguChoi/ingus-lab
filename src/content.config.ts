@@ -14,6 +14,7 @@ const blog = defineCollection({
 		descriptionKo: z.string().optional(),
 		descriptionEn: z.string().optional(),
 		category: z.enum(["papers", "trends", "concept"]),
+		tags: z.array(z.string()).min(1),
 		// Transform string to Date object
 		pubDate: z.coerce.date(),
 		updatedDate: z.coerce.date().optional(),

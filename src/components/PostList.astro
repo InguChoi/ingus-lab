@@ -30,6 +30,13 @@ const { posts } = Astro.props;
 								<span data-lang="ko">{post.data.descriptionKo ?? post.data.description}</span>
 								<span data-lang="en">{post.data.descriptionEn ?? post.data.description}</span>
 							</p>
+							{post.data.tags && post.data.tags.length > 0 && (
+								<ul class="tags" aria-label="Keywords">
+									{post.data.tags.map((tag) => (
+										<li>#{tag}</li>
+									))}
+								</ul>
+							)}
 						</div>
 					</a>
 				</li>
@@ -71,6 +78,23 @@ const { posts } = Astro.props;
 	}
 	.post-list p {
 		margin: 0;
+	}
+	.tags {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.35rem;
+		list-style: none;
+		margin: 0.75rem 0 0;
+		padding: 0;
+	}
+	.tags li {
+		border: 1px solid rgb(var(--gray-light));
+		border-radius: 999px;
+		color: rgb(var(--gray));
+		font-size: 0.76rem;
+		font-weight: 700;
+		line-height: 1;
+		padding: 0.38rem 0.55rem;
 	}
 	.post-list .meta {
 		color: rgb(var(--gray));

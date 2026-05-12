@@ -2,13 +2,15 @@
 import BaseHead from "../components/BaseHead.astro";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
+import KnowledgeGraph from "../components/KnowledgeGraph.astro";
 import PostList from "../components/PostList.astro";
 import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
 import { getCollection } from "astro:content";
 
-const posts = (await getCollection("blog"))
-	.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
-	.slice(0, 4);
+const allPosts = (await getCollection("blog")).sort(
+	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+);
+const posts = allPosts.slice(0, 4);
 ---
 
 <!doctype html>
@@ -48,12 +50,13 @@ const posts = (await getCollection("blog"))
 					<span data-lang="en">Signals from AI, product, developer-tool, and market changes.</span>
 				</a>
 				<a href="/concept">
-					<span class="section-title" data-lang="ko">Background</span>
+					<span class="section-title" data-lang="ko">배경지식</span>
 					<span class="section-title" data-lang="en">Background</span>
 					<span data-lang="ko">AI와 로보틱스를 이해하는 데 필요한 배경 지식, 개념, 방법론을 정리합니다.</span>
 					<span data-lang="en">Background notes on concepts, methods, and context for understanding AI and robotics.</span>
 				</a>
 			</section>
+			<KnowledgeGraph posts={allPosts} />
 			<section>
 				<h2>
 					<span data-lang="ko">최근 노트</span>
