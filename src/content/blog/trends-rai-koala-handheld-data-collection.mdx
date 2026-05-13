@@ -1,0 +1,134 @@
+---
+title: "RAI Koala: 로봇 조작 데이터 수집을 Gripper 문제로 다시 보기"
+description: "RAI Institute의 handheld robotic data collection 글이 로봇 조작 데이터, force sensing, gripper co-design에 주는 신호를 정리합니다."
+titleKo: "RAI Koala: 로봇 조작 데이터 수집을 Gripper 문제로 다시 보기"
+titleEn: "RAI Koala: Reframing Robotic Data Collection as a Gripper Problem"
+descriptionKo: "RAI Institute의 handheld robotic data collection 글이 로봇 조작 데이터, force sensing, gripper co-design에 주는 신호를 정리합니다."
+descriptionEn: "A look at what RAI Institute's handheld robotic data collection work signals for manipulation data, force sensing, and gripper co-design."
+category: "trends"
+tags:
+  - robotics
+  - dexterous-manipulation
+  - data-collection
+  - imitation-learning
+  - robot-hands
+  - tactile-sensing
+  - foundation-models
+pubDate: "May 13 2026"
+heroImage: "https://rai-inst.com/wp-content/uploads/2026/05/Capture-Piston-Demo-Horizontal.jpg"
+---
+
+<figure>
+	<img src="https://rai-inst.com/wp-content/uploads/2026/05/Capture-Piston-Demo-Horizontal.jpg" alt="RAI Institute handheld gripper demonstration on an engine assembly task" />
+	<figcaption>
+		<span data-lang="ko">Figure: RAI Institute의 handheld gripper를 이용한 engine assembly 데이터 수집 데모.</span>
+		<span data-lang="en">Figure: RAI Institute's handheld gripper demonstration for engine assembly data collection.</span>
+	</figcaption>
+</figure>
+
+<section data-lang="ko">
+
+RAI Institute가 [Getting a Grip on Robotic Data Collection](https://rai-inst.com/resources/blog/handheld-robotic-data-collection/)을 공개했습니다. 글의 표면 주제는 handheld gripper를 이용한 로봇 조작 데이터 수집입니다. 하지만 더 중요한 메시지는 데이터 수집 장치와 로봇 end effector를 따로 설계하면 contact-rich manipulation에서 전이 손실이 커진다는 점입니다.
+
+최근 로봇 파운데이션 모델 논의는 vision-language-action 모델, 대규모 demonstration, 시뮬레이션, teleoperation을 중심으로 빠르게 넓어지고 있습니다. RAI의 글은 그 흐름 속에서 조금 다른 질문을 던집니다. 로봇이 배터리 bracket을 끼우고, nut를 조이고, tool을 잡고, stuck bolt를 풀려면 어떤 데이터가 실제로 필요할까요. 답은 더 많은 이미지뿐 아니라 힘, 위치, 속도, torque, gripper 상태, 그리고 사람이 거의 자연스러운 속도로 수행한 접촉 이력에 가깝습니다.
+
+## 무엇이 나왔나
+
+RAI Institute는 handheld data collection을 로봇 조작 데이터의 주요 축으로 제시합니다. 사람이 목적에 맞게 만든 gripper를 손에 들고 실제 물체를 조작하면, gripper에 달린 카메라와 센서가 egocentric RGB, gripper width, velocity, torque 같은 신호를 기록합니다. 이후 로봇은 같은 기구 구조와 센서 구성을 가진 actuated gripper로 policy를 실행합니다.
+
+핵심은 human demonstration을 그대로 robot action으로 바꾸는 것이 아니라, 사람이 잡는 장치와 로봇이 쓰는 장치를 함께 설계한다는 점입니다. RAI는 이를 gripper co-design 문제로 봅니다. 데이터 수집용 handheld interface와 로봇 실행용 actuated gripper가 linkages, finger geometry, kinematics, sensor suite를 공유하면, 학습 시점의 관측과 배포 시점의 관측이 더 잘 맞습니다.
+
+## 왜 중요한가
+
+로봇 조작 데이터에는 늘 scale과 fidelity의 긴장이 있습니다. 인터넷 영상은 크지만 힘과 촉각이 없습니다. 시뮬레이션은 대량 생성이 쉽지만 유연한 물체나 빠른 접촉에서는 sim-to-real gap이 큽니다. Egocentric video는 싸고 자연스럽지만 손 가림, hand tracking 오차, force 신호 부재가 문제가 됩니다. Teleoperation은 로봇 정렬 데이터라는 장점이 있지만, 장치가 무겁거나 tactile feedback이 약하면 사람의 속도와 섬세함이 떨어집니다.
+
+Handheld gripper 접근은 이 사이에 놓입니다. 사람은 실제 물체를 직접 다루기 때문에 접촉 상황이 현실적이고, 장치가 충분히 직관적이면 거의 자연스러운 cadence로 시연할 수 있습니다. 동시에 gripper 내부의 force, torque, proprioceptive signal을 기록할 수 있습니다. 이 조합은 manufacturing, assembly, disassembly처럼 보이는 모양보다 보이지 않는 힘의 변화가 중요한 작업에서 특히 의미가 큽니다.
+
+예를 들어 bolt가 풀리기 전에는 눈에 보이는 움직임이 거의 없지만 torque는 계속 커집니다. 병뚜껑 위에 손을 올린 상태와 강하게 누르는 상태도 이미지로는 비슷할 수 있습니다. 이런 차이는 해상도 문제가 아니라 modality 문제입니다.
+
+## 기술적 신호
+
+RAI의 Koala platform은 이 관점을 구체화한 gripper입니다. Koala는 handheld, hand-powered gripper와 electrically actuated robot gripper라는 두 variant로 구성됩니다. 두 variant는 같은 finger geometry와 sensor suite를 공유하되, 사람 쪽은 직접 squeeze하는 interface이고 로봇 쪽은 motor-driven mechanism입니다.
+
+설계는 double-thumb 구조와 underactuated linkage-based fingers를 사용합니다. 원문은 3개의 controllable degrees of freedom과 2개의 underactuated degrees of freedom을 언급하며, contoured and deformable pad surface를 통해 precision pinch, power grasp, caging grasp 같은 다양한 grasp를 다루려는 의도를 설명합니다. 목표는 사람 손의 모든 grasp를 복제하는 것이 아니라, 적은 자유도로 기능적으로 같은 결과를 얻는 것입니다.
+
+또 하나의 신호는 ergonomics를 데이터 품질 문제로 본다는 점입니다. 사람이 오래 들고 쓰기 어렵거나 trigger mapping이 직관적이지 않으면 demonstration 자체가 느려지고 어색해집니다. RAI는 다양한 손 크기에 맞춰 세 가지 handheld device size를 프로토타입으로 만들었다고 설명합니다. 로봇 데이터 수집에서 하드웨어 ergonomics가 model performance로 이어진다는 관점은 앞으로 더 중요해질 가능성이 큽니다.
+
+<figure>
+	<img src="https://rai-inst.com/wp-content/uploads/2026/05/Screenshot-2026-05-11-at-12.02.39-PM.png" alt="RAI Institute Koala platform handheld interface and actuated robot gripper" />
+	<figcaption>
+		RAI Institute가 제시한 Koala platform의 co-design 개념. 사람용 handheld interface와 로봇용 actuated gripper가 같은 기구 구조와 센서 구성을 공유한다.
+	</figcaption>
+</figure>
+
+## 시장 또는 제품 관점
+
+이 글은 제품 출시라기보다 로봇 조작 데이터 인프라에 대한 연구 방향 선언에 가깝습니다. 최근 RLDX-1과 GENE-26.5가 tactile, torque, memory, hand hardware, low-latency control을 강조했다면, RAI의 Koala는 그 앞단의 질문을 다룹니다. 그런 신호를 학습하려면 애초에 어떤 방식으로 데이터를 모아야 하는가입니다.
+
+이 관점은 로봇 회사와 연구팀의 비용 구조에도 영향을 줍니다. 모든 데이터를 로봇 teleoperation으로만 모으면 장비, 공간, 숙련 operator, robot uptime이 병목이 됩니다. 반대로 handheld capture device가 충분히 저렴하고 견고해지면, 실제 작업 환경에서 더 많은 사람이 더 다양한 물체와 조건을 기록할 수 있습니다. 원문이 beach에서 Koala device로 litter를 줍는 예를 든 것도 같은 맥락입니다. 데이터 수집 장소가 실험실 밖으로 나갈수록 조명, 지형, clutter, object distribution이 현실에 가까워집니다.
+
+다만 남는 질문도 큽니다. Handheld gripper는 bare hand보다 자유도가 낮고, 사람 팔이 든 gripper와 로봇 팔이 든 gripper 사이에는 여전히 embodiment gap이 있습니다. 또한 force-rich 데이터를 모아도 policy architecture가 memory와 temporal context를 충분히 쓰지 못하면 현재 관측 하나에 너무 많은 의미를 담아야 합니다. RAI도 이 지점을 인정하며 memory를 포함한 architecture를 후속 연구 축으로 남깁니다.
+
+## Ingus Lab 댓글
+
+Koala가 흥미로운 이유는 데이터 수집을 소프트웨어 파이프라인이 아니라 물리적 interface 문제로 다룬다는 점입니다. 좋은 로봇 데이터는 잘 라벨링된 파일 이전에, 사람이 자연스럽게 좋은 demonstration을 만들 수 있는 장치에서 시작합니다.
+
+다음에 보고 싶은 것은 같은 handheld gripper 데이터가 서로 다른 arm, 서로 다른 workspace, 서로 다른 policy architecture에서 얼마나 잘 버티는지입니다. 결국 이 접근의 가치는 gripper가 멋지다는 데서 끝나지 않고, 데이터가 얼마나 멀리 전이되는지에서 결정될 것 같습니다.
+
+</section>
+
+<section data-lang="en">
+
+RAI Institute has published [Getting a Grip on Robotic Data Collection](https://rai-inst.com/resources/blog/handheld-robotic-data-collection/). On the surface, the post is about collecting manipulation data with handheld grippers. The deeper point is that contact-rich robot learning suffers when the data capture device and the robot end effector are designed as separate objects.
+
+Robot foundation model discussions are expanding quickly around vision-language-action models, large-scale demonstrations, simulation, and teleoperation. RAI's post asks a more physical question inside that trend. If a robot needs to seat a battery bracket, tighten nuts, use tools, or break a stuck bolt free, what data does it actually need? The answer is not just more images. It is force, position, velocity, torque, gripper state, and contact histories produced at a nearly natural human cadence.
+
+## What Changed
+
+RAI Institute presents handheld data collection as a major path for manipulation data. A human operator holds a purpose-built gripper and directly manipulates real objects, while cameras and sensors on the gripper record egocentric RGB, gripper width, velocity, torque, and related signals. The robot later executes the learned policy with an actuated gripper that shares the same mechanism and sensor configuration.
+
+The key move is not simply converting human demonstration into robot action. It is co-designing the device used by the human and the end effector used by the robot. RAI frames this as a gripper co-design problem. When the handheld interface and the actuated robot gripper share linkages, finger geometry, kinematics, and sensor suite, the observations seen during training and deployment become more consistent.
+
+## Why It Matters
+
+Manipulation data always sits between scale and fidelity. Internet video is abundant, but lacks force and tactile signals. Simulation scales well, but still struggles with deformable objects and fast-changing contacts. Egocentric video is cheap and natural, but hand occlusion, tracking error, and missing force signals are serious limits. Teleoperation produces robot-aligned data, but heavy interfaces or weak tactile feedback can slow the operator and remove the subtle contact cues that make the task work.
+
+Handheld grippers occupy a useful middle ground. The human directly handles real objects, so the contact situations are physically real. If the device is intuitive enough, the operator can demonstrate at close to natural cadence. At the same time, the gripper can record force, torque, and proprioceptive signals from inside the mechanism. That combination is especially relevant for manufacturing, assembly, and disassembly, where invisible force changes often matter more than visible motion.
+
+For example, before a bolt breaks free, there may be little visible motion while torque keeps rising. A hand resting on a bottle cap and a hand pressing it hard can also look nearly identical in an image. The difference is not primarily an image resolution problem. It is a modality problem.
+
+## Technical Signals
+
+RAI's Koala platform makes this argument concrete. Koala has two variants: a handheld, hand-powered gripper for data collection and an electrically actuated gripper for robot execution. They share the same finger geometry and sensor suite, while the human side is operated by squeezing and the robot side is driven by motors.
+
+The design uses a double-thumb morphology and underactuated linkage-based fingers. The post describes three controllable degrees of freedom and two underactuated degrees of freedom, combined with contoured and deformable pad surfaces to support precision pinches, power grasps, and caging grasps. The goal is not to reproduce every human grasp. It is to reach the same functional outcomes with fewer active degrees of freedom.
+
+Another signal is that ergonomics is treated as a data quality problem. If the device is tiring to hold or if the trigger mapping is unnatural, the demonstrations become slower and less representative. RAI says it prototyped three handheld device sizes to fit a wider range of human hands. In robot data collection, hardware ergonomics may turn out to be a direct contributor to model performance.
+
+<figure>
+	<img src="https://rai-inst.com/wp-content/uploads/2026/05/Screenshot-2026-05-11-at-12.02.39-PM.png" alt="RAI Institute Koala platform handheld interface and actuated robot gripper" />
+	<figcaption>
+		RAI Institute's Koala platform co-design concept. The human handheld interface and robot actuated gripper share the same mechanism and sensor configuration.
+	</figcaption>
+</figure>
+
+## Market or Product View
+
+This is less a product launch than a research statement about manipulation data infrastructure. Recent systems such as RLDX-1 and GENE-26.5 emphasize tactile input, torque, memory, hand hardware, and low-latency control. Koala sits one step earlier in the stack. If those signals matter for learning, how should teams collect them in the first place?
+
+That question affects the cost structure of robotics companies and labs. If all data must come from robot teleoperation, then equipment, space, skilled operators, and robot uptime become the bottleneck. If handheld capture devices become cheap and robust enough, more people can collect data across more objects, tasks, and environments. RAI's example of taking a Koala device to a beach to pick up litter points in that direction. Moving data collection outside the lab brings lighting, terrain, clutter, and object distributions closer to the real world.
+
+There are still hard questions. A handheld gripper has less dexterity than a bare hand, and there remains an embodiment gap between a gripper held by a human arm and the same gripper mounted on a robot arm. Rich force data also does not remove the need for better policy architectures. If the policy has little memory or temporal context, the current observation has to carry too much of the task state. RAI explicitly leaves memory-aware architectures as an active research direction.
+
+## Ingus Lab Comment
+
+Koala is interesting because it treats data collection as a physical interface problem, not just as a software pipeline. Good robot data begins before labeling or training; it begins with a device that lets humans produce good demonstrations naturally.
+
+The next thing I would like to see is how far the same handheld gripper data transfers across different arms, workspaces, and policy architectures. The value of this approach will be decided not only by the gripper design, but by how far the resulting data can travel.
+
+</section>
+
+## Source
+
+- RAI Institute, [Getting a Grip on Robotic Data Collection](https://rai-inst.com/resources/blog/handheld-robotic-data-collection/), 2026-05-12
+- Image source: RAI Institute official post, handheld gripper engine assembly demo and Koala platform co-design figure
