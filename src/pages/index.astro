@@ -55,6 +55,12 @@ const posts = allPosts.slice(0, 4);
 					<span data-lang="ko">AI와 로보틱스를 이해하는 데 필요한 배경 지식, 개념, 방법론을 정리합니다.</span>
 					<span data-lang="en">Background notes on concepts, methods, and context for understanding AI and robotics.</span>
 				</a>
+				<a href="/lecture">
+					<span class="section-title" data-lang="ko">강의</span>
+					<span class="section-title" data-lang="en">Lecture</span>
+					<span data-lang="ko">로봇 핸드 제어와 자율주행처럼 영상 강의로 확장할 주제를 모읍니다.</span>
+					<span data-lang="en">Lecture tracks for topics that will grow through embedded videos, including robot hand control and autonomous driving.</span>
+				</a>
 			</section>
 			<KnowledgeGraph posts={allPosts} />
 			<section>
@@ -113,7 +119,7 @@ const posts = allPosts.slice(0, 4);
 	.sections {
 		display: grid;
 		gap: 1rem;
-		grid-template-columns: repeat(3, 1fr);
+		grid-template-columns: repeat(4, minmax(0, 1fr));
 		margin-bottom: 3rem;
 	}
 	.sections a {
@@ -129,6 +135,11 @@ const posts = allPosts.slice(0, 4);
 		font-size: 1.25em;
 		font-weight: 700;
 		margin-bottom: 0.35rem;
+	}
+	@media (max-width: 960px) {
+		.sections {
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+		}
 	}
 	@media (max-width: 720px) {
 		.hero {

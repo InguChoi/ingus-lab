@@ -1,0 +1,142 @@
+---
+import BaseHead from "../components/BaseHead.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import { SITE_TITLE } from "../consts";
+
+const title = "Lecture";
+const description = "강화학습 기반 로봇 핸드 제어와 자율주행 강의 자료를 모읍니다.";
+const categories = [
+	{
+		id: "rl-robot-hand-control",
+		titleKo: "강화학습 기반 로봇 핸드 제어",
+		titleEn: "RL-Based Robot Hand Control",
+		descriptionKo:
+			"정책 학습, dexterous manipulation, sim-to-real, 촉각과 힘 피드백을 중심으로 로봇 핸드 제어를 정리합니다.",
+		descriptionEn:
+			"Robot hand control through policy learning, dexterous manipulation, sim-to-real transfer, tactile input, and force feedback.",
+	},
+	{
+		id: "autonomous-driving",
+		titleKo: "자율주행",
+		titleEn: "Autonomous Driving",
+		descriptionKo:
+			"인지, 예측, 계획, 제어, 시뮬레이션 평가를 중심으로 자율주행 시스템의 흐름을 정리합니다.",
+		descriptionEn:
+			"Autonomous driving systems through perception, prediction, planning, control, simulation, and evaluation.",
+	},
+];
+---
+
+<!doctype html>
+<html lang="ko">
+	<head>
+		<BaseHead title={`${title} | ${SITE_TITLE}`} description={description} />
+	</head>
+	<body>
+		<Header />
+		<main>
+			<section class="page-heading">
+				<p>Ingus Lab</p>
+				<h1>
+					<span data-lang="ko">강의</span>
+					<span data-lang="en">Lecture</span>
+				</h1>
+				<p>
+					<span data-lang="ko">영상 강의와 함께 볼 수 있는 AI·로보틱스 학습 트랙을 정리합니다.</span>
+					<span data-lang="en">Learning tracks for AI and robotics topics that pair naturally with lecture videos.</span>
+				</p>
+			</section>
+
+			<section class="lecture-grid" aria-label="Lecture categories">
+				{
+					categories.map((category) => (
+						<article class="lecture-card" id={category.id}>
+							<div>
+								<p class="kicker">
+									<span data-lang="ko">강의 카테고리</span>
+									<span data-lang="en">Lecture Category</span>
+								</p>
+								<h2>
+									<span data-lang="ko">{category.titleKo}</span>
+									<span data-lang="en">{category.titleEn}</span>
+								</h2>
+								<p>
+									<span data-lang="ko">{category.descriptionKo}</span>
+									<span data-lang="en">{category.descriptionEn}</span>
+								</p>
+							</div>
+							<div class="video-slot" aria-hidden="true">
+								<span>YouTube</span>
+							</div>
+						</article>
+					))
+				}
+			</section>
+		</main>
+		<Footer />
+	</body>
+</html>
+
+<style>
+	.page-heading {
+		margin-bottom: 2.5rem;
+	}
+	.page-heading > p:first-child,
+	.kicker {
+		color: var(--accent);
+		font-size: 0.85em;
+		font-weight: 700;
+		letter-spacing: 0;
+		margin-bottom: 0.5rem;
+		text-transform: uppercase;
+	}
+	.page-heading h1 {
+		margin-bottom: 0.75rem;
+	}
+	.lecture-grid {
+		display: grid;
+		gap: 1rem;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+	.lecture-card {
+		border: 1px solid rgb(var(--gray-light));
+		border-radius: 8px;
+		display: grid;
+		gap: 1.25rem;
+		grid-template-rows: 1fr auto;
+		padding: 1.25rem;
+	}
+	.lecture-card h2 {
+		font-size: 1.35rem;
+		line-height: 1.3;
+		margin-bottom: 0.75rem;
+	}
+	.lecture-card p:last-child {
+		color: rgb(var(--gray-dark));
+		margin-bottom: 0;
+	}
+	.video-slot {
+		align-items: center;
+		aspect-ratio: 16 / 9;
+		background:
+			linear-gradient(135deg, rgba(35, 55, 255, 0.14), rgba(var(--black), 0.04)),
+			rgb(var(--gray-light));
+		border-radius: 6px;
+		color: rgba(var(--black), 0.54);
+		display: flex;
+		font-size: 0.85rem;
+		font-weight: 700;
+		justify-content: center;
+		letter-spacing: 0;
+		min-height: 180px;
+	}
+	@media (max-width: 720px) {
+		.lecture-grid {
+			grid-template-columns: 1fr;
+		}
+		.lecture-card {
+			padding: 1rem;
+		}
+	}
+</style>
