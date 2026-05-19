@@ -7,6 +7,7 @@ import {
 	type ConceptBook,
 	type ConceptBookPage,
 } from "../data/conceptBooks";
+import { isPrivateConceptBookSlug } from "../data/privateContent";
 import { SITE_TITLE } from "../consts";
 
 interface Props {
@@ -20,8 +21,11 @@ interface Props {
 }
 
 const { book, page, frontmatter, Content } = Astro.props;
-const navPages = book.pages.filter((entry) => entry.kind !== "landing");
-const orderedPages = book.pages;
+const visiblePages = book.pages.filter(
+	(entry) => !isPrivateConceptBookSlug(entry.slug) || entry.slug === page.slug,
+);
+const navPages = visiblePages.filter((entry) => entry.kind !== "landing");
+const orderedPages = visiblePages;
 const currentIndex = orderedPages.findIndex((entry) => entry.slug === page.slug);
 const previousPage = currentIndex > 0 ? orderedPages[currentIndex - 1] : undefined;
 const nextPage =

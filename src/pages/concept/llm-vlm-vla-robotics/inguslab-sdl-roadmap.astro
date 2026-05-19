@@ -1,0 +1,24 @@
+---
+export const prerender = false;
+
+import ConceptBookShell from "../../../components/ConceptBookShell.astro";
+import { llmVlmVlaRoboticsBook } from "../../../data/conceptBooks";
+import * as roadmapModule from "../../../content/concept-books/llm-vlm-vla-robotics/pages/inguslab-sdl-roadmap.md";
+
+const page = llmVlmVlaRoboticsBook.pages.find(
+	(entry) => entry.slug === "inguslab-sdl-roadmap",
+);
+
+if (!page) {
+	throw new Error("Missing private roadmap page metadata for llm-vlm-vla-robotics.");
+}
+
+const { Content, frontmatter } = roadmapModule;
+---
+
+<ConceptBookShell
+	book={llmVlmVlaRoboticsBook}
+	page={page}
+	frontmatter={frontmatter}
+	Content={Content}
+/>

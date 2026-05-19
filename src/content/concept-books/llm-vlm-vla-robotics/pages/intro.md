@@ -36,6 +36,5 @@ VLA는 한 단계 더 나아가 이미지와 언어에서 로봇 action을 직�
 4. **VLM grounding**: VLM의 시각 추론을 좌표계, keypoint, affordance로 어떻게 바꾸는가?
 5. **VLA**: action token, diffusion, flow matching은 로봇 제어를 어떻게 바꾸었는가?
 6. **시스템 설계**: 실제 로봇에서는 어떤 validation과 safety layer가 필요한가?
-7. **Ingus Lab/SDL 적용**: 실험 자동화 로봇에는 어떤 단계로 적용하는 것이 안전한가?
 
 이 책의 관점은 연구 소개에만 머물지 않습니다. 목표는 `/concept/`에 배포할 수 있는 배경지식 글이면서, 동시에 실제 구현을 시작할 수 있는 시스템 설계 문서가 되는 것입니다.

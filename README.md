@@ -19,6 +19,15 @@ Ingus Lab is an Astro-powered research notebook for paper reviews, technology tr
 | `npm run preview` | Build and preview through Wrangler |
 | `npm run deploy` | Deploy to Cloudflare Workers |
 
+## Private Content
+
+Private concept pages are protected at the Worker middleware layer. Configure one of these before deploying private pages:
+
+- Cloudflare Access: set `PRIVATE_ALLOWED_EMAIL` to the allowed email address.
+- Basic auth: set `PRIVATE_CONTENT_PASSWORD`, and optionally `PRIVATE_CONTENT_USERNAME` (defaults to `ingu`).
+
+Do not commit the password to the repository. Use Wrangler secrets or the Cloudflare dashboard.
+
 ## Content
 
 Posts live in `src/content/blog/`. Each post uses a `category` frontmatter value:

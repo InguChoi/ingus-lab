@@ -1,6 +1,7 @@
 ---
 import ConceptBookShell from "../../../components/ConceptBookShell.astro";
 import { llmVlmVlaRoboticsBook, type ConceptBookPage } from "../../../data/conceptBooks";
+import { isPrivateConceptBookSlug } from "../../../data/privateContent";
 
 type MarkdownPageModule = {
 	Content: any;
@@ -17,7 +18,7 @@ const pageModules = import.meta.glob(
 
 export function getStaticPaths() {
 	return llmVlmVlaRoboticsBook.pages
-		.filter((page) => page.slug)
+		.filter((page) => page.slug && !isPrivateConceptBookSlug(page.slug))
 		.map((page) => ({
 			params: { slug: page.slug },
 			props: { page },

@@ -28,7 +28,7 @@ model output string → 바로 robot command 실행
   <p class="paper-media-note">공식 benchmark/project page를 연결했습니다.</p>
 </div>
 
-![SDL/실험 자동화용 안전한 아키텍처](/concept-books/llm-vlm-vla-robotics/figures/fig06_sdl_safe_architecture.svg)
+![실험 자동화용 안전한 아키텍처](/concept-books/llm-vlm-vla-robotics/figures/fig06_safe_architecture.svg)
 
 기본 원칙은 다음입니다.
 

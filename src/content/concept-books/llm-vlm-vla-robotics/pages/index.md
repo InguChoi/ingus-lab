@@ -25,7 +25,6 @@ tags: ["Robotics", "LLM", "VLM", "VLA"]
 6. 최신 Robot Foundation Model: diffusion, flow, humanoid
 7. 데이터와 툴체인: VLA 성능을 만드는 실제 파이프라인
 8. 안전한 시스템 설계: 문자열을 로봇 명령으로 바꾸는 법
-9. Ingus Lab/SDL 적용 로드맵
 
 ## 핵심 메시지
 
