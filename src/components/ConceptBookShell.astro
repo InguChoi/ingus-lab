@@ -2,11 +2,13 @@
 import BaseHead from "./BaseHead.astro";
 import Header from "./Header.astro";
 import Footer from "./Footer.astro";
+import ConceptBookMedia from "./ConceptBookMedia.astro";
 import {
 	getConceptBookPageHref,
 	type ConceptBook,
 	type ConceptBookPage,
 } from "../data/conceptBooks";
+import { llmVlmVlaRoboticsMedia } from "../data/conceptBookMedia";
 import { SITE_TITLE } from "../consts";
 
 interface Props {
@@ -33,6 +35,7 @@ const description = frontmatter.description ?? page.description;
 const pageTitle =
 	page.kind === "landing" ? `${book.title} | ${SITE_TITLE}` : `${title} | ${book.title}`;
 const firstChapter = navPages[0];
+const mediaItems = page.slug ? llmVlmVlaRoboticsMedia[page.slug] : undefined;
 ---
 
 <!doctype html>
@@ -91,6 +94,7 @@ const firstChapter = navPages[0];
 				<div class="book-body">
 					<article class="book-content">
 						<Content />
+						<ConceptBookMedia items={mediaItems} />
 					</article>
 
 					<nav class="chapter-pager" aria-label="Chapter navigation">
