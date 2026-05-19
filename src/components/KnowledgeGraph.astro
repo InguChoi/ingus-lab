@@ -391,8 +391,11 @@ const graphData = {
 				return result;
 			}
 
-			if (attributes.kind === "tag" && (attributes.count ?? 0) < 2) {
-				result.label = "";
+			if (attributes.kind === "tag") {
+				result.label = getNodeLabel(attributes);
+				result.forceLabel = true;
+				result.zIndex = 4;
+				return result;
 			}
 			result.zIndex = attributes.kind === "post" ? 3 : 2;
 			return result;
@@ -418,7 +421,7 @@ const graphData = {
 			edgeReducer,
 			labelColor: { color: "#e5e7eb" },
 			labelDensity: 0.12,
-			labelRenderedSizeThreshold: 9,
+			labelRenderedSizeThreshold: 6,
 			labelSize: 10,
 			labelWeight: "700",
 			maxCameraRatio: 2.8,
