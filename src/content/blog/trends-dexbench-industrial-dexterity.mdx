@@ -1,0 +1,128 @@
+---
+title: "DexBench: 산업용 Dexterity를 평가 언어로 바꾸기"
+description: "RLWRLD의 DexBench가 로봇 조작 평가를 grasping 중심에서 산업 현장의 상태 전환, 실패 원인, dexterity regime 중심으로 옮기는 신호를 정리합니다."
+titleKo: "DexBench: 산업용 Dexterity를 평가 언어로 바꾸기"
+titleEn: "DexBench: Turning Industrial Dexterity into an Evaluation Language"
+descriptionKo: "RLWRLD의 DexBench가 로봇 조작 평가를 grasping 중심에서 산업 현장의 상태 전환, 실패 원인, dexterity regime 중심으로 옮기는 신호를 정리합니다."
+descriptionEn: "A look at how RLWRLD's DexBench shifts robot manipulation evaluation from grasping toward industrial state transitions, failure causes, and dexterity regimes."
+category: "trends"
+tags:
+  - robotics
+  - dexterous-manipulation
+  - benchmarks
+  - robot-learning
+  - industrial-robots
+  - physical-ai
+  - manipulation
+pubDate: "May 19 2026"
+heroImage: "https://dexbench.org/assets/og-image.png"
+---
+
+<figure>
+	<img src="https://dexbench.org/assets/og-image.png" alt="DexBench official overview image" />
+	<figcaption>
+		<span data-lang="ko">Figure: DexBench 공식 페이지의 대표 이미지.</span>
+		<span data-lang="en">Figure: Representative image from the official DexBench page.</span>
+	</figcaption>
+</figure>
+
+<section data-lang="ko">
+
+RLWRLD가 [DexBench](https://dexbench.org/en/)를 공개했습니다. DexBench는 산업용 로봇 dexterity를 평가하기 위한 task definition과 taxonomy입니다. 사이트는 로봇 조작 연구가 grasping에 많이 집중해 왔지만, 실제 산업 현장은 그보다 넓은 조작 능력을 요구한다고 문제를 잡습니다.
+
+핵심은 18개 benchmark task와 56개 evaluation case입니다. 하지만 단순히 과제 목록을 늘리는 발표는 아닙니다. DexBench는 "어떤 작업을 했는가"보다 "왜 어려운가", "어떤 능력이 그 어려움을 흡수해야 하는가", "어떤 조건에서 성능이 무너지는가"를 분리해 보려는 시도입니다.
+
+## 무엇이 나왔나
+
+DexBench는 산업 현장에서 반복적으로 등장하는 조작 과제를 18개 task로 정리합니다. Special Picking, In-Hand Reorientation, Bimanual Regrasping, Precision Insertion, Hand Fastening, Tool-Use, Moving Object Interaction 같은 과제가 포함됩니다.
+
+각 task는 다시 구체적인 evaluation case로 나뉩니다. 예를 들어 Tool-Use는 Allen key, electric driver, manual screwdriver, wrench처럼 도구 종류와 접촉 조건이 다른 case를 포함합니다. Moving Object Interaction은 conveyor pick과 conveyor place처럼 시간이 결과를 좌우하는 상황을 다룹니다.
+
+DexBench가 강조하는 설계 원칙은 네 가지입니다. 첫째, 방법이 아니라 상태 전환을 정의합니다. 둘째, 성공은 trajectory similarity가 아니라 검증 가능한 최종 상태로 판단합니다. 셋째, 구매 가능한 실제 물체와 공개된 사양을 씁니다. 넷째, 단일 성공률보다 어느 파라미터 범위에서 성능이 붕괴하는지를 봅니다.
+
+## 왜 중요한가
+
+로봇 조작에서 "dexterous"라는 말은 자주 쓰이지만, 무엇을 비교하는지는 흐릿한 경우가 많습니다. 다섯 손가락 손을 썼는지, 작은 물체를 집었는지, 삽입을 했는지, 사람처럼 움직였는지가 섞여 버립니다. 그러면 서로 다른 연구나 제품 발표를 같은 기준으로 읽기 어렵습니다.
+
+DexBench의 좋은 점은 task 이름만으로 난이도를 판단하지 않으려는 데 있습니다. USB cable insertion과 piston rod insertion은 모두 insertion이지만, 요구되는 공차, 힘 제어, 관찰 가능성, 접촉 상태는 완전히 다를 수 있습니다. 같은 "pick"도 물류 상자에서의 pick과 전자 조립의 pick은 다른 실패 조건을 가집니다.
+
+이런 평가 언어는 로봇 hand, VLA(Vision-Language-Action) 모델, tactile sensing, force control, planner를 비교할 때 중요합니다. 어떤 시스템이 실패했을 때 "성공률 70%"보다 더 필요한 정보는 무엇이 실패를 만들었는가입니다.
+
+## 기술적 신호
+
+첫 번째 축은 Object State Complexity(OSC)입니다. DexBench는 조작 난이도를 여섯 가지 독립 축으로 분해합니다. `C_geom`은 유효한 pose와 contact configuration이 얼마나 좁은지, `C_force`는 힘과 토크 조절이 얼마나 정밀해야 하는지, `C_contact`는 접촉 mode가 얼마나 많이 바뀌는지를 봅니다.
+
+나머지 축도 중요합니다. `C_obs`는 필요한 상태가 얼마나 가려져 있는지, `C_deform`은 물체 형상이 얼마나 자유롭고 history-dependent인지, `C_dyn`은 상태가 얼마나 빨리 변하고 timing이 얼마나 결정적인지를 다룹니다. 이 구조는 task name을 capability diagnosis로 바꾸는 장치입니다.
+
+두 번째 축은 Dexterity Regimes입니다. DexBench는 필요한 능력을 Grasp Diversity, Spatial Precision, Temporal Precision, Contact Precision, Context Awareness의 다섯 범주로 정리합니다. 여기서 dexterity는 손의 자유도 자체가 아니라, task의 복잡도를 흡수해 원하는 상태 전환을 안정화하는 능력에 가깝습니다.
+
+세 번째 신호는 breakdown curve입니다. DexBench는 단일 성공률보다 성능이 무너지는 경계에 관심을 둡니다. tolerance가 2 mm일 때 되는 insertion이 0.2 mm에서는 실패한다면, 그 경계가 시스템의 실제 능력입니다. 물체 속도, 마찰, occlusion, deformability를 바꿔가며 붕괴 지점을 찾는 방식은 산업 적용성 평가에 더 가깝습니다.
+
+## 시장 또는 제품 관점
+
+DexBench는 RLWRLD의 RLDX-1 같은 dexterous manipulation 모델 발표와도 이어집니다. RLDX-1이 tactile, torque, memory 같은 신호를 모델 안으로 끌어들이는 방향이었다면, DexBench는 그런 설계가 필요한 이유를 task taxonomy로 정리합니다.
+
+시장 관점에서 중요한 점은 벤치마크가 고객 언어와 연구 언어 사이의 번역기가 될 수 있다는 것입니다. 호텔 amenity arrangement, outbound shipment sealing, automotive fastening, conveyor sorting 같은 요구는 각 산업에서는 익숙하지만, 연구 benchmark에서는 한 줄로 비교하기 어렵습니다. DexBench는 이런 요구를 state transition, OSC, regime, case로 쪼개어 재사용 가능한 평가 형식으로 만듭니다.
+
+물론 한계도 있습니다. 현재 페이지는 benchmark definition과 object/case reference에 가깝고, 다양한 로봇 hand와 모델이 같은 조건에서 낸 공개 leaderboard는 아직 중심에 있지 않습니다. 실제 영향력은 이 taxonomy가 얼마나 많은 연구실, 로봇 회사, 고객 site에서 반복 가능한 평가 프로토콜로 쓰이는지에 달려 있습니다.
+
+## Ingus Lab 댓글
+
+DexBench에서 마음에 드는 부분은 dexterity를 "손이 몇 개의 관절을 가졌는가"가 아니라 "어떤 실패 원인을 흡수할 수 있는가"로 바꾸려는 점입니다. 이 관점은 로봇 hand 설계뿐 아니라 모델 구조와 데이터 수집 우선순위까지 바꿉니다.
+
+다음에 보고 싶은 것은 각 task의 baseline 결과와 failure taxonomy입니다. 같은 18개 task라도 누가 어디에서 무너지는지를 공개적으로 쌓기 시작하면, dexterous manipulation 논의가 데모 영상보다 훨씬 정밀해질 수 있습니다.
+
+</section>
+
+<section data-lang="en">
+
+RLWRLD has introduced [DexBench](https://dexbench.org/en/), a task definition and taxonomy for evaluating industrial robot dexterity. The site starts from a clear premise: manipulation research has focused heavily on grasping, while industrial work demands a much broader range of manipulation capabilities.
+
+The core asset is a set of 18 benchmark tasks and 56 evaluation cases. But this is not just a longer task list. DexBench tries to separate what the task is, why it is hard, which ability should absorb that difficulty, and where performance starts to collapse.
+
+## What Changed
+
+DexBench organizes recurring industrial manipulation needs into 18 tasks. The list includes Special Picking, In-Hand Reorientation, Bimanual Regrasping, Precision Insertion, Hand Fastening, Tool-Use, and Moving Object Interaction.
+
+Each task is split into concrete evaluation cases. Tool-Use, for example, includes cases for an Allen key, electric driver, manual screwdriver, and wrench. Moving Object Interaction includes conveyor picking and conveyor placing, where timing becomes part of the task definition.
+
+The design principles are also important. DexBench defines state transitions rather than prescribed methods. It judges success by verifiable end states rather than trajectory similarity. It uses purchasable real objects with specifications. And it emphasizes breakdown curves: not only whether a system succeeds, but the parameter range where reliability collapses.
+
+## Why It Matters
+
+The word dexterous is used often in robot manipulation, but the comparison target is frequently unclear. It can refer to a five-finger hand, a small object, an insertion task, or motion that looks human. That makes it hard to compare research systems and product claims under the same lens.
+
+DexBench is useful because it refuses to treat a task name as the difficulty itself. USB cable insertion and piston rod insertion may both be insertion, but their tolerances, force-control needs, observability, and contact states can be entirely different. A pick in logistics and a pick in electronics assembly can fail for very different reasons.
+
+That evaluation language matters when comparing robot hands, VLA(Vision-Language-Action) models, tactile sensing, force control, and planners. When a system fails, "70% success" is less informative than knowing which failure source created the gap.
+
+## Technical Signals
+
+The first technical axis is Object State Complexity(OSC). DexBench decomposes manipulation difficulty into six independent axes. `C_geom` asks how narrow the valid pose and contact configurations are. `C_force` asks how precisely force and torque must be regulated. `C_contact` captures the number and diversity of contact-mode transitions.
+
+The other axes are just as important. `C_obs` captures hidden task-critical state. `C_deform` covers shape freedom and history-dependent deformation. `C_dyn` captures fast-changing state and timing sensitivity. Together, these axes turn a task label into a capability diagnosis.
+
+The second axis is Dexterity Regimes. DexBench groups required abilities into Grasp Diversity, Spatial Precision, Temporal Precision, Contact Precision, and Context Awareness. Dexterity here is not the number of joints in the hand. It is the ability to stabilize the required state transition under the task's complexity constraints.
+
+The third signal is the focus on breakdown curves. A single success rate can hide the actual capability boundary. If an insertion works at 2 mm tolerance but fails at 0.2 mm, that boundary is the system's real operating envelope. Varying tolerance, object speed, friction, occlusion, and deformability is closer to how industrial usefulness should be evaluated.
+
+## Market or Product View
+
+DexBench also connects naturally to RLWRLD's RLDX-1 direction. If RLDX-1 pulls tactile, torque, and memory signals into the model, DexBench explains why those signals are needed by mapping the task space that creates those bottlenecks.
+
+The market signal is that a benchmark can become a translator between customer language and research language. Hotel amenity arrangement, outbound shipment sealing, automotive fastening, and conveyor sorting are familiar requirements inside each industry, but they are hard to compare as research benchmarks. DexBench turns them into reusable evaluation objects: state transition, OSC profile, dexterity regime, and case definition.
+
+The limitation is also clear. The current page is primarily a benchmark definition and object/case reference, not yet a broad public leaderboard across robot hands and models. Its real impact will depend on whether labs, robot companies, and customer sites adopt the taxonomy as a repeatable evaluation protocol.
+
+## Ingus Lab Comment
+
+The best part of DexBench is the reframing of dexterity from "how many joints does the hand have?" to "which failure causes can the system absorb?" That changes not only hand design, but also model architecture and data collection priorities.
+
+What I would like to see next is baseline performance and a shared failure taxonomy for each task. If the community starts accumulating where different systems break across these 18 tasks, dexterous manipulation discussion can become much more precise than another demo clip.
+
+</section>
+
+## Source
+
+- RLWRLD, [DexBench: Defining the Benchmark for Industrial Dexterity](https://dexbench.org/en/), 2026
+- Image source: DexBench official page, Open Graph image
