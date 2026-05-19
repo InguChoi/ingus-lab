@@ -1,0 +1,70 @@
+{
+  "id": "llm-vlm-vla-robotics",
+  "title": "언어 모델은 어떻게 로봇을 움직이게 되었나",
+  "subtitle": "LLM 기반 계획에서 VLM grounding, VLA action model, 그리고 안전한 로봇 시스템 설계까지",
+  "language": "ko",
+  "target_route": "/concept/llm-vlm-vla-robotics/",
+  "created_at": "2026-05-19",
+  "version": "0.1",
+  "status": "draft-for-deployment",
+  "chapters": [
+    {
+      "order": 0,
+      "file": "chapters/ch00_intro.md",
+      "title": "프롤로그: 왜 LLM/VLM/VLA를 로봇에 붙이는가"
+    },
+    {
+      "order": 1,
+      "file": "chapters/ch01_language_conditioned_policy.md",
+      "title": "LLM 이전: 언어 조건 로봇 정책"
+    },
+    {
+      "order": 2,
+      "file": "chapters/ch02_llm_planner.md",
+      "title": "LLM as Planner: skill을 선택하는 언어 모델"
+    },
+    {
+      "order": 3,
+      "file": "chapters/ch03_llm_programs.md",
+      "title": "LLM as Program Generator: code와 API로 로봇을 다루기"
+    },
+    {
+      "order": 4,
+      "file": "chapters/ch04_vlm_grounding.md",
+      "title": "VLM Grounding: 보고, 찾고, 좌표로 연결하기"
+    },
+    {
+      "order": 5,
+      "file": "chapters/ch05_vla_models.md",
+      "title": "VLA의 등장: image+language에서 action으로"
+    },
+    {
+      "order": 6,
+      "file": "chapters/ch06_robot_foundation_models.md",
+      "title": "최신 Robot Foundation Model: diffusion, flow, humanoid"
+    },
+    {
+      "order": 7,
+      "file": "chapters/ch07_data_tooling.md",
+      "title": "데이터와 툴체인: VLA 성능을 만드는 실제 파이프라인"
+    },
+    {
+      "order": 8,
+      "file": "chapters/ch08_safe_system_design.md",
+      "title": "안전한 시스템 설계: 문자열을 로봇 명령으로 바꾸는 법"
+    },
+    {
+      "order": 9,
+      "file": "chapters/ch09_inguslab_sdl_roadmap.md",
+      "title": "Ingus Lab/SDL 적용 로드맵"
+    }
+  ],
+  "figures": [
+    "assets/figures/fig01_evolution_timeline.svg",
+    "assets/figures/fig02_llm_planner_skill_library.svg",
+    "assets/figures/fig03_vlm_grounding.svg",
+    "assets/figures/fig04_vla_policy.svg",
+    "assets/figures/fig05_data_flywheel.svg",
+    "assets/figures/fig06_sdl_safe_architecture.svg"
+  ]
+}

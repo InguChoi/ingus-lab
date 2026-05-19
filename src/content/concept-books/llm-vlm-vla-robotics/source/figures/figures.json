@@ -1,0 +1,44 @@
+[
+  {
+    "id": "fig01_evolution_timeline",
+    "file": "assets/figures/fig01_evolution_timeline.svg",
+    "type": "author_created_diagram",
+    "caption": "LLM, VLM, VLA, robot foundation model로 이어지는 로봇 시스템 설계의 진화.",
+    "license_note": "Author-created. No paper figure copied."
+  },
+  {
+    "id": "fig02_llm_planner_skill_library",
+    "file": "assets/figures/fig02_llm_planner_skill_library.svg",
+    "type": "author_created_diagram",
+    "caption": "LLM planner가 skill library와 motion planner를 통해 로봇 controller에 연결되는 구조.",
+    "license_note": "Author-created. Inspired by SayCan-style pipeline, but not copied."
+  },
+  {
+    "id": "fig03_vlm_grounding",
+    "file": "assets/figures/fig03_vlm_grounding.svg",
+    "type": "author_created_diagram",
+    "caption": "VLM이 장면 이해를 keypoint, affordance, 3D target/value map으로 변환하는 구조.",
+    "license_note": "Author-created. Inspired by VLM grounding literature, but not copied."
+  },
+  {
+    "id": "fig04_vla_policy",
+    "file": "assets/figures/fig04_vla_policy.svg",
+    "type": "author_created_diagram",
+    "caption": "VLA model이 image, language, robot state로부터 action proposal을 생성하고 safety filter를 거쳐 controller로 전달되는 구조.",
+    "license_note": "Author-created."
+  },
+  {
+    "id": "fig05_data_flywheel",
+    "file": "assets/figures/fig05_data_flywheel.svg",
+    "type": "author_created_diagram",
+    "caption": "Teleoperation, dataset, training, deployment, logging, retraining으로 이어지는 robot learning data flywheel.",
+    "license_note": "Author-created."
+  },
+  {
+    "id": "fig06_sdl_safe_architecture",
+    "file": "assets/figures/fig06_sdl_safe_architecture.svg",
+    "type": "author_created_diagram",
+    "caption": "SDL/실험 자동화 로봇에 LLM, VLM, VLA를 안전하게 붙이기 위한 계층형 architecture.",
+    "license_note": "Author-created."
+  }
+]

@@ -17,6 +17,7 @@ interface Props {
 }
 
 const { title, description, titleKo, titleEn, descriptionKo, descriptionEn, posts } = Astro.props;
+const hasIntroContent = Astro.slots.has("default");
 ---
 
 <!doctype html>
@@ -38,7 +39,8 @@ const { title, description, titleKo, titleEn, descriptionKo, descriptionEn, post
 					<span data-lang="en">{descriptionEn ?? description}</span>
 				</p>
 			</section>
-			<PostList posts={posts} />
+			<slot />
+			{(posts.length > 0 || !hasIntroContent) && <PostList posts={posts} />}
 		</main>
 		<Footer />
 	</body>

@@ -1,0 +1,152 @@
+---
+import type { ConceptBook } from "../data/conceptBooks";
+
+interface Props {
+	books: ConceptBook[];
+}
+
+const { books } = Astro.props;
+---
+
+<section class="concept-books" aria-labelledby="concept-books-heading">
+	<div class="section-heading">
+		<p>Concept Book</p>
+		<h2 id="concept-books-heading">
+			<span data-lang="ko">책으로 읽는 배경지식</span>
+			<span data-lang="en">Background Books</span>
+		</h2>
+	</div>
+	<ul class="book-list">
+		{
+			books.map((book) => {
+				const firstChapter = book.pages.find((page) => page.kind === "chapter");
+
+				return (
+					<li>
+						<a class="book-card" href={book.href}>
+							<img width={720} height={360} src={book.heroImage} alt="" />
+							<div>
+								<p class="meta">
+									<time datetime={book.createdAt}>{book.createdAt}</time>
+									<span>{book.pages.filter((page) => page.kind === "chapter").length} chapters</span>
+								</p>
+								<h3>{book.title}</h3>
+								<p>{book.description}</p>
+								<ul class="tags" aria-label="Keywords">
+									{book.tags.map((tag) => (
+										<li>#{tag}</li>
+									))}
+								</ul>
+								{firstChapter && (
+									<span class="start-link">
+										읽기 시작: {firstChapter.title}
+									</span>
+								)}
+							</div>
+						</a>
+					</li>
+				);
+			})
+		}
+	</ul>
+</section>
+
+<style>
+	.concept-books {
+		margin-bottom: 2.5rem;
+	}
+	.section-heading {
+		border-top: 1px solid rgb(var(--gray-light));
+		margin-bottom: 1rem;
+		padding-top: 1.5rem;
+	}
+	.section-heading p {
+		color: var(--accent);
+		font-size: 0.8rem;
+		font-weight: 700;
+		margin: 0 0 0.25rem;
+		text-transform: uppercase;
+	}
+	.section-heading h2 {
+		font-size: 1.35rem;
+		margin: 0;
+	}
+	.book-list {
+		display: grid;
+		gap: 1rem;
+		list-style: none;
+		margin: 0;
+		padding: 0;
+	}
+	.book-list > li {
+		position: relative;
+	}
+	.book-card {
+		background: #fff;
+		border: 1px solid rgb(var(--gray-light));
+		border-radius: 8px;
+		color: rgb(var(--gray-dark));
+		display: grid;
+		gap: 1.25rem;
+		grid-template-columns: minmax(180px, 260px) 1fr;
+		padding: 1rem;
+		text-decoration: none;
+	}
+	.book-card:hover h3 {
+		color: var(--accent);
+	}
+	.book-card img {
+		aspect-ratio: 2 / 1;
+		background: #fff;
+		border: 1px solid rgb(var(--gray-light));
+		height: 100%;
+		object-fit: contain;
+		width: 100%;
+	}
+	.book-card h3 {
+		font-size: 1.25rem;
+		margin-bottom: 0.35rem;
+	}
+	.book-card p {
+		margin: 0;
+	}
+	.meta {
+		align-items: center;
+		color: rgb(var(--gray));
+		display: flex;
+		flex-wrap: wrap;
+		font-size: 0.82rem;
+		font-weight: 700;
+		gap: 0.5rem;
+		margin-bottom: 0.3rem;
+	}
+	.tags {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.35rem;
+		list-style: none;
+		margin: 0.8rem 0 0;
+		padding: 0;
+	}
+	.tags li {
+		border: 1px solid rgb(var(--gray-light));
+		border-radius: 999px;
+		color: rgb(var(--gray));
+		font-size: 0.76rem;
+		font-weight: 700;
+		line-height: 1;
+		padding: 0.38rem 0.55rem;
+	}
+	.start-link {
+		color: var(--accent);
+		display: inline-block;
+		font-size: 0.86rem;
+		font-weight: 700;
+		margin-top: 0.9rem;
+	}
+	@media (max-width: 720px) {
+		.book-card {
+			grid-template-columns: 1fr;
+		}
+	}
+</style>

@@ -1,6 +1,8 @@
 ---
 import { getCollection } from "astro:content";
+import ConceptBookList from "../components/ConceptBookList.astro";
 import SectionPage from "../components/SectionPage.astro";
+import { conceptBooks } from "../data/conceptBooks";
 
 const posts = (await getCollection("blog", ({ data }) => data.category === "concept")).sort(
 	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
@@ -15,4 +17,6 @@ const posts = (await getCollection("blog", ({ data }) => data.category === "conc
 	descriptionKo="AI와 로봇을 이해하는 데 필요한 배경 지식, 핵심 개념, 방법론을 정리합니다."
 	descriptionEn="Background notes on core ideas, methods, and context for understanding AI and robotics."
 	posts={posts}
-/>
+>
+	<ConceptBookList books={conceptBooks} />
+</SectionPage>

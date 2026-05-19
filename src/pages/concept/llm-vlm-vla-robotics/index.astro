@@ -1,0 +1,20 @@
+---
+import ConceptBookShell from "../../../components/ConceptBookShell.astro";
+import { llmVlmVlaRoboticsBook } from "../../../data/conceptBooks";
+import * as landingModule from "../../../content/concept-books/llm-vlm-vla-robotics/pages/index.md";
+
+const page = llmVlmVlaRoboticsBook.pages.find((entry) => entry.slug === "");
+
+if (!page) {
+	throw new Error("Missing landing page metadata for llm-vlm-vla-robotics.");
+}
+
+const { Content, frontmatter } = landingModule;
+---
+
+<ConceptBookShell
+	book={llmVlmVlaRoboticsBook}
+	page={page}
+	frontmatter={frontmatter}
+	Content={Content}
+/>

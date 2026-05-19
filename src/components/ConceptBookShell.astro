@@ -1,0 +1,329 @@
+---
+import BaseHead from "./BaseHead.astro";
+import Header from "./Header.astro";
+import Footer from "./Footer.astro";
+import {
+	getConceptBookPageHref,
+	type ConceptBook,
+	type ConceptBookPage,
+} from "../data/conceptBooks";
+import { SITE_TITLE } from "../consts";
+
+interface Props {
+	book: ConceptBook;
+	page: ConceptBookPage;
+	frontmatter: {
+		title?: string;
+		description?: string;
+	};
+	Content: any;
+}
+
+const { book, page, frontmatter, Content } = Astro.props;
+const navPages = book.pages.filter((entry) => entry.kind !== "landing");
+const orderedPages = book.pages;
+const currentIndex = orderedPages.findIndex((entry) => entry.slug === page.slug);
+const previousPage = currentIndex > 0 ? orderedPages[currentIndex - 1] : undefined;
+const nextPage =
+	currentIndex >= 0 && currentIndex < orderedPages.length - 1
+		? orderedPages[currentIndex + 1]
+		: undefined;
+const title = frontmatter.title ?? page.title;
+const description = frontmatter.description ?? page.description;
+const pageTitle =
+	page.kind === "landing" ? `${book.title} | ${SITE_TITLE}` : `${title} | ${book.title}`;
+const firstChapter = navPages[0];
+---
+
+<!doctype html>
+<html lang="ko">
+	<head>
+		<BaseHead title={pageTitle} description={description} heroImage={book.heroImage} />
+	</head>
+	<body>
+		<Header />
+		<main class="book-main">
+			<section class="book-heading">
+				<p class="eyebrow">
+					<a href="/concept/">배경지식</a>
+					<span>/</span>
+					<span>Concept Book</span>
+				</p>
+				<p class="book-title">
+					<a href={book.href}>{book.title}</a>
+				</p>
+				<h1>{title}</h1>
+				<p class="description">{description}</p>
+				{
+					page.kind === "landing" && firstChapter && (
+						<div class="book-actions">
+							<a href={getConceptBookPageHref(book, firstChapter)}>처음부터 읽기</a>
+							<a href={getConceptBookPageHref(book, orderedPages[orderedPages.length - 1])}>
+								참고문헌
+							</a>
+						</div>
+					)
+				}
+			</section>
+
+			<div class="book-layout">
+				<aside class="book-nav" aria-label="Book navigation">
+					<a class:list={["landing-link", { active: page.kind === "landing" }]} href={book.href}>
+						Overview
+					</a>
+					<ol>
+						{
+							navPages.map((entry) => (
+								<li>
+									<a
+										class:list={{ active: entry.slug === page.slug }}
+										href={getConceptBookPageHref(book, entry)}
+									>
+										<span>{entry.label}</span>
+										{entry.title}
+									</a>
+								</li>
+							))
+						}
+					</ol>
+				</aside>
+
+				<div class="book-body">
+					<article class="book-content">
+						<Content />
+					</article>
+
+					<nav class="chapter-pager" aria-label="Chapter navigation">
+						{
+							previousPage ? (
+								<a href={getConceptBookPageHref(book, previousPage)}>
+									<span>이전</span>
+									{previousPage.title}
+								</a>
+							) : (
+								<span />
+							)
+						}
+						{
+							nextPage ? (
+								<a href={getConceptBookPageHref(book, nextPage)}>
+									<span>다음</span>
+									{nextPage.title}
+								</a>
+							) : (
+								<span />
+							)
+						}
+					</nav>
+				</div>
+			</div>
+		</main>
+		<Footer />
+	</body>
+</html>
+
+<style>
+	.book-main {
+		width: min(1180px, calc(100% - 2rem));
+		max-width: none;
+		padding: 2.5rem 1rem 4rem;
+	}
+	.book-heading {
+		border-bottom: 1px solid rgb(var(--gray-light));
+		margin-bottom: 2rem;
+		padding-bottom: 1.5rem;
+	}
+	.eyebrow {
+		align-items: center;
+		color: rgb(var(--gray));
+		display: flex;
+		flex-wrap: wrap;
+		font-size: 0.85rem;
+		font-weight: 700;
+		gap: 0.45rem;
+		margin: 0 0 0.75rem;
+		text-transform: uppercase;
+	}
+	.eyebrow a {
+		text-decoration: none;
+	}
+	.book-title {
+		font-size: 0.95rem;
+		font-weight: 700;
+		margin: 0 0 0.5rem;
+	}
+	.book-title a {
+		color: rgb(var(--gray-dark));
+		text-decoration: none;
+	}
+	.book-heading h1 {
+		font-size: clamp(2.1rem, 6vw, 4.4rem);
+		letter-spacing: 0;
+		margin-bottom: 0.75rem;
+		max-width: 920px;
+	}
+	.description {
+		color: rgb(var(--gray));
+		font-size: 1.05rem;
+		max-width: 780px;
+	}
+	.book-actions {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.75rem;
+		margin-top: 1.25rem;
+	}
+	.book-actions a {
+		border: 1px solid rgb(var(--gray-light));
+		border-radius: 8px;
+		color: rgb(var(--black));
+		font-size: 0.92rem;
+		font-weight: 700;
+		padding: 0.65rem 0.9rem;
+		text-decoration: none;
+	}
+	.book-actions a:first-child {
+		background: rgb(var(--black));
+		border-color: rgb(var(--black));
+		color: #fff;
+	}
+	.book-layout {
+		align-items: start;
+		display: grid;
+		gap: 2rem;
+		grid-template-columns: minmax(220px, 280px) minmax(0, 1fr);
+	}
+	.book-nav {
+		position: sticky;
+		top: 1rem;
+	}
+	.book-nav ol {
+		display: grid;
+		gap: 0.25rem;
+		list-style: none;
+		margin: 0;
+		padding: 0;
+	}
+	.book-nav a {
+		border-radius: 8px;
+		color: rgb(var(--gray-dark));
+		display: block;
+		font-size: 0.86rem;
+		line-height: 1.35;
+		padding: 0.55rem 0.65rem;
+		text-decoration: none;
+	}
+	.book-nav a:hover,
+	.book-nav a.active {
+		background: #fff;
+		box-shadow: inset 0 0 0 1px rgb(var(--gray-light));
+		color: var(--accent);
+	}
+	.book-nav span {
+		color: rgb(var(--gray));
+		display: block;
+		font-size: 0.74rem;
+		font-weight: 700;
+		margin-bottom: 0.15rem;
+		text-transform: uppercase;
+	}
+	.landing-link {
+		font-weight: 700;
+		margin-bottom: 0.45rem;
+	}
+	.book-body {
+		min-width: 0;
+	}
+	.book-content {
+		background: #fff;
+		border: 1px solid rgb(var(--gray-light));
+		border-radius: 8px;
+		padding: min(5vw, 3rem);
+	}
+	.book-content :global(h2) {
+		font-size: 1.75rem;
+		margin-top: 2.5rem;
+	}
+	.book-content :global(h3) {
+		font-size: 1.35rem;
+		margin-top: 2rem;
+	}
+	.book-content :global(p),
+	.book-content :global(li) {
+		line-height: 1.85;
+	}
+	.book-content :global(img) {
+		background: #fff;
+		border: 1px solid rgb(var(--gray-light));
+		border-radius: 8px;
+		display: block;
+		margin: 2rem auto;
+	}
+	.book-content :global(pre) {
+		background: #f7f8fb;
+		border: 1px solid rgb(var(--gray-light));
+		font-size: 0.9rem;
+	}
+	.book-content :global(ul),
+	.book-content :global(ol) {
+		padding-left: 1.35rem;
+	}
+	.chapter-pager {
+		display: grid;
+		gap: 1rem;
+		grid-template-columns: 1fr 1fr;
+		margin-top: 1.5rem;
+	}
+	.chapter-pager a {
+		background: #fff;
+		border: 1px solid rgb(var(--gray-light));
+		border-radius: 8px;
+		color: rgb(var(--gray-dark));
+		display: block;
+		font-size: 0.95rem;
+		font-weight: 700;
+		line-height: 1.4;
+		padding: 1rem;
+		text-decoration: none;
+	}
+	.chapter-pager a:last-child {
+		text-align: right;
+	}
+	.chapter-pager a span {
+		color: rgb(var(--gray));
+		display: block;
+		font-size: 0.75rem;
+		margin-bottom: 0.25rem;
+		text-transform: uppercase;
+	}
+	@media (max-width: 860px) {
+		.book-main {
+			width: min(100% - 1rem, 720px);
+			padding-inline: 0.5rem;
+		}
+		.book-layout {
+			grid-template-columns: 1fr;
+		}
+		.book-nav {
+			position: static;
+		}
+		.book-nav ol {
+			grid-template-columns: 1fr 1fr;
+		}
+		.book-content {
+			padding: 1.25rem;
+		}
+	}
+	@media (max-width: 560px) {
+		.book-heading h1 {
+			font-size: 2rem;
+		}
+		.book-nav ol,
+		.chapter-pager {
+			grid-template-columns: 1fr;
+		}
+		.chapter-pager a:last-child {
+			text-align: left;
+		}
+	}
+</style>

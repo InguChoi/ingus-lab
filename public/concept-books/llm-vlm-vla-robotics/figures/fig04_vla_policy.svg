@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="360" viewBox="0 0 1200 360">
+<defs><marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L0,6 L9,3 z" fill="#374151"/></marker></defs>
+<rect width="100%" height="100%" fill="#ffffff"/>
+<text x="600.0" y="42" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="28" font-weight="700" fill="#1f2937">VLA Policy: 이미지와 언어에서 action으로</text>
+<text x="600.0" y="72" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="16" fill="#4b5563">VLA도 최종 실행 전에는 safety, limits, feasibility check가 필요합니다.</text>
+<rect x="60.0" y="145" width="190.4" height="110" rx="18" fill="#e0f2fe" stroke="#111827" stroke-width="2"/>
+<text x="155.2" y="187" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="700" fill="#111827">Images</text>
+<text x="155.2" y="211" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="400" fill="#111827">+ instruction</text>
+<line x1="255.4" y1="200.0" x2="274.4" y2="200.0" stroke="#374151" stroke-width="3" marker-end="url(#arrow)"/>
+<rect x="282.4" y="145" width="190.4" height="110" rx="18" fill="#dcfce7" stroke="#111827" stroke-width="2"/>
+<text x="377.59999999999997" y="187" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="700" fill="#111827">VLM/VLA</text>
+<text x="377.59999999999997" y="211" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="400" fill="#111827">backbone</text>
+<line x1="477.79999999999995" y1="200.0" x2="496.79999999999995" y2="200.0" stroke="#374151" stroke-width="3" marker-end="url(#arrow)"/>
+<rect x="504.8" y="145" width="190.4" height="110" rx="18" fill="#fef9c3" stroke="#111827" stroke-width="2"/>
+<text x="600.0" y="187" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="700" fill="#111827">Action head</text>
+<text x="600.0" y="211" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="400" fill="#111827">or tokens</text>
+<line x1="700.2" y1="200.0" x2="719.2" y2="200.0" stroke="#374151" stroke-width="3" marker-end="url(#arrow)"/>
+<rect x="727.2" y="145" width="190.4" height="110" rx="18" fill="#fae8ff" stroke="#111827" stroke-width="2"/>
+<text x="822.4000000000001" y="187" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="700" fill="#111827">Safety</text>
+<text x="822.4000000000001" y="211" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="400" fill="#111827">filter</text>
+<line x1="922.6" y1="200.0" x2="941.6" y2="200.0" stroke="#374151" stroke-width="3" marker-end="url(#arrow)"/>
+<rect x="949.6" y="145" width="190.4" height="110" rx="18" fill="#fee2e2" stroke="#111827" stroke-width="2"/>
+<text x="1044.8" y="187" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="700" fill="#111827">Low-level</text>
+<text x="1044.8" y="211" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="400" fill="#111827">control</text>
+<text x="600.0" y="330" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="14" fill="#6b7280">Author-created diagram for Ingus Lab concept book. Do not need external figure license.</text>
+</svg>

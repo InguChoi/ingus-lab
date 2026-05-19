@@ -1,0 +1,40 @@
+---
+title: "참고문헌"
+description: "언어 모델과 로봇 시스템 관련 참고문헌"
+slug: "llm-vlm-vla-robotics/references"
+date: "2026-05-19"
+draft: false
+order: 11
+tags: ["Robotics", "LLM", "VLM", "VLA", "References"]
+---
+- **lcil** — [Stepputtis et al. (2020), Language-Conditioned Imitation Learning for Robot Manipulation Tasks](https://arxiv.org/abs/2010.12083)
+- **cliport** — [Shridhar et al. (2021/2022), CLIPort: What and Where Pathways for Robotic Manipulation](https://arxiv.org/abs/2109.12098)
+- **peract** — [Shridhar et al. (2022), PerAct: Perceiver-Actor](https://arxiv.org/abs/2209.05451)
+- **saycan** — [Ahn et al. (2022), Do As I Can, Not As I Say / SayCan](https://arxiv.org/abs/2204.01691)
+- **inner** — [Huang et al. (2022), Inner Monologue](https://arxiv.org/abs/2207.05608)
+- **cap** — [Liang et al. (2022), Code as Policies](https://arxiv.org/abs/2209.07753)
+- **progprompt** — [Singh et al. (2022), ProgPrompt](https://arxiv.org/abs/2209.11302)
+- **moo** — [Stone et al. (2023), Open-World Object Manipulation using Pre-trained VLMs / MOO](https://arxiv.org/abs/2303.00905)
+- **palme** — [Driess et al. (2023), PaLM-E](https://arxiv.org/abs/2303.03378)
+- **voxposer** — [Huang et al. (2023), VoxPoser](https://arxiv.org/abs/2307.05973)
+- **moka** — [Liu et al. (2024), MOKA](https://arxiv.org/abs/2403.03174)
+- **rt1** — [Brohan et al. (2022), RT-1](https://arxiv.org/abs/2212.06817)
+- **rt2** — [Brohan et al. (2023), RT-2](https://arxiv.org/abs/2307.15818)
+- **openx** — [O'Neill et al. (2023/2024), Open X-Embodiment / RT-X](https://arxiv.org/abs/2310.08864)
+- **octo** — [Octo Model Team et al. (2024), Octo](https://arxiv.org/abs/2405.12213)
+- **openvla** — [Kim et al. (2024), OpenVLA](https://arxiv.org/abs/2406.09246)
+- **pi0** — [Black et al. (2024), π0](https://arxiv.org/abs/2410.24164)
+- **rdt** — [Liu et al. (2024), RDT-1B](https://arxiv.org/abs/2410.07864)
+- **gemini** — [Google DeepMind (2025), Gemini Robotics](https://arxiv.org/html/2503.20020v1)
+- **gr00t** — [NVIDIA et al. (2025), GR00T N1](https://arxiv.org/abs/2503.14734)
+- **helix** — [Figure AI (2025), Helix](https://www.figure.ai/news/helix)
+- **smolvla** — [Shukor et al. (2025), SmolVLA](https://arxiv.org/abs/2506.01844)
+- **asimov** — [Sermanet et al. (2025), ASIMOV Benchmark](https://arxiv.org/abs/2503.08663)
+- **lerobot** — [Cadene et al. (2026), LeRobot](https://arxiv.org/abs/2602.22818)
+- **pi07** — [Physical Intelligence et al. (2026), π0.7](https://arxiv.org/abs/2604.15483)
+- **gemini_er** — [Google DeepMind (2026), Gemini Robotics-ER 1.6](https://deepmind.google/blog/gemini-robotics-er-1-6/)
+- **rfm_industrial** — [Kube et al. (2026), Robotic Foundation Models for Industrial Control](https://arxiv.org/abs/2603.06749)
+- **aloha** — [Zhao et al. (2023), ALOHA / ACT](https://arxiv.org/abs/2304.13705)
+- **mobile_aloha** — [Fu et al. (2024), Mobile ALOHA](https://arxiv.org/abs/2401.02117)
+- **droid** — [Khazatsky et al. (2024), DROID](https://arxiv.org/abs/2403.12945)
+- **vla_survey** — [Ud Din et al. (2025), Vision Language Action Models in Robotic Manipulation: A Systematic Review](https://arxiv.org/abs/2507.10672)

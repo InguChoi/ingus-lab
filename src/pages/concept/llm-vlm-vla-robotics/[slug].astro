@@ -1,0 +1,43 @@
+---
+import ConceptBookShell from "../../../components/ConceptBookShell.astro";
+import { llmVlmVlaRoboticsBook, type ConceptBookPage } from "../../../data/conceptBooks";
+
+type MarkdownPageModule = {
+	Content: any;
+	frontmatter: {
+		title?: string;
+		description?: string;
+	};
+};
+
+const pageModules = import.meta.glob(
+	"../../../content/concept-books/llm-vlm-vla-robotics/pages/*.md",
+	{ eager: true },
+);
+
+export function getStaticPaths() {
+	return llmVlmVlaRoboticsBook.pages
+		.filter((page) => page.slug)
+		.map((page) => ({
+			params: { slug: page.slug },
+			props: { page },
+		}));
+}
+
+const { page } = Astro.props as { page: ConceptBookPage };
+const modulePath = `../../../content/concept-books/llm-vlm-vla-robotics/pages/${page.file}`;
+const markdownModule = pageModules[modulePath] as MarkdownPageModule | undefined;
+
+if (!markdownModule) {
+	throw new Error(`Missing Markdown page for ${page.slug}.`);
+}
+
+const { Content, frontmatter } = markdownModule;
+---
+
+<ConceptBookShell
+	book={llmVlmVlaRoboticsBook}
+	page={page}
+	frontmatter={frontmatter}
+	Content={Content}
+/>
