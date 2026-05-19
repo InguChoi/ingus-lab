@@ -12,11 +12,31 @@ tags: ["Robotics", "LLM", "VLM", "VLA", "Robot Foundation Model"]
 
 ## 6.1 π0: VLM 위에 flow matching action model을 올리다
 
+<div class="paper-media-inline">
+  <div class="paper-media-links">
+    <strong>대표 미디어</strong>
+    <a href="https://arxiv.org/abs/2410.24164" target="_blank" rel="noreferrer">Paper</a>
+    <a href="https://www.physicalintelligence.company/blog/pi0" target="_blank" rel="noreferrer">Project</a>
+    <a href="https://www.physicalintelligence.company/blog/pi0" target="_blank" rel="noreferrer">Demo</a>
+  </div>
+  <p class="paper-media-note">Physical Intelligence 공식 글의 demo media를 연결했습니다.</p>
+</div>
+
 π0는 pretrained VLM 위에 flow matching architecture를 얹어 general robot control을 수행하는 VLA입니다. 이 접근은 인터넷 규모 semantic knowledge를 가진 VLM을 기반으로 하면서, 로봇 action은 continuous flow model로 생성하려는 방향입니다. [Black et al. (2024), π0](https://arxiv.org/abs/2410.24164)
 
 이 구조가 중요한 이유는 RT-2/OpenVLA처럼 action을 token으로만 보는 방식과 다르게, continuous action distribution을 직접 다루려 한다는 점입니다. 정밀 조작, dexterous manipulation, high-frequency action에서는 continuous distribution이 더 자연스러울 수 있습니다.
 
 ## 6.2 π0.7: steerable generalist robotic foundation model
+
+<div class="paper-media-inline">
+  <div class="paper-media-links">
+    <strong>대표 미디어</strong>
+    <a href="https://arxiv.org/abs/2604.15483" target="_blank" rel="noreferrer">Paper</a>
+    <a href="https://www.physicalintelligence.company/blog/pi07" target="_blank" rel="noreferrer">Project</a>
+    <a href="https://www.physicalintelligence.company/blog/pi07" target="_blank" rel="noreferrer">Demo</a>
+  </div>
+  <p class="paper-media-note">Physical Intelligence 공식 글의 demo media를 연결했습니다.</p>
+</div>
 
 2026년 4월 공개된 π0.7은 language command뿐 아니라 task performance metadata, subgoal image 같은 다양한 multimodal context conditioning을 prompt에 포함해 모델 행동을 steer하는 방향을 제안했습니다. 논문은 unseen environments, multi-stage tasks, cross-embodiment generalization, dexterous tasks에서 strong out-of-the-box performance를 목표로 한다고 설명합니다. [Physical Intelligence et al. (2026), π0.7](https://arxiv.org/abs/2604.15483)
 
@@ -34,11 +54,37 @@ tags: ["Robotics", "LLM", "VLM", "VLA", "Robot Foundation Model"]
 
 ## 6.3 RDT-1B: diffusion transformer와 bimanual manipulation
 
+<div class="paper-media-inline">
+  <div class="paper-media-links">
+    <strong>대표 미디어</strong>
+    <a href="https://arxiv.org/abs/2410.07864" target="_blank" rel="noreferrer">Paper</a>
+    <a href="https://rdt-robotics.github.io/" target="_blank" rel="noreferrer">Project</a>
+    <a href="https://rdt-robotics.github.io/" target="_blank" rel="noreferrer">Demo</a>
+  </div>
+  <p class="paper-media-note">공식 프로젝트 페이지의 robot demo media를 연결했습니다.</p>
+</div>
+
 RDT-1B는 diffusion-based foundation model로, bimanual manipulation을 주요 대상으로 합니다. 논문은 multi-modal input, high-frequency robot data, heterogeneous action space를 다루기 위해 Robotics Diffusion Transformer를 제안하고, 1M+ multi-robot episodes와 6K+ ALOHA dual-arm fine-tuning data를 활용했다고 설명합니다. [Liu et al. (2024), RDT-1B](https://arxiv.org/abs/2410.07864)
 
 RDT 계열은 VLA가 항상 autoregressive token prediction이어야 하는 것은 아니라는 점을 보여줍니다. 로봇 action은 본질적으로 continuous, multi-modal, temporally correlated하기 때문에 diffusion/flow 계열이 잘 맞는 경우가 많습니다.
 
 ## 6.4 Gemini Robotics와 Gemini Robotics-ER
+
+<div class="paper-media-inline">
+  <a class="paper-media-thumb" href="https://deepmind.google/discover/blog/gemini-robotics-brings-ai-into-the-physical-world/" target="_blank" rel="noreferrer">
+    <img src="https://img.youtube.com/vi/4MvGnmmP3c0/hqdefault.jpg" alt="Gemini Robotics video thumbnail" loading="lazy" />
+  </a>
+  <div class="paper-media-links">
+    <strong>대표 미디어</strong>
+    <a href="https://arxiv.org/html/2503.20020v1" target="_blank" rel="noreferrer">Paper</a>
+    <a href="https://deepmind.google/models/gemini-robotics/" target="_blank" rel="noreferrer">Project</a>
+    <a href="https://www.youtube.com/watch?v=4MvGnmmP3c0" target="_blank" rel="noreferrer">YouTube</a>
+    <a href="https://deepmind.google/blog/gemini-robotics-er-1-6/" target="_blank" rel="noreferrer">ER 1.6</a>
+  </div>
+  <div class="paper-video-embed">
+    <iframe src="https://www.youtube.com/embed/4MvGnmmP3c0" title="Gemini Robotics video" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="lazy"></iframe>
+  </div>
+</div>
 
 Google DeepMind의 Gemini Robotics는 Gemini 기반 모델을 physical action까지 확장한 VLA 계열로 소개되었습니다. 반면 Gemini Robotics-ER은 visual/spatial understanding, task planning, success detection 등 embodied reasoning에 초점을 둔 VLM/ER 모델입니다. [Google DeepMind (2025), Gemini Robotics](https://arxiv.org/html/2503.20020v1) [Google DeepMind (2026), Gemini Robotics-ER 1.6](https://deepmind.google/blog/gemini-robotics-er-1-6/)
 
@@ -56,6 +102,16 @@ Gemini Robotics-ER:
 
 ## 6.5 GR00T N1: humanoid용 dual-system VLA
 
+<div class="paper-media-inline">
+  <div class="paper-media-links">
+    <strong>대표 미디어</strong>
+    <a href="https://arxiv.org/abs/2503.14734" target="_blank" rel="noreferrer">Paper</a>
+    <a href="https://research.nvidia.com/labs/lpr/publication/gr00tn1_2025/" target="_blank" rel="noreferrer">Project</a>
+    <a href="https://developer.nvidia.com/project-gr00t" target="_blank" rel="noreferrer">Demo</a>
+  </div>
+  <p class="paper-media-note">NVIDIA 공식 연구 페이지와 Project GR00T 페이지를 연결했습니다.</p>
+</div>
+
 NVIDIA GR00T N1은 humanoid robot을 위한 open foundation model입니다. 논문은 GR00T N1을 dual-system VLA로 설명합니다. vision-language module, 즉 System 2가 환경과 instruction을 해석하고, diffusion transformer module, 즉 System 1이 real-time motor action을 생성합니다. [NVIDIA et al. (2025), GR00T N1](https://arxiv.org/abs/2503.14734)
 
 이 구조는 최신 로봇 모델의 큰 방향을 잘 보여줍니다.
@@ -69,6 +125,16 @@ NVIDIA GR00T N1은 humanoid robot을 위한 open foundation model입니다. 논�
 사람의 인지 시스템처럼, high-level reasoning과 low-level action generation을 분리하되 end-to-end로 연결하려는 흐름입니다.
 
 ## 6.6 Helix: humanoid upper-body continuous control
+
+<div class="paper-media-inline">
+  <div class="paper-media-links">
+    <strong>대표 미디어</strong>
+    <a href="https://www.figure.ai/news/helix" target="_blank" rel="noreferrer">Technical note</a>
+    <a href="https://www.figure.ai/news/helix" target="_blank" rel="noreferrer">Project</a>
+    <a href="https://www.figure.ai/news/helix" target="_blank" rel="noreferrer">Demo</a>
+  </div>
+  <p class="paper-media-note">Figure AI 공식 기술 소개와 embedded demo media를 연결했습니다.</p>
+</div>
 
 Figure AI의 Helix는 humanoid를 위한 generalist VLA로 소개되었습니다. Figure는 Helix가 perception, language understanding, learned control을 통합하고, wrists, torso, head, individual fingers까지 포함하는 full-upper-body high-rate continuous control을 출력한다고 설명합니다. [Figure AI (2025), Helix](https://www.figure.ai/news/helix)
 

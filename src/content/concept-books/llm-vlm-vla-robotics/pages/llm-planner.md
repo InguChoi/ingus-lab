@@ -16,6 +16,21 @@ LLM은 웹 텍스트에서 얻은 절차적 지식과 상식은 풍부하지만,
 
 ## 2.1 SayCan: “그럴듯한 행동”과 “가능한 행동”을 곱하다
 
+<div class="paper-media-inline">
+  <a class="paper-media-thumb" href="https://say-can.github.io/" target="_blank" rel="noreferrer">
+    <img src="https://img.youtube.com/vi/ysFav0b472w/hqdefault.jpg" alt="SayCan representative video thumbnail" loading="lazy" />
+  </a>
+  <div class="paper-media-links">
+    <strong>대표 미디어</strong>
+    <a href="https://arxiv.org/abs/2204.01691" target="_blank" rel="noreferrer">Paper</a>
+    <a href="https://say-can.github.io/" target="_blank" rel="noreferrer">Project</a>
+    <a href="https://www.youtube.com/watch?v=ysFav0b472w" target="_blank" rel="noreferrer">YouTube</a>
+  </div>
+  <div class="paper-video-embed">
+    <iframe src="https://www.youtube.com/embed/ysFav0b472w" title="SayCan video" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="lazy"></iframe>
+  </div>
+</div>
+
 SayCan의 질문은 다음과 같았습니다.
 
 > LLM이 제안하는 행동이 로봇에게 실제로 가능한지 어떻게 알 수 있을까?
@@ -38,6 +53,21 @@ Affordance score:
 이 구조의 핵심은 **LLM output을 로봇 capability로 제한**하는 것입니다. LLM은 자유롭게 말을 만들 수 있지만, 실행 가능한 후보 skill은 allowlist 안에 있어야 합니다.
 
 ## 2.2 Inner Monologue: feedback을 언어로 다시 넣다
+
+<div class="paper-media-inline">
+  <a class="paper-media-thumb" href="https://innermonologue.github.io/" target="_blank" rel="noreferrer">
+    <img src="https://img.youtube.com/vi/0sJjdxn5kcI/hqdefault.jpg" alt="Inner Monologue representative video thumbnail" loading="lazy" />
+  </a>
+  <div class="paper-media-links">
+    <strong>대표 미디어</strong>
+    <a href="https://arxiv.org/abs/2207.05608" target="_blank" rel="noreferrer">Paper</a>
+    <a href="https://innermonologue.github.io/" target="_blank" rel="noreferrer">Project</a>
+    <a href="https://www.youtube.com/watch?v=0sJjdxn5kcI" target="_blank" rel="noreferrer">YouTube</a>
+  </div>
+  <div class="paper-video-embed">
+    <iframe src="https://www.youtube.com/embed/0sJjdxn5kcI" title="Inner Monologue video" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="lazy"></iframe>
+  </div>
+</div>
 
 SayCan류의 planner는 open-loop로 동작하면 문제가 생깁니다. 실제 로봇은 명령을 실행하다가 물체를 놓칠 수 있고, perception이 틀릴 수 있고, 사람이 중간에 수정 요청을 할 수 있습니다.
 

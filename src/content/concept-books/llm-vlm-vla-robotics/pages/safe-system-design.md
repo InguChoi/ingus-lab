@@ -18,6 +18,16 @@ model output string → 바로 robot command 실행
 
 ## 8.1 안전한 전체 구조
 
+<div class="paper-media-inline">
+  <div class="paper-media-links">
+    <strong>대표 미디어</strong>
+    <a href="https://arxiv.org/abs/2503.08663" target="_blank" rel="noreferrer">Paper</a>
+    <a href="https://asimov-benchmark.github.io/" target="_blank" rel="noreferrer">Project</a>
+    <a href="https://asimov-benchmark.github.io/" target="_blank" rel="noreferrer">Demo</a>
+  </div>
+  <p class="paper-media-note">공식 benchmark/project page를 연결했습니다.</p>
+</div>
+
 ![SDL/실험 자동화용 안전한 아키텍처](/concept-books/llm-vlm-vla-robotics/figures/fig06_sdl_safe_architecture.svg)
 
 기본 원칙은 다음입니다.

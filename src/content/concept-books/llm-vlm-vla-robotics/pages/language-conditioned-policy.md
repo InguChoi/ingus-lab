@@ -12,6 +12,21 @@ LLM이 로봇 계획에 본격적으로 들어오기 전에도, 언어는 이미
 
 ## 1.1 문제 설정
 
+<div class="paper-media-inline">
+  <a class="paper-media-thumb" href="https://simonstepputtis.com/publication/neurips2020/" target="_blank" rel="noreferrer">
+    <img src="https://img.youtube.com/vi/k6DUkuT5SjY/hqdefault.jpg" alt="Language-Conditioned Imitation Learning representative video thumbnail" loading="lazy" />
+  </a>
+  <div class="paper-media-links">
+    <strong>대표 미디어</strong>
+    <a href="https://arxiv.org/abs/2010.12083" target="_blank" rel="noreferrer">Paper</a>
+    <a href="https://simonstepputtis.com/publication/neurips2020/" target="_blank" rel="noreferrer">Project</a>
+    <a href="https://www.youtube.com/watch?v=k6DUkuT5SjY" target="_blank" rel="noreferrer">YouTube</a>
+  </div>
+  <div class="paper-video-embed">
+    <iframe src="https://www.youtube.com/embed/k6DUkuT5SjY" title="Language-Conditioned Imitation Learning video" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="lazy"></iframe>
+  </div>
+</div>
+
 언어 조건 로봇 정책은 보통 다음 형태입니다.
 
 ```text
@@ -24,6 +39,21 @@ LLM이 로봇 계획에 본격적으로 들어오기 전에도, 언어는 이미
 여기서 언어는 task ID를 대체합니다. 예전에는 `task_id=3`처럼 미리 정의된 작업을 선택했다면, 언어 조건 정책에서는 “빨간 블록을 그릇에 넣어라” 같은 자연어가 정책의 조건이 됩니다. Stepputtis et al.은 language-conditioned visuomotor policy를 통해 7-DOF 로봇팔 조작에서 runtime instruction으로 정책을 조건화하는 방향을 보였습니다. [Stepputtis et al. (2020), Language-Conditioned Imitation Learning for Robot Manipulation Tasks](https://arxiv.org/abs/2010.12083)
 
 ## 1.2 CLIPort: What과 Where를 나누다
+
+<div class="paper-media-inline">
+  <a class="paper-media-thumb" href="https://cliport.github.io/" target="_blank" rel="noreferrer">
+    <img src="https://cliport.github.io/media/images/affordances.png" alt="CLIPort affordance prediction examples" loading="lazy" />
+  </a>
+  <div class="paper-media-links">
+    <strong>대표 미디어</strong>
+    <a href="https://arxiv.org/abs/2109.12098" target="_blank" rel="noreferrer">Paper</a>
+    <a href="https://cliport.github.io/" target="_blank" rel="noreferrer">Project</a>
+    <a href="https://youtu.be/UdzoagBgWTA" target="_blank" rel="noreferrer">YouTube</a>
+  </div>
+  <div class="paper-video-embed">
+    <iframe src="https://www.youtube.com/embed/UdzoagBgWTA" title="CLIPort video" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="lazy"></iframe>
+  </div>
+</div>
 
 CLIPort의 핵심 아이디어는 간단하지만 강력합니다. CLIP은 “무엇인지”를 잘 이해하지만, 픽셀 단위의 정밀한 조작 위치를 바로 만들기는 어렵습니다. Transporter 계열 구조는 “어디를 집고 어디에 놓을지”를 잘 다루지만, open-vocabulary semantic understanding은 약합니다. CLIPort는 이 둘을 결합하여 language-conditioned tabletop manipulation을 수행했습니다. [Shridhar et al. (2021/2022), CLIPort: What and Where Pathways for Robotic Manipulation](https://arxiv.org/abs/2109.12098)
 
@@ -41,6 +71,21 @@ Transporter pathway:
 이 구조는 이후 VLM/VLA 연구를 이해하는 데 중요한 힌트를 줍니다. 로봇은 semantic understanding만으로 움직이지 못합니다. 항상 그 semantic understanding을 **공간적 action representation**으로 바꿔야 합니다.
 
 ## 1.3 PerAct: 3D voxel과 Transformer
+
+<div class="paper-media-inline">
+  <a class="paper-media-thumb" href="https://peract.github.io/" target="_blank" rel="noreferrer">
+    <img src="https://peract.github.io/media/figures/arch.png" alt="PerAct architecture diagram" loading="lazy" />
+  </a>
+  <div class="paper-media-links">
+    <strong>대표 미디어</strong>
+    <a href="https://arxiv.org/abs/2209.05451" target="_blank" rel="noreferrer">Paper</a>
+    <a href="https://peract.github.io/" target="_blank" rel="noreferrer">Project</a>
+    <a href="https://www.youtube.com/watch?v=TB0g52N-3_Y" target="_blank" rel="noreferrer">YouTube</a>
+  </div>
+  <div class="paper-video-embed">
+    <iframe src="https://www.youtube.com/embed/TB0g52N-3_Y" title="PerAct video" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="lazy"></iframe>
+  </div>
+</div>
 
 PerAct는 language goal과 RGB-D voxel observation을 Perceiver Transformer로 encoding하고, 다음 best voxel action을 예측했습니다. 2D 이미지 위에서만 행동을 고르는 것이 아니라, 3D voxelized observation/action space를 사용해 6-DoF manipulation action을 다룬 것이 중요합니다. [Shridhar et al. (2022), PerAct: Perceiver-Actor](https://arxiv.org/abs/2209.05451)
 

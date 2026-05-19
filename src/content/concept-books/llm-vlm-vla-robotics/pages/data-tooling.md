@@ -14,6 +14,16 @@ VLA나 robot foundation model을 이야기할 때 모델 구조만 보면 절반
 
 ## 7.1 ALOHA와 ACT
 
+<div class="paper-media-inline">
+  <div class="paper-media-links">
+    <strong>대표 미디어</strong>
+    <a href="https://arxiv.org/abs/2304.13705" target="_blank" rel="noreferrer">Paper</a>
+    <a href="https://tonyzhaozh.github.io/aloha/" target="_blank" rel="noreferrer">Project</a>
+    <a href="https://tonyzhaozh.github.io/aloha/" target="_blank" rel="noreferrer">Demo</a>
+  </div>
+  <p class="paper-media-note">공식 프로젝트 페이지의 task demo media를 연결했습니다.</p>
+</div>
+
 ALOHA는 low-cost bimanual manipulation system과 imitation learning pipeline을 제안했습니다. 특히 ACT, Action Chunking Transformer는 한 번에 action 하나를 예측하는 대신 action chunk를 예측해 imitation learning의 compounding error를 줄이려는 접근입니다. [Zhao et al. (2023), ALOHA / ACT](https://arxiv.org/abs/2304.13705)
 
 ```text
@@ -31,6 +41,16 @@ ACT의 메시지는 VLA와도 연결됩니다. 로봇 제어에서 한 step acti
 
 ## 7.2 Mobile ALOHA
 
+<div class="paper-media-inline">
+  <div class="paper-media-links">
+    <strong>대표 미디어</strong>
+    <a href="https://arxiv.org/abs/2401.02117" target="_blank" rel="noreferrer">Paper</a>
+    <a href="https://mobile-aloha.github.io/" target="_blank" rel="noreferrer">Project</a>
+    <a href="https://mobile-aloha.github.io/" target="_blank" rel="noreferrer">Demo</a>
+  </div>
+  <p class="paper-media-note">공식 프로젝트 페이지의 mobile manipulation demo media를 연결했습니다.</p>
+</div>
+
 Mobile ALOHA는 ALOHA를 mobile base와 whole-body teleoperation으로 확장했습니다. 논문은 low-cost whole-body teleoperation system으로 bimanual mobile manipulation data를 수집하고, 기존 static ALOHA dataset과 co-training하면 mobile manipulation performance가 좋아진다고 보고했습니다. [Fu et al. (2024), Mobile ALOHA](https://arxiv.org/abs/2401.02117)
 
 이 연구의 교훈은 두 가지입니다.
@@ -42,11 +62,31 @@ Mobile ALOHA는 ALOHA를 mobile base와 whole-body teleoperation으로 확장했
 
 ## 7.3 DROID: in-the-wild robot manipulation dataset
 
+<div class="paper-media-inline">
+  <div class="paper-media-links">
+    <strong>대표 미디어</strong>
+    <a href="https://arxiv.org/abs/2403.12945" target="_blank" rel="noreferrer">Paper</a>
+    <a href="https://droid-dataset.github.io/" target="_blank" rel="noreferrer">Project</a>
+    <a href="https://droid-dataset.github.io/" target="_blank" rel="noreferrer">Demo</a>
+  </div>
+  <p class="paper-media-note">공식 데이터셋 페이지의 media와 dataset link를 연결했습니다.</p>
+</div>
+
 DROID는 in-the-wild robot manipulation dataset으로, 76k demonstration trajectories, 350 hours, 수백 개 scene, 80개 이상의 tasks를 포함합니다. [Khazatsky et al. (2024), DROID](https://arxiv.org/abs/2403.12945)
 
 DROID의 의의는 “실험실 안의 동일한 tabletop”이 아니라, 여러 장소와 장면에서 수집한 다양한 데이터를 강조한다는 점입니다. generalist policy가 실제 환경에서 잘 동작하려면, 데이터도 실제 환경의 다양성을 담아야 합니다.
 
 ## 7.4 LeRobot: end-to-end robot learning library
+
+<div class="paper-media-inline">
+  <div class="paper-media-links">
+    <strong>대표 미디어</strong>
+    <a href="https://arxiv.org/abs/2602.22818" target="_blank" rel="noreferrer">Paper</a>
+    <a href="https://github.com/huggingface/lerobot" target="_blank" rel="noreferrer">Project</a>
+    <a href="https://huggingface.co/lerobot" target="_blank" rel="noreferrer">Hub</a>
+  </div>
+  <p class="paper-media-note">Hugging Face LeRobot repository와 model/dataset hub를 연결했습니다.</p>
+</div>
 
 LeRobot은 low-level middleware communication, dataset collection, storage/streaming, state-of-the-art algorithms, inference stack까지 포함하는 open-source end-to-end robot learning library입니다. [Cadene et al. (2026), LeRobot](https://arxiv.org/abs/2602.22818)
 

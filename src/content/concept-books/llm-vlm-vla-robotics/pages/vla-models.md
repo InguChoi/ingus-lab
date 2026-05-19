@@ -14,11 +14,39 @@ VLA, 즉 Vision-Language-Action model은 이미지와 언어를 보고 로봇 ac
 
 ## 5.1 RT-1: real-world robot data로 Transformer policy를 키우다
 
+<div class="paper-media-inline">
+  <a class="paper-media-thumb" href="https://robotics-transformer1.github.io/" target="_blank" rel="noreferrer">
+    <img src="https://robotics-transformer1.github.io/img/rt1_teaser.png" alt="RT-1 teaser figure" loading="lazy" />
+  </a>
+  <div class="paper-media-links">
+    <strong>대표 미디어</strong>
+    <a href="https://arxiv.org/abs/2212.06817" target="_blank" rel="noreferrer">Paper</a>
+    <a href="https://robotics-transformer1.github.io/" target="_blank" rel="noreferrer">Project</a>
+    <a href="https://www.youtube.com/watch?v=UuKAp9a6wMs" target="_blank" rel="noreferrer">YouTube</a>
+  </div>
+  <div class="paper-video-embed">
+    <iframe src="https://www.youtube.com/embed/UuKAp9a6wMs" title="RT-1 video" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="lazy"></iframe>
+  </div>
+</div>
+
 RT-1은 대규모 real-world robot data로 multi-task robot policy를 학습하는 흐름을 대표합니다. RT-1은 language instruction과 image observation을 입력으로 받아 robot action을 출력하는 Robotics Transformer 계열 모델입니다. 핵심 메시지는 “로봇에서도 data size, model size, data diversity가 generalization에 중요하다”는 것이었습니다. [Brohan et al. (2022), RT-1](https://arxiv.org/abs/2212.06817)
 
 RT-1은 엄밀히 말해 web-scale VLM을 action model로 전환한 RT-2와는 다르지만, generalist robot policy의 중요한 시작점입니다.
 
 ## 5.2 RT-2: action을 text token처럼 표현하다
+
+<div class="paper-media-inline">
+  <a class="paper-media-thumb" href="https://robotics-transformer2.github.io/" target="_blank" rel="noreferrer">
+    <img src="https://robotics-transformer2.github.io/img/fig1.png" alt="RT-2 vision-language-action overview" loading="lazy" />
+  </a>
+  <div class="paper-media-links">
+    <strong>대표 미디어</strong>
+    <a href="https://arxiv.org/abs/2307.15818" target="_blank" rel="noreferrer">Paper</a>
+    <a href="https://robotics-transformer2.github.io/" target="_blank" rel="noreferrer">Project</a>
+    <a href="https://robotics-transformer2.github.io/" target="_blank" rel="noreferrer">Demo</a>
+  </div>
+  <p class="paper-media-note">공식 프로젝트 페이지의 demo video 영역을 연결했습니다.</p>
+</div>
 
 RT-2는 VLA라는 표현을 널리 알린 대표 연구입니다. RT-2는 vision-language model을 web-scale vision-language task와 robot trajectory data에 함께 fine-tuning했고, robot action을 text token처럼 표현했습니다. [Brohan et al. (2023), RT-2](https://arxiv.org/abs/2307.15818)
 
@@ -42,6 +70,19 @@ Post-process:
 
 ## 5.3 Open X-Embodiment와 RT-X: 데이터가 곧 확장성이다
 
+<div class="paper-media-inline">
+  <a class="paper-media-thumb" href="https://robotics-transformer-x.github.io/" target="_blank" rel="noreferrer">
+    <img src="https://robotics-transformer-x.github.io/img/logos.png" alt="Open X-Embodiment collaboration logos" loading="lazy" />
+  </a>
+  <div class="paper-media-links">
+    <strong>대표 미디어</strong>
+    <a href="https://arxiv.org/abs/2310.08864" target="_blank" rel="noreferrer">Paper</a>
+    <a href="https://robotics-transformer-x.github.io/" target="_blank" rel="noreferrer">Project</a>
+    <a href="https://robotics-transformer-x.github.io/" target="_blank" rel="noreferrer">Demo</a>
+  </div>
+  <p class="paper-media-note">공식 프로젝트 페이지의 robot rollout media 영역을 연결했습니다.</p>
+</div>
+
 VLA가 일반화되려면 다양한 로봇, 다양한 환경, 다양한 작업의 데이터가 필요합니다. Open X-Embodiment는 여러 기관의 robot datasets를 통합해 1M+ real robot trajectories와 22개 robot embodiments를 포함하는 대규모 데이터셋을 구성했습니다. [O'Neill et al. (2023/2024), Open X-Embodiment / RT-X](https://arxiv.org/abs/2310.08864)
 
 이 흐름의 핵심은 cross-embodiment learning입니다.
@@ -58,6 +99,19 @@ RT-X는 이런 통합 데이터셋을 기반으로 여러 robot embodiment에서
 
 ## 5.4 OpenVLA: open-source VLA
 
+<div class="paper-media-inline">
+  <a class="paper-media-thumb" href="https://openvla.github.io/" target="_blank" rel="noreferrer">
+    <img src="https://openvla.github.io/static/images/openvla_teaser.jpg" alt="OpenVLA teaser figure" loading="lazy" />
+  </a>
+  <div class="paper-media-links">
+    <strong>대표 미디어</strong>
+    <a href="https://arxiv.org/abs/2406.09246" target="_blank" rel="noreferrer">Paper</a>
+    <a href="https://openvla.github.io/" target="_blank" rel="noreferrer">Project</a>
+    <a href="https://openvla.github.io/" target="_blank" rel="noreferrer">Demo</a>
+  </div>
+  <p class="paper-media-note">공식 프로젝트 페이지의 rollout video 영역을 연결했습니다.</p>
+</div>
+
 OpenVLA는 7B parameter open-source VLA로, 970k real-world robot demonstration에서 학습되었습니다. 기존 VLA들이 대부분 closed model이어서 연구자가 직접 적용하기 어려웠던 문제를 줄이고, efficient fine-tuning까지 다루려는 시도입니다. [Kim et al. (2024), OpenVLA](https://arxiv.org/abs/2406.09246)
 
 OpenVLA의 의미는 다음입니다.
@@ -71,11 +125,31 @@ OpenVLA의 의미는 다음입니다.
 
 ## 5.5 Octo: open-source generalist robot policy
 
+<div class="paper-media-inline">
+  <div class="paper-media-links">
+    <strong>대표 미디어</strong>
+    <a href="https://arxiv.org/abs/2405.12213" target="_blank" rel="noreferrer">Paper</a>
+    <a href="https://octo-models.github.io/" target="_blank" rel="noreferrer">Project</a>
+    <a href="https://octo-models.github.io/" target="_blank" rel="noreferrer">Demo</a>
+  </div>
+  <p class="paper-media-note">공식 프로젝트 페이지의 rollout media와 code link를 연결했습니다.</p>
+</div>
+
 Octo는 Open X-Embodiment에서 가져온 800k trajectories로 pretrained된 transformer-based diffusion policy입니다. 언어 명령 또는 goal image로 지시할 수 있고, 새로운 observation/action space로 fine-tuning할 수 있도록 설계되었습니다. [Octo Model Team et al. (2024), Octo](https://arxiv.org/abs/2405.12213)
 
 Octo의 장점은 “처음부터 모든 것을 학습하지 않고, generalist policy initialization을 가져와 내 로봇에 fine-tuning한다”는 실용적 접근입니다.
 
 ## 5.6 SmolVLA: 작고 접근 가능한 VLA
+
+<div class="paper-media-inline">
+  <div class="paper-media-links">
+    <strong>대표 미디어</strong>
+    <a href="https://arxiv.org/abs/2506.01844" target="_blank" rel="noreferrer">Paper</a>
+    <a href="https://smolvla.net/index_en.html" target="_blank" rel="noreferrer">Project</a>
+    <a href="https://smolvla.net/index_en.html" target="_blank" rel="noreferrer">Demo</a>
+  </div>
+  <p class="paper-media-note">공식 프로젝트 페이지의 YouTube/demo 영역을 연결했습니다.</p>
+</div>
 
 SmolVLA는 450M parameter 규모의 compact open-source VLA입니다. 이 모델은 기존 VLA가 너무 크고 비용이 높다는 문제를 줄이기 위해, consumer-grade hardware에서도 deploy 가능한 효율성을 목표로 했습니다. 또한 asynchronous inference stack을 통해 action prediction과 execution을 분리해 control responsiveness를 높이는 방향을 제시했습니다. [Shukor et al. (2025), SmolVLA](https://arxiv.org/abs/2506.01844)
 

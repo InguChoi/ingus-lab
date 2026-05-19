@@ -2,13 +2,11 @@
 import BaseHead from "./BaseHead.astro";
 import Header from "./Header.astro";
 import Footer from "./Footer.astro";
-import ConceptBookMedia from "./ConceptBookMedia.astro";
 import {
 	getConceptBookPageHref,
 	type ConceptBook,
 	type ConceptBookPage,
 } from "../data/conceptBooks";
-import { llmVlmVlaRoboticsMedia } from "../data/conceptBookMedia";
 import { SITE_TITLE } from "../consts";
 
 interface Props {
@@ -35,7 +33,6 @@ const description = frontmatter.description ?? page.description;
 const pageTitle =
 	page.kind === "landing" ? `${book.title} | ${SITE_TITLE}` : `${title} | ${book.title}`;
 const firstChapter = navPages[0];
-const mediaItems = page.slug ? llmVlmVlaRoboticsMedia[page.slug] : undefined;
 ---
 
 <!doctype html>
@@ -94,7 +91,6 @@ const mediaItems = page.slug ? llmVlmVlaRoboticsMedia[page.slug] : undefined;
 				<div class="book-body">
 					<article class="book-content">
 						<Content />
-						<ConceptBookMedia items={mediaItems} />
 					</article>
 
 					<nav class="chapter-pager" aria-label="Chapter navigation">
@@ -271,6 +267,61 @@ const mediaItems = page.slug ? llmVlmVlaRoboticsMedia[page.slug] : undefined;
 	.book-content :global(ul),
 	.book-content :global(ol) {
 		padding-left: 1.35rem;
+	}
+	.book-content :global(.paper-media-inline) {
+		background: #f8f9fc;
+		border: 1px solid rgb(var(--gray-light));
+		border-radius: 8px;
+		display: grid;
+		gap: 0.8rem;
+		margin: 0.75rem 0 1.75rem;
+		padding: 0.9rem;
+	}
+	.book-content :global(.paper-media-thumb) {
+		background: #fff;
+		border: 1px solid rgb(var(--gray-light));
+		border-radius: 8px;
+		display: block;
+		overflow-x: auto;
+	}
+	.book-content :global(.paper-media-thumb img) {
+		border: 0;
+		border-radius: 8px;
+		display: block;
+		margin: 0 auto;
+		max-height: 340px;
+		object-fit: contain;
+		width: 100%;
+	}
+	.book-content :global(.paper-media-links) {
+		align-items: center;
+		display: flex;
+		flex-wrap: wrap;
+		font-size: 0.86rem;
+		gap: 0.45rem;
+		line-height: 1.4;
+	}
+	.book-content :global(.paper-media-links strong) {
+		color: rgb(var(--black));
+		margin-right: 0.2rem;
+	}
+	.book-content :global(.paper-media-note) {
+		color: rgb(var(--gray));
+		font-size: 0.85rem;
+		margin: -0.25rem 0 0;
+	}
+	.book-content :global(.paper-video-embed) {
+		aspect-ratio: 16 / 9;
+		background: #fff;
+		border: 1px solid rgb(var(--gray-light));
+		border-radius: 8px;
+		overflow: hidden;
+	}
+	.book-content :global(.paper-video-embed iframe) {
+		border: 0;
+		display: block;
+		height: 100%;
+		width: 100%;
 	}
 	.chapter-pager {
 		display: grid;

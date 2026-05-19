@@ -12,6 +12,19 @@ LLM planner가 “다음 skill”을 고르는 방식이라면, 다음 흐름은
 
 ## 3.1 Code as Policies
 
+<div class="paper-media-inline">
+  <a class="paper-media-thumb" href="https://code-as-policies.github.io/" target="_blank" rel="noreferrer">
+    <img src="https://code-as-policies.github.io/img/share_image.png" alt="Code as Policies representative diagram" loading="lazy" />
+  </a>
+  <div class="paper-media-links">
+    <strong>대표 미디어</strong>
+    <a href="https://arxiv.org/abs/2209.07753" target="_blank" rel="noreferrer">Paper</a>
+    <a href="https://code-as-policies.github.io/" target="_blank" rel="noreferrer">Project</a>
+    <a href="https://code-as-policies.github.io/" target="_blank" rel="noreferrer">Demo</a>
+  </div>
+  <p class="paper-media-note">공식 프로젝트 페이지의 demo video 영역을 연결했습니다.</p>
+</div>
+
 Code as Policies는 LLM이 Python-like policy code를 생성하고, 이 코드가 perception output을 처리하거나 control primitive API를 호출하도록 설계했습니다. 중요한 점은 LLM이 직접 motor torque를 계산하는 것이 아니라, 이미 존재하는 controller, waypoint primitive, impedance primitive, perception API 등을 조합한다는 점입니다. [Liang et al. (2022), Code as Policies](https://arxiv.org/abs/2209.07753)
 
 예시는 다음과 같은 방향입니다.
@@ -30,6 +43,16 @@ open_gripper()
 이 방식의 장점은 LLM이 공간적 계산, 조건문, 반복문, 함수 조합을 코드로 표현할 수 있다는 것입니다. 예를 들어 “조금 더 빠르게”, “가장 가까운 물체”, “왼쪽에 있는 물체” 같은 모호한 표현을 수치 계산이나 perception result 기반 로직으로 바꿀 수 있습니다.
 
 ## 3.2 ProgPrompt
+
+<div class="paper-media-inline">
+  <div class="paper-media-links">
+    <strong>대표 미디어</strong>
+    <a href="https://arxiv.org/abs/2209.11302" target="_blank" rel="noreferrer">Paper</a>
+    <a href="https://progprompt.github.io/" target="_blank" rel="noreferrer">Project</a>
+    <a href="https://progprompt.github.io/" target="_blank" rel="noreferrer">Demo</a>
+  </div>
+  <p class="paper-media-note">공식 프로젝트 페이지의 video/demo 영역을 연결했습니다.</p>
+</div>
 
 ProgPrompt는 LLM에게 available actions, objects, example programs를 prompt로 제공하고, situated task plan을 program-like 형태로 생성하도록 했습니다. 이 접근의 핵심은 LLM이 존재하지 않는 행동을 만들어내지 않도록, prompt 안에 로봇 capability와 환경 context를 명시하는 것입니다. [Singh et al. (2022), ProgPrompt](https://arxiv.org/abs/2209.11302)
 
