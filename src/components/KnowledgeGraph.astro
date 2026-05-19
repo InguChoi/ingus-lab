@@ -13,6 +13,7 @@ const taggedPosts = posts
 		id: post.id,
 		titleKo: post.data.titleKo ?? post.data.title,
 		titleEn: post.data.titleEn ?? post.data.title,
+		category: post.data.category,
 		url: `/blog/${post.id}/`,
 		tags: post.data.tags ?? [],
 	}));
@@ -31,10 +32,24 @@ const compactLabel = (value: string, maxLength = 28) => {
 	return normalized.length > maxLength ? `${normalized.slice(0, maxLength - 1)}...` : normalized;
 };
 
-const palette = ["#0ea5e9", "#14b8a6", "#f59e0b", "#6366f1", "#ef4444", "#22c55e"];
+const hashValue = (value: string) => {
+	let hash = 0;
+	for (let index = 0; index < value.length; index += 1) {
+		hash = (hash * 31 + value.charCodeAt(index)) >>> 0;
+	}
+	return hash;
+};
+
+const palette = ["#7dd3fc", "#5eead4", "#fbbf24", "#c4b5fd", "#fb7185", "#86efac", "#f9a8d4"];
+const categoryColors = {
+	papers: "#60a5fa",
+	trends: "#f59e0b",
+	concept: "#34d399",
+} as const;
+
 const tagNodes = tags.map((tag, index) => {
 	const angle = (Math.PI * 2 * index) / Math.max(tags.length, 1) - Math.PI / 2;
-	const radius = 1.08;
+	const radius = 1.05 + (hashValue(tag.name) % 18) / 100;
 	return {
 		id: `tag:${tag.name}`,
 		kind: "tag",
@@ -44,14 +59,25 @@ const tagNodes = tags.map((tag, index) => {
 		count: tag.count,
 		x: Math.cos(angle) * radius,
 		y: Math.sin(angle) * radius,
-		size: 7 + tag.count * 2,
+		size: 4.8 + Math.sqrt(tag.count) * 2.5,
 		color: palette[index % palette.length],
 	};
 });
 
+const tagNodeMap = new Map(tagNodes.map((node) => [node.tag, node]));
 const postNodes = taggedPosts.map((post, index) => {
-	const angle = (Math.PI * 2 * index) / Math.max(taggedPosts.length, 1) + Math.PI / 2;
-	const radius = 0.35;
+	const connectedTags = post.tags
+		.map((tag) => tagNodeMap.get(tag))
+		.filter((tag): tag is (typeof tagNodes)[number] => Boolean(tag));
+	const tagCenter = connectedTags.reduce(
+		(center, tag) => ({
+			x: center.x + tag.x / Math.max(connectedTags.length, 1),
+			y: center.y + tag.y / Math.max(connectedTags.length, 1),
+		}),
+		{ x: 0, y: 0 },
+	);
+	const angle = ((hashValue(post.id) % 360) / 180) * Math.PI;
+	const radius = 0.18 + (index % 4) * 0.045;
 	return {
 		id: `post:${post.id}`,
 		kind: "post",
@@ -59,12 +85,13 @@ const postNodes = taggedPosts.map((post, index) => {
 		labelEn: compactLabel(post.titleEn, 28),
 		fullLabelKo: post.titleKo,
 		fullLabelEn: post.titleEn,
+		category: post.category,
 		url: post.url,
 		tags: post.tags,
-		x: Math.cos(angle) * radius,
-		y: Math.sin(angle) * radius,
-		size: 12,
-		color: "#111827",
+		x: tagCenter.x * 0.38 + Math.cos(angle) * radius,
+		y: tagCenter.y * 0.38 + Math.sin(angle) * radius,
+		size: 7.8,
+		color: categoryColors[post.category],
 	};
 });
 
@@ -87,19 +114,32 @@ const graphData = {
 	<section class="knowledge-graph" aria-labelledby="knowledge-graph-title">
 		<div class="graph-heading">
 			<div>
-				<p>Knowledge Graph</p>
+				<p>Obsidian Graph View</p>
 				<h2 id="knowledge-graph-title">
-					<span data-lang="ko">글과 배경지식의 연결</span>
-					<span data-lang="en">Connections Across Notes</span>
+					<span data-lang="ko">노트 사이에 생기는 지식의 별자리</span>
+					<span data-lang="en">A Vault-Like Map of Notes</span>
 				</h2>
 			</div>
+			<p class="graph-copy">
+				<span data-lang="ko">글은 밝은 노드로, 태그는 작은 키워드 노드로 표시됩니다. 노드에 마우스를 올리면 직접 연결된 관계만 남습니다.</span>
+				<span data-lang="en">Notes are bright nodes, tags are smaller keyword nodes, and hover focus keeps only direct relationships prominent.</span>
+			</p>
 		</div>
 		<div class="graph-shell">
 			<div class="graph-legend" aria-hidden="true">
-				<span><i class="post-dot"></i> Notes</span>
-				<span><i class="tag-dot"></i> #keywords</span>
+				<span><i class="post-dot"></i><span data-lang="ko">노트</span><span data-lang="en">Notes</span></span>
+				<span><i class="tag-dot"></i>#keywords</span>
+				<span class="graph-count">
+					<span data-lang="ko">{taggedPosts.length}개 노트 · {tags.length}개 태그 · {links.length}개 링크</span>
+					<span data-lang="en">{taggedPosts.length} notes · {tags.length} tags · {links.length} links</span>
+				</span>
 			</div>
 			<div class="sigma-graph" data-knowledge-graph></div>
+			<div class="graph-focus-card" data-graph-focus-card aria-hidden="true">
+				<span data-graph-focus-type>Graph</span>
+				<strong data-graph-focus-title>Ingus Lab</strong>
+				<small data-graph-focus-meta>{taggedPosts.length} notes · {tags.length} tags</small>
+			</div>
 			<script type="application/json" data-knowledge-graph-data set:html={JSON.stringify(graphData)} />
 			<noscript>
 				<ul class="graph-fallback">
@@ -126,71 +166,138 @@ const graphData = {
 		);
 		if (!dataScript?.textContent) return;
 
+		type GraphNodeData = {
+			id: string;
+			kind: "post" | "tag";
+			labelKo: string;
+			labelEn: string;
+			fullLabelKo?: string;
+			fullLabelEn?: string;
+			category?: "papers" | "trends" | "concept";
+			tag?: string;
+			tags?: string[];
+			count?: number;
+			url?: string;
+			x: number;
+			y: number;
+			size: number;
+			color: string;
+		};
+
 		const data = JSON.parse(dataScript.textContent) as {
+			nodes: GraphNodeData[];
+			edges: Array<{ id: string; source: string; target: string; tag: string }>;
+		};
+
+		const runForceLayout = (
 			nodes: Array<{
 				id: string;
 				kind: "post" | "tag";
-				labelKo: string;
-				labelEn: string;
-				fullLabelKo?: string;
-				fullLabelEn?: string;
-				url?: string;
 				x: number;
 				y: number;
 				size: number;
-				color: string;
-			}>;
-			edges: Array<{ id: string; source: string; target: string; tag: string }>;
+			}>,
+			edges: Array<{ source: string; target: string }>,
+		) => {
+			const layout = nodes.map((node) => ({ ...node, vx: 0, vy: 0 }));
+			const byId = new Map(layout.map((node) => [node.id, node]));
+			const iterations = Math.min(560, 260 + nodes.length * 10);
+
+			for (let step = 0; step < iterations; step += 1) {
+				for (let i = 0; i < layout.length; i += 1) {
+					for (let j = i + 1; j < layout.length; j += 1) {
+						const first = layout[i];
+						const second = layout[j];
+						let dx = first.x - second.x;
+						let dy = first.y - second.y;
+						let distanceSquared = dx * dx + dy * dy;
+						if (distanceSquared < 0.0004) {
+							dx = 0.02 * (i + 1);
+							dy = 0.02 * (j + 1);
+							distanceSquared = dx * dx + dy * dy;
+						}
+						const distance = Math.sqrt(distanceSquared);
+						const sameKindBoost = first.kind === second.kind ? 1.15 : 0.82;
+						const force = (0.0032 * sameKindBoost) / distanceSquared;
+						const fx = (dx / distance) * force;
+						const fy = (dy / distance) * force;
+						first.vx += fx;
+						first.vy += fy;
+						second.vx -= fx;
+						second.vy -= fy;
+					}
+				}
+
+				edges.forEach((edge) => {
+					const source = byId.get(edge.source);
+					const target = byId.get(edge.target);
+					if (!source || !target) return;
+					const dx = target.x - source.x;
+					const dy = target.y - source.y;
+					const distance = Math.sqrt(dx * dx + dy * dy) || 0.001;
+					const restLength = source.kind === "post" || target.kind === "post" ? 0.42 : 0.58;
+					const force = (distance - restLength) * 0.013;
+					const fx = (dx / distance) * force;
+					const fy = (dy / distance) * force;
+					source.vx += fx;
+					source.vy += fy;
+					target.vx -= fx;
+					target.vy -= fy;
+				});
+
+				layout.forEach((node) => {
+					node.vx -= node.x * 0.0018;
+					node.vy -= node.y * 0.0018;
+					node.vx *= 0.78;
+					node.vy *= 0.78;
+					node.x += node.vx;
+					node.y += node.vy;
+				});
+			}
+
+			return nodes.map((node) => {
+				const positioned = byId.get(node.id);
+				return positioned ? { ...node, x: positioned.x, y: positioned.y } : node;
+			});
 		};
 
 		const graph = new Graph();
 		const getLanguage = () => document.documentElement.dataset.lang === "en" ? "en" : "ko";
+		const getNodeLabel = (attributes: GraphNodeData, full = false) => {
+			if (getLanguage() === "en") return full ? attributes.fullLabelEn ?? attributes.labelEn : attributes.labelEn;
+			return full ? attributes.fullLabelKo ?? attributes.labelKo : attributes.labelKo;
+		};
 		const applyLabels = () => {
-			const language = getLanguage();
 			graph.forEachNode((node, attributes) => {
-				graph.setNodeAttribute(
-					node,
-					"label",
-					language === "en" ? attributes.labelEn : attributes.labelKo,
-				);
+				graph.setNodeAttribute(node, "label", getNodeLabel(attributes as GraphNodeData));
 			});
 		};
 		const drawLabel = (
 			context: CanvasRenderingContext2D,
-			data: { label?: string; size: number; color: string },
+			data: { label?: string; size: number; color: string; kind?: "post" | "tag" },
 			settings: { labelSize: number; labelWeight: string },
 		) => {
 			if (!data.label) return;
 
-			const fontSize = settings.labelSize;
+			const fontSize = data.kind === "post" ? settings.labelSize + 1 : settings.labelSize;
 			context.font = `${settings.labelWeight} ${fontSize}px var(--font-body), sans-serif`;
-			const paddingX = 6;
-			const paddingY = 3;
 			const x = data.size + 6;
-			const y = fontSize / 3;
-			const width = context.measureText(data.label).width + paddingX * 2;
-			const height = fontSize + paddingY * 2;
-
-			context.fillStyle = "rgba(255, 255, 255, 0.9)";
-			context.strokeStyle = "rgba(203, 213, 225, 0.95)";
-			context.lineWidth = 1;
-			context.beginPath();
-			if (typeof context.roundRect === "function") {
-				context.roundRect(x - paddingX, y - fontSize + 1 - paddingY, width, height, 5);
-			} else {
-				context.rect(x - paddingX, y - fontSize + 1 - paddingY, width, height);
-			}
-			context.fill();
-			context.stroke();
-
-			context.fillStyle = data.color === "#111827" ? "#111827" : "#0f172a";
+			const y = fontSize / 3.2;
+			context.shadowBlur = 10;
+			context.shadowColor = "rgba(2, 6, 23, 0.9)";
+			context.lineWidth = 3;
+			context.strokeStyle = "rgba(2, 6, 23, 0.78)";
+			context.strokeText(data.label, x, y);
+			context.shadowBlur = 0;
+			context.fillStyle = data.kind === "post" ? "rgba(248, 250, 252, 0.94)" : "rgba(203, 213, 225, 0.82)";
 			context.fillText(data.label, x, y);
 		};
 
-		data.nodes.forEach((node) => {
+		const layoutNodes = runForceLayout(data.nodes, data.edges);
+		layoutNodes.forEach((node) => {
 			graph.addNode(node.id, {
 				...node,
-				label: getLanguage() === "en" ? node.labelEn : node.labelKo,
+				label: getNodeLabel(node),
 			});
 		});
 
@@ -204,40 +311,164 @@ const graphData = {
 			}
 		});
 
+		let hoveredNode: string | null = null;
+		let selectedNode: string | null = null;
+		const focusCard = container.parentElement?.querySelector<HTMLElement>("[data-graph-focus-card]");
+		const focusType = focusCard?.querySelector<HTMLElement>("[data-graph-focus-type]");
+		const focusTitle = focusCard?.querySelector<HTMLElement>("[data-graph-focus-title]");
+		const focusMeta = focusCard?.querySelector<HTMLElement>("[data-graph-focus-meta]");
+		const categoryNames = {
+			papers: { ko: "논문", en: "Papers" },
+			trends: { ko: "트렌드", en: "Trends" },
+			concept: { ko: "배경지식", en: "Background" },
+		};
+		const uiText = {
+			ko: {
+				graph: "그래프",
+				note: "노트",
+				keyword: "키워드",
+				nodes: "개 노드",
+				links: "개 링크",
+				tags: "개 태그",
+				connectedNotes: "개 연결 노트",
+			},
+			en: {
+				graph: "Graph",
+				note: "Note",
+				keyword: "Keyword",
+				nodes: " nodes",
+				links: " links",
+				tags: " tags",
+				connectedNotes: " connected notes",
+			},
+		};
+		const updateFocusCard = (node?: string) => {
+			if (!focusCard || !focusType || !focusTitle || !focusMeta) return;
+			const language = getLanguage();
+			const copy = uiText[language];
+			if (!node) {
+				focusType.textContent = copy.graph;
+				focusTitle.textContent = "Ingus Lab";
+				focusMeta.textContent = `${graph.order}${copy.nodes} · ${graph.size}${copy.links}`;
+				return;
+			}
+			const attributes = graph.getNodeAttributes(node) as GraphNodeData;
+			focusType.textContent = attributes.kind === "post" ? copy.note : copy.keyword;
+			focusTitle.textContent = getNodeLabel(attributes, true);
+			if (attributes.kind === "post") {
+				const category = attributes.category ? categoryNames[attributes.category]?.[language] : "";
+				focusMeta.textContent = [category, `${attributes.tags?.length ?? 0}${copy.tags}`]
+					.filter(Boolean)
+					.join(" · ");
+			} else {
+				focusMeta.textContent = `${attributes.count ?? 0}${copy.connectedNotes}`;
+			}
+		};
+		const isFocused = (node: string) => hoveredNode === node || selectedNode === node;
+		const getFocusNode = () => hoveredNode ?? selectedNode;
+		const nodeReducer = (node: string, attributes: GraphNodeData) => {
+			const focusNode = getFocusNode();
+			const result: Partial<GraphNodeData> & {
+				label?: string;
+				forceLabel?: boolean;
+				zIndex?: number;
+			} = { ...attributes };
+			const connectedToFocus = focusNode ? graph.areNeighbors(node, focusNode) : false;
+
+			if (focusNode && !isFocused(node) && !connectedToFocus) {
+				result.color = "rgba(100, 116, 139, 0.22)";
+				result.label = "";
+				result.size = attributes.size * 0.72;
+				result.zIndex = 0;
+				return result;
+			}
+
+			if (focusNode && (isFocused(node) || connectedToFocus)) {
+				result.label = getNodeLabel(attributes, isFocused(node));
+				result.forceLabel = true;
+				result.size = attributes.size * (isFocused(node) ? 1.45 : 1.16);
+				result.zIndex = isFocused(node) ? 6 : 4;
+				return result;
+			}
+
+			if (attributes.kind === "tag" && (attributes.count ?? 0) < 2) {
+				result.label = "";
+			}
+			result.zIndex = attributes.kind === "post" ? 3 : 2;
+			return result;
+		};
+		const edgeReducer = (edge: string, attributes: { color: string; size: number }) => {
+			const focusNode = getFocusNode();
+			if (!focusNode) return attributes;
+			const source = graph.source(edge);
+			const target = graph.target(edge);
+			const connected = source === focusNode || target === focusNode;
+			return {
+				...attributes,
+				color: connected ? "rgba(226, 232, 240, 0.76)" : "rgba(71, 85, 105, 0.12)",
+				size: connected ? 2.1 : 0.55,
+			};
+		};
+
 		const renderer = new Sigma(graph, container, {
 			allowInvalidContainer: true,
-			defaultEdgeColor: "#94a3b8",
-			defaultNodeColor: "#111827",
+			defaultEdgeColor: "rgba(148, 163, 184, 0.34)",
+			defaultNodeColor: "#e5e7eb",
 			edgeColor: "default",
-			labelColor: { color: "#111827" },
-			labelDensity: 0.08,
-			labelRenderedSizeThreshold: 8,
-			labelSize: 11,
+			edgeReducer,
+			labelColor: { color: "#e5e7eb" },
+			labelDensity: 0.12,
+			labelRenderedSizeThreshold: 9,
+			labelSize: 10,
 			labelWeight: "700",
+			maxCameraRatio: 2.8,
+			minCameraRatio: 0.28,
 			renderEdgeLabels: false,
-			nodeReducer: (node, attributes) => ({
-				...attributes,
-				zIndex: attributes.kind === "post" ? 2 : 1,
-			}),
+			nodeReducer,
 			labelRenderer: drawLabel,
 			zIndex: true,
 		});
 
+		renderer.getCamera().setState({ x: 0, y: 0, ratio: 1.05 });
+		updateFocusCard();
+
 		renderer.on("clickNode", ({ node }) => {
+			const kind = graph.getNodeAttribute(node, "kind") as string | undefined;
 			const url = graph.getNodeAttribute(node, "url") as string | undefined;
-			if (url) window.location.href = url;
+			if (kind === "post" && url) {
+				window.location.href = url;
+				return;
+			}
+			selectedNode = selectedNode === node ? null : node;
+			updateFocusCard(selectedNode ?? undefined);
+			renderer.refresh();
+		});
+
+		renderer.on("clickStage", () => {
+			selectedNode = null;
+			updateFocusCard();
+			renderer.refresh();
 		});
 
 		renderer.on("enterNode", ({ node }) => {
-			container.style.cursor = graph.getNodeAttribute(node, "kind") === "post" ? "pointer" : "default";
+			hoveredNode = node;
+			container.style.cursor = "pointer";
+			container.parentElement?.classList.add("is-focusing");
+			updateFocusCard(node);
+			renderer.refresh();
 		});
 
 		renderer.on("leaveNode", () => {
+			hoveredNode = null;
 			container.style.cursor = "grab";
+			if (!selectedNode) container.parentElement?.classList.remove("is-focusing");
+			updateFocusCard(selectedNode ?? undefined);
+			renderer.refresh();
 		});
 
 		const observer = new MutationObserver(() => {
 			applyLabels();
+			updateFocusCard(getFocusNode() ?? undefined);
 			renderer.refresh();
 		});
 		observer.observe(document.documentElement, {
@@ -249,81 +480,169 @@ const graphData = {
 
 <style>
 	.knowledge-graph {
-		margin: 0 0 3rem;
+		background:
+			radial-gradient(circle at 18% 10%, rgba(96, 165, 250, 0.18), transparent 30rem),
+			radial-gradient(circle at 82% 24%, rgba(52, 211, 153, 0.12), transparent 26rem),
+			linear-gradient(180deg, #0b1020 0%, #090d18 100%);
+		border-bottom: 1px solid rgba(148, 163, 184, 0.2);
+		border-top: 1px solid rgba(148, 163, 184, 0.2);
+		margin: 0 calc(50% - 50vw) 3.5rem;
+		padding: clamp(2rem, 5vw, 3.5rem) max(1rem, calc((100vw - 1120px) / 2));
 	}
 	.graph-heading {
 		align-items: end;
 		display: grid;
-		gap: 1rem;
+		gap: 1.5rem;
 		grid-template-columns: minmax(0, 0.9fr) minmax(260px, 1.1fr);
-		margin-bottom: 1rem;
+		margin-bottom: 1.25rem;
 	}
 	.graph-heading p {
-		color: rgb(var(--gray));
+		color: rgba(203, 213, 225, 0.74);
 		margin: 0;
 	}
 	.graph-heading > div > p {
-		color: var(--accent);
-		font-size: 0.8rem;
+		color: #93c5fd;
+		font-size: 0.74rem;
 		font-weight: 700;
-		letter-spacing: 0;
+		letter-spacing: 0.08em;
 		margin-bottom: 0.25rem;
 		text-transform: uppercase;
 	}
 	.graph-heading h2 {
+		color: #f8fafc;
+		font-size: clamp(2rem, 5vw, 3.6rem);
 		margin: 0;
 	}
+	.graph-copy {
+		font-size: clamp(0.95rem, 2vw, 1.05rem);
+		line-height: 1.65;
+		max-width: 34rem;
+	}
 	.graph-shell {
-		border-top: 1px solid rgb(var(--gray-light));
-		padding-top: 1rem;
+		background:
+			radial-gradient(circle at 50% 48%, rgba(30, 41, 59, 0.72), transparent 44rem),
+			linear-gradient(180deg, rgba(15, 23, 42, 0.96), rgba(2, 6, 23, 0.98));
+		border: 1px solid rgba(148, 163, 184, 0.22);
+		border-radius: 8px;
+		box-shadow:
+			0 28px 70px rgba(0, 0, 0, 0.42),
+			inset 0 1px 0 rgba(255, 255, 255, 0.06);
+		overflow: hidden;
+		position: relative;
 	}
 	.graph-legend {
+		align-items: center;
+		backdrop-filter: blur(16px);
+		background: rgba(2, 6, 23, 0.56);
+		border: 1px solid rgba(148, 163, 184, 0.18);
+		border-radius: 8px;
 		display: flex;
 		flex-wrap: wrap;
-		gap: 1rem;
-		margin-bottom: 0.75rem;
+		gap: 0.75rem 1rem;
+		left: 1rem;
+		max-width: calc(100% - 2rem);
+		padding: 0.65rem 0.8rem;
+		position: absolute;
+		top: 1rem;
+		z-index: 2;
 	}
 	.graph-legend span {
 		align-items: center;
-		color: rgb(var(--gray));
+		color: rgba(226, 232, 240, 0.82);
 		display: inline-flex;
-		font-size: 0.82rem;
+		font-size: 0.72rem;
 		font-weight: 700;
 		gap: 0.4rem;
+		line-height: 1;
+		white-space: nowrap;
 	}
 	.graph-legend i {
 		border-radius: 999px;
 		display: inline-block;
-		height: 0.75rem;
-		width: 0.75rem;
+		height: 0.6rem;
+		width: 0.6rem;
 	}
 	.post-dot {
-		background: #111827;
+		background: #f59e0b;
+		box-shadow: 0 0 14px rgba(245, 158, 11, 0.9);
 	}
 	.tag-dot {
-		background: #0ea5e9;
+		background: #7dd3fc;
+		box-shadow: 0 0 14px rgba(125, 211, 252, 0.9);
+	}
+	.graph-count {
+		color: rgba(148, 163, 184, 0.9) !important;
+		font-variant-numeric: tabular-nums;
+	}
+	.graph-focus-card {
+		backdrop-filter: blur(18px);
+		background: rgba(15, 23, 42, 0.72);
+		border: 1px solid rgba(148, 163, 184, 0.2);
+		border-radius: 8px;
+		bottom: 1rem;
+		box-shadow: 0 16px 40px rgba(0, 0, 0, 0.28);
+		color: #e2e8f0;
+		display: grid;
+		gap: 0.15rem;
+		left: 1rem;
+		max-width: min(24rem, calc(100% - 2rem));
+		padding: 0.8rem 0.9rem;
+		position: absolute;
+		z-index: 2;
+	}
+	.graph-focus-card span {
+		color: #93c5fd;
+		font-size: 0.65rem;
+		font-weight: 700;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+	}
+	.graph-focus-card strong {
+		color: #f8fafc;
+		font-size: 0.95rem;
+		line-height: 1.3;
+	}
+	.graph-focus-card small {
+		color: rgba(203, 213, 225, 0.72);
+		font-size: 0.72rem;
 	}
 	.sigma-graph {
 		background:
-			linear-gradient(180deg, rgba(248, 250, 252, 0.86), rgba(255, 255, 255, 0.98)),
-			radial-gradient(circle at 20% 20%, rgba(14, 165, 233, 0.12), transparent 32%);
-		border: 1px solid rgb(var(--gray-light));
-		border-radius: 8px;
+			linear-gradient(rgba(148, 163, 184, 0.045) 1px, transparent 1px),
+			linear-gradient(90deg, rgba(148, 163, 184, 0.045) 1px, transparent 1px),
+			radial-gradient(circle at 50% 50%, rgba(96, 165, 250, 0.12), transparent 30rem),
+			#050816;
+		background-size: 42px 42px, 42px 42px, auto, auto;
+		border: 0;
 		cursor: grab;
-		height: clamp(420px, 54vw, 620px);
+		height: clamp(560px, 62vw, 760px);
 		overflow: hidden;
 		width: 100%;
 	}
 	.graph-fallback {
-		margin: 1rem 0 0;
+		color: #e2e8f0;
+		margin: 1rem;
 	}
 	@media (max-width: 720px) {
+		.knowledge-graph {
+			padding: 2rem 1rem;
+		}
 		.graph-heading {
 			align-items: start;
 			grid-template-columns: 1fr;
 		}
+		.graph-legend {
+			left: 0.75rem;
+			right: 0.75rem;
+			top: 0.75rem;
+		}
+		.graph-focus-card {
+			bottom: 0.75rem;
+			left: 0.75rem;
+			right: 0.75rem;
+		}
 		.sigma-graph {
-			height: 460px;
+			height: 560px;
 		}
 	}
 </style>
