@@ -43,6 +43,7 @@ const hashValue = (value: string) => {
 const palette = ["#7dd3fc", "#5eead4", "#fbbf24", "#c4b5fd", "#fb7185", "#86efac", "#f9a8d4"];
 const categoryColors = {
 	papers: "#60a5fa",
+	project: "#a78bfa",
 	trends: "#f59e0b",
 	concept: "#34d399",
 } as const;
@@ -173,7 +174,7 @@ const graphData = {
 			labelEn: string;
 			fullLabelKo?: string;
 			fullLabelEn?: string;
-			category?: "papers" | "trends" | "concept";
+			category?: "papers" | "project" | "trends" | "concept";
 			tag?: string;
 			tags?: string[];
 			count?: number;
@@ -319,6 +320,7 @@ const graphData = {
 		const focusMeta = focusCard?.querySelector<HTMLElement>("[data-graph-focus-meta]");
 		const categoryNames = {
 			papers: { ko: "논문", en: "Papers" },
+			project: { ko: "프로젝트", en: "Project" },
 			trends: { ko: "트렌드", en: "Trends" },
 			concept: { ko: "배경지식", en: "Background" },
 		};

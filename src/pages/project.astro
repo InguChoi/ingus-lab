@@ -1,0 +1,18 @@
+---
+import { getCollection } from "astro:content";
+import SectionPage from "../components/SectionPage.astro";
+
+const posts = (await getCollection("blog", ({ data }) => data.category === "project")).sort(
+	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+);
+---
+
+<SectionPage
+	title="Project"
+	description="논문과 트렌드에서 이어진 실험, 구현, 제품 아이디어를 프로젝트 단위로 정리합니다."
+	titleKo="프로젝트"
+	titleEn="Project"
+	descriptionKo="논문과 트렌드에서 이어진 실험, 구현, 제품 아이디어를 프로젝트 단위로 정리합니다."
+	descriptionEn="Project notes that turn papers and trends into experiments, implementations, and product ideas."
+	posts={posts}
+/>

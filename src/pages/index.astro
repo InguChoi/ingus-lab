@@ -28,10 +28,10 @@ const posts = allPosts.slice(0, 4);
 					<h1>Ingus Lab</h1>
 					<p>
 						<span data-lang="ko">
-							논문을 읽고, 기술 트렌드를 관찰하며, AI와 로보틱스에서 반복해서 쓰이는 핵심 개념을 정리하는 개인 연구 노트입니다.
+							논문을 읽고, 프로젝트로 옮기며, 기술 트렌드를 관찰하고, AI와 로보틱스에서 반복해서 쓰이는 핵심 개념을 정리하는 개인 연구 노트입니다.
 						</span>
 						<span data-lang="en">
-							A personal research notebook for reading papers, tracking technology trends, and building background knowledge in AI and robotics.
+							A personal research notebook for reading papers, shaping projects, tracking technology trends, and building background knowledge in AI and robotics.
 						</span>
 					</p>
 				</div>
@@ -42,6 +42,12 @@ const posts = allPosts.slice(0, 4);
 					<span class="section-title" data-lang="en">Papers</span>
 					<span data-lang="ko">논문과 연구 자료에서 얻은 질문, 방법론, 실험 아이디어를 정리합니다.</span>
 					<span data-lang="en">Notes on research papers, methods, and experiment ideas worth carrying forward.</span>
+				</a>
+				<a href="/project">
+					<span class="section-title" data-lang="ko">프로젝트</span>
+					<span class="section-title" data-lang="en">Project</span>
+					<span data-lang="ko">읽은 것과 관찰한 것을 실제 실험, 구현, 제품 아이디어로 옮기는 과정을 기록합니다.</span>
+					<span data-lang="en">Work-in-progress notes that turn reading and signals into experiments, builds, and product ideas.</span>
 				</a>
 				<a href="/trends">
 					<span class="section-title" data-lang="ko">트렌드</span>
@@ -119,7 +125,7 @@ const posts = allPosts.slice(0, 4);
 	.sections {
 		display: grid;
 		gap: 1rem;
-		grid-template-columns: repeat(4, minmax(0, 1fr));
+		grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
 		margin-bottom: 3rem;
 	}
 	.sections a {
@@ -135,11 +141,6 @@ const posts = allPosts.slice(0, 4);
 		font-size: 1.25em;
 		font-weight: 700;
 		margin-bottom: 0.35rem;
-	}
-	@media (max-width: 960px) {
-		.sections {
-			grid-template-columns: repeat(2, minmax(0, 1fr));
-		}
 	}
 	@media (max-width: 720px) {
 		.hero {

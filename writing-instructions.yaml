@@ -64,7 +64,7 @@ global:
     required:
       title: string
       description: string
-      category: papers | trends | concept
+      category: papers | project | trends | concept
       tags: string[]
       pubDate: date
     optional:
@@ -81,6 +81,7 @@ global:
       - 태그는 화면에서 #keyword 형식으로 표시되므로 공백 대신 하이픈을 사용합니다.
       - 같은 주제는 같은 태그를 재사용해 Home의 지식 그래프에서 글 사이 연결이 보이게 합니다.
       - heroImage에는 가능하면 참고 홈페이지의 대표 figure 또는 concept image를 사용합니다.
+      - 프로젝트/Project 글은 category 값으로 project를 사용합니다.
       - 현재 Astro 스키마에서는 배경지식/Background 글도 category 값으로 concept를 사용합니다.
       - 화면이나 글 내부에서는 한국어 표시명은 배경지식, 영어 표시명은 Background를 사용합니다.
 
@@ -160,6 +161,39 @@ categories:
       - 초록을 단순 번역한 요약
       - 수식이나 세부 구현만 나열하는 방식
       - 성능 수치를 맥락 없이 크게 보이게 쓰는 방식
+
+  project:
+    label: 프로젝트 / Project
+    aliases:
+      - Project
+      - Project Notes
+      - Build Notes
+    purpose: 논문, 트렌드, 배경지식에서 이어진 실험, 구현, 제품 아이디어를 실제 프로젝트 단위로 정리합니다.
+    required_focus:
+      - 어떤 문제를 직접 풀어보려는지
+      - 논문, 트렌드, 배경지식 중 무엇에서 출발했는지
+      - 현재 구현 상태와 다음 실험 단계
+      - 데이터, 모델, 인터페이스, 운영 방식의 주요 설계 결정
+      - 성공 기준과 아직 확인해야 할 위험
+    preferred_sections:
+      korean:
+        - 프로젝트 목표
+        - 출발점
+        - 현재 설계
+        - 다음 실험
+        - 리스크와 기준
+        - Ingus Lab 댓글
+      english:
+        - Project Goal
+        - Starting Point
+        - Current Design
+        - Next Experiment
+        - Risks and Criteria
+        - Ingus Lab Comment
+    avoid:
+      - 아이디어만 있고 검증 방법이 없는 선언적 글
+      - 실제 구현 상태와 희망 사항을 구분하지 않는 글
+      - 제품 홍보 문구처럼 성과를 과장하는 방식
 
   trends:
     label: Trends
@@ -245,7 +279,7 @@ workflow:
     - frontmatter가 src/content.config.ts 스키마와 맞는지 확인한다.
     - 새 글에는 titleKo, titleEn, descriptionKo, descriptionEn을 넣었는지 확인한다.
     - 새 글에는 tags 배열을 넣었고, 기존 글과 연결되는 태그를 최소 하나 포함했는지 확인한다.
-    - category 값이 papers, trends, concept 중 하나인지 확인한다.
+    - category 값이 papers, project, trends, concept 중 하나인지 확인한다.
     - 배경지식/Background 글은 표시명이 달라도 frontmatter category는 concept로 둔다.
     - heroImage 또는 본문 이미지가 참고 자료의 figure/concept image인지 확인한다.
     - 이미지 caption과 Source 섹션에 출처 링크가 있는지 확인한다.

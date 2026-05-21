@@ -1,11 +1,12 @@
 # Ingus Lab
 
-Ingus Lab is an Astro-powered research notebook for paper reviews, technology trend notes, and technical concept reviews.
+Ingus Lab is an Astro-powered research notebook for paper reviews, project notes, technology trend notes, and technical concept reviews.
 
 ## Sections
 
 - `Home`: Intro and latest notes
 - `Papers`: Paper and research reading notes
+- `Project`: Experiments, implementations, and product ideas growing out of research notes
 - `Trends`: AI, product, and developer-tool trend observations
 - `Technical Concepts`: Core technologies, concepts, and methods used across AI and robotics
 
@@ -33,10 +34,11 @@ Do not commit the password to the repository. Use Wrangler secrets or the Cloudf
 Posts live in `src/content/blog/`. Each post uses a `category` frontmatter value:
 
 - `papers`
+- `project`
 - `trends`
 - `concept`
 
-The section pages at `/papers`, `/trends`, and `/concept` filter the shared blog collection by that category.
+The section pages at `/papers`, `/project`, `/trends`, and `/concept` filter the shared blog collection by that category.
 
 ## Writing Instructions
 
@@ -45,6 +47,7 @@ Shared writing guidance lives in `writing-instructions.yaml`.
 When drafting or editing a post, use the `global` rules first, then apply the matching category block under `categories`:
 
 - `papers`: paper and research review guidance
+- `project`: experiment, implementation, and product idea guidance
 - `trends`: technology and product trend guidance
 - `concept`: technical concept review guidance
 
