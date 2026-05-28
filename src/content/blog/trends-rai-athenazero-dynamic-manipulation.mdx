@@ -1,0 +1,129 @@
+---
+title: "AthenaZero: 동적 조작을 하드웨어 설계 문제로 다시 보기"
+description: "RAI Institute의 AthenaZero 발표가 저관성, 준직접구동, 양팔 조작, 인간 속도 동작을 통해 로봇 manipulation 흐름에 주는 신호를 정리합니다."
+titleKo: "AthenaZero: 동적 조작을 하드웨어 설계 문제로 다시 보기"
+titleEn: "AthenaZero: Reframing Dynamic Manipulation as a Hardware Design Problem"
+descriptionKo: "RAI Institute의 AthenaZero 발표가 저관성, 준직접구동, 양팔 조작, 인간 속도 동작을 통해 로봇 manipulation 흐름에 주는 신호를 정리합니다."
+descriptionEn: "A look at what RAI Institute's AthenaZero signals for low-inertia hardware, quasi-direct drive actuation, bimanual manipulation, and human-cadence robot motion."
+category: "trends"
+tags:
+  - robotics
+  - dynamic-manipulation
+  - bimanual-robots
+  - robot-learning
+  - physical-ai
+  - dexterous-manipulation
+  - hardware-design
+pubDate: "May 28 2026"
+heroImage: "https://rai-inst.com/wp-content/uploads/2025/10/teaser-1-5.png"
+---
+
+<figure>
+	<img src="https://rai-inst.com/wp-content/uploads/2025/10/teaser-1-5.png" alt="RAI Institute AthenaZero robot baseball demonstration" />
+	<figcaption>
+		<span data-lang="ko">Figure: RAI Institute가 공개한 AthenaZero 야구 데모 이미지. 같은 저임피던스 양팔 플랫폼의 던지기, 받기, 치기 실험을 보여준다.</span>
+		<span data-lang="en">Figure: RAI Institute's AthenaZero baseball demo image, showing throwing, catching, and batting experiments on the same low-impedance bimanual platform.</span>
+	</figcaption>
+</figure>
+
+<section data-lang="ko">
+
+RAI Institute가 [AthenaZero: A Bimanual Robot for Dynamic Manipulation](https://rai-inst.com/resources/blog/bimanual-robot-for-dynamic-manipulation/)을 공개했습니다. AthenaZero는 1-DoF torso, 두 개의 7-DoF arm, 두 개의 6-DoF underactuated hand를 가진 양팔 로봇 prototype입니다. 전체로는 27개 joint와 22개 actuator를 갖고, 키는 약 1.6 m, wingspan은 약 1.8 m입니다.
+
+이 글이 흥미로운 이유는 로봇 조작의 병목을 policy나 dataset만으로 보지 않는다는 데 있습니다. RAI의 주장은 동적 조작을 하려면 로봇 팔 자체가 접촉, 가속, 감속, 힘 전달을 다르게 받아들일 수 있어야 한다는 쪽에 가깝습니다. 즉, "더 좋은 제어기를 얹는다"보다 먼저 "제어 가능한 몸을 만든다"는 이야기입니다.
+
+## 무엇이 나왔나
+
+AthenaZero는 fast, precise, compliant contact를 동시에 겨냥한 양팔 조작 플랫폼입니다. RAI는 일반적인 로봇 팔이 80:1 이상 gear ratio를 쓰는 경우가 많고, 이런 구조가 정밀도와 힘에는 유리하지만 reflected inertia와 effective mass를 크게 만들어 접촉 시 원치 않는 힘을 낼 수 있다고 설명합니다.
+
+AthenaZero는 이 문제를 낮은 effective mass와 높은 control authority의 균형으로 접근합니다. 대부분의 joint에서 5:1 gear ratio를 쓰는 custom quasi-direct drive actuator를 사용하고, 97% 이상 효율의 planetary gearset을 적용했습니다. 또 무거운 부품을 torso 쪽에 가깝게 배치해 팔 끝으로 갈수록 움직여야 하는 질량을 줄였습니다.
+
+RAI가 보여준 검증 과제는 야구에서 가져왔습니다. AthenaZero는 dynamic trajectory optimization으로 70 mph(113 km/h) 공을 던졌고, impedance matching으로 24 ft(7.3 m) 거리에서 최대 41 mph(66 km/h) 공을 받았습니다. Batting에서는 31 mph(50 km/h) 투구에 대해 33번 swing 중 82% 접촉률을 보였다고 합니다.
+
+## 왜 중요한가
+
+최근 로봇 manipulation 논의는 VLA(Vision-Language-Action) 모델, imitation learning, simulation data generation, foundation model로 빠르게 이동하고 있습니다. 하지만 접촉이 많은 동작에서는 hardware가 만드는 물리적 조건이 여전히 매우 큽니다. 팔의 effective mass가 높으면 부드럽게 부딪히거나 빠르게 방향을 바꾸는 동작은 제어 문제 이전에 기계적 한계에 부딪힙니다.
+
+AthenaZero의 신호는 인간형 로봇을 사람처럼 보이게 만드는 데 있지 않습니다. 더 중요한 점은 사람 팔과 비슷한 질량 분포, 낮은 reflected inertia, backdrivability를 통해 contact를 피해야 할 위험이 아니라 활용할 수 있는 자원으로 바꾸려는 점입니다.
+
+이 관점은 기존 산업용 로봇 팔의 강점과도 다릅니다. Welding처럼 높은 endpoint stiffness와 엄격한 trajectory following이 중요한 작업에는 전통적 고강성 arm이 더 적합할 수 있습니다. 반대로 던지기, 받기, 치기, 밀기, 삽입, whole-arm contact처럼 외부 물체와 에너지를 주고받는 작업에서는 낮은 관성과 투명한 힘 전달이 더 큰 장점이 됩니다.
+
+## 기술적 신호
+
+첫 번째 신호는 effective mass를 설계 목표로 전면에 둔 점입니다. RAI는 wrist neutral configuration 기준 AthenaZero의 effective mass를 9 lb(3.97 kg)로 제시합니다. 이는 human arm의 6 lb(2.76 kg)에 가깝고, Franka Research 3의 64 lb(29.21 kg), Universal Robots UR5e의 77 lb(34.72 kg)보다 훨씬 낮습니다.
+
+두 번째 신호는 gear ratio의 제곱 효과입니다. Actuator-reflected inertia는 gear ratio의 제곱에 비례해 커지므로, 낮은 gear ratio는 단순한 스펙 선택이 아니라 접촉 동작 전체의 성격을 바꿉니다. AthenaZero가 별도 force-torque sensor 없이 motor current measurement만으로 torque sensing을 한다는 점도 이 방향과 연결됩니다.
+
+세 번째 신호는 backdrivability와 kinetic chain입니다. 낮은 gear ratio와 proximal mass 배치는 외력이 geartrain을 통해 다시 전달되는 구조를 만들고, proximal actuator의 에너지가 distal joint motion으로 이어지는 동작을 가능하게 합니다. RAI는 야구 투구의 wind-up과 pitch 같은 동작을 예로 듭니다.
+
+다만 이것은 software stack을 덜 중요하게 만든다는 뜻이 아닙니다. 오히려 이런 로봇은 kinematic planning이나 position feedforward만으로 충분하지 않고, torque control과 trajectory acceleration component를 포함한 feedforward dynamics를 더 세심하게 다뤄야 합니다. 낮은 관성의 몸은 가능성을 열지만, 그 가능성을 안정적으로 쓰려면 제어도 같이 바뀌어야 합니다.
+
+## 시장 또는 제품 관점
+
+AthenaZero는 당장 판매용 로봇이라기보다 연구 플랫폼의 성격이 강합니다. 하지만 제품 관점에서 중요한 질문을 던집니다. 범용 manipulation 로봇이 반복 pick-and-place를 넘어 실제 작업장에 들어가려면, 팔 끝만 정확히 움직이는 기계가 아니라 접촉을 흡수하고 활용하는 몸이 필요할 수 있습니다.
+
+이 흐름은 RAI의 다른 글들과도 이어집니다. Koala는 real-world handheld data collection을, AnyTask와 ExpertGen은 simulation data generation과 sim-to-real expert policy를 다뤘습니다. AthenaZero는 그 위에 올라갈 수 있는 hardware substrate를 보여줍니다. 데이터, policy, simulation이 아무리 좋아져도 마지막 접촉은 물리적 몸에서 일어나기 때문입니다.
+
+한계도 분명합니다. RAI는 AthenaZero가 사람처럼 장시간 높은 torque를 유지하는 static hold에는 적합하지 않고, thermal dissipation 문제가 있을 수 있다고 적습니다. 또한 야구 과제는 동적 성능을 잘 보여주는 testbed이지만, 가정이나 공장 작업의 긴 horizon, 물체 다양성, perception uncertainty까지 곧바로 해결했다는 뜻은 아닙니다.
+
+## Ingus Lab 댓글
+
+AthenaZero에서 가장 좋은 신호는 "로봇이 접촉을 피하는 대신 어떻게 믿고 쓸 수 있을까"라는 질문입니다. 로봇 foundation model 이야기가 커질수록 dataset과 policy가 전면에 서지만, 결국 좋은 행동은 좋은 몸 위에서 훨씬 쉽게 나옵니다.
+
+개인적으로는 RAI의 최근 글들이 서로 조각처럼 맞물리는 점이 재미있습니다. Koala가 현실 데이터를, AnyTask와 ExpertGen이 시뮬레이션 데이터를, AthenaZero가 저관성 몸을 맡는다면, dynamic manipulation은 단일 모델 발표보다 훨씬 넓은 시스템 설계 문제가 됩니다.
+
+</section>
+
+<section data-lang="en">
+
+RAI Institute has published [AthenaZero: A Bimanual Robot for Dynamic Manipulation](https://rai-inst.com/resources/blog/bimanual-robot-for-dynamic-manipulation/). AthenaZero is a bimanual robot prototype with a 1-DoF torso, two 7-DoF arms, and two 6-DoF underactuated hands. In total, it has 27 joints and 22 actuators, stands about 1.6 m tall, and has a wingspan of roughly 1.8 m.
+
+The interesting part of the post is that it does not frame robot manipulation as only a policy or dataset problem. RAI's argument is closer to this: if a robot is expected to manipulate dynamically, the arm itself has to handle contact, acceleration, deceleration, and force transmission differently. Before adding a better controller, the body has to be controllable in the right way.
+
+## What Changed
+
+AthenaZero is a bimanual platform aimed at fast, precise, and compliant contact. RAI notes that many standard robot arms use gear ratios above 80:1. That is useful for precision and strength, but it also amplifies reflected inertia and effective mass, which can create undesirable forces during contact.
+
+AthenaZero approaches the problem as a balance between low effective mass and high control authority. It uses custom quasi-direct drive actuators with low gear ratios, mostly 5:1, and efficient planetary gearsets rated at 97% or better. It also moves heavy components closer to the torso, reducing the amount of mass that has to swing through space near the distal links.
+
+RAI validates the platform with baseball-inspired tasks. Using dynamic trajectory optimization, AthenaZero threw a ball at 70 mph(113 km/h). With impedance matching, it caught balls up to 41 mph(66 km/h) over a 24 ft(7.3 m) distance. In batting, it made contact on 82% of 33 swings against 31 mph(50 km/h) pitches.
+
+## Why It Matters
+
+The manipulation conversation is moving quickly toward VLA(Vision-Language-Action) models, imitation learning, simulation data generation, and foundation models. But contact-rich behavior still depends heavily on the physical conditions created by the hardware. If an arm has high effective mass, gentle collision, rapid redirection, and compliant interaction become hard before the control problem even begins.
+
+AthenaZero's signal is not mainly about making a humanoid robot look human. The more important move is to make contact usable by designing around human-like mass distribution, low reflected inertia, and backdrivability. Contact becomes less of a hazard to avoid and more of a resource that can be exploited.
+
+That differs from the strengths of many traditional industrial arms. For tasks such as welding, where high endpoint stiffness and strict trajectory following matter, a conventional stiff arm may still be the better tool. For throwing, catching, batting, pushing, insertion, and whole-arm contact, low inertia and transparent force transmission become much more valuable.
+
+## Technical Signals
+
+The first signal is that effective mass is treated as a central design target. RAI reports an effective mass of 9 lb(3.97 kg) at AthenaZero's wrist in a neutral joint configuration. That is close to a human arm at 6 lb(2.76 kg), and far below Franka Research 3 at 64 lb(29.21 kg) or Universal Robots UR5e at 77 lb(34.72 kg).
+
+The second signal is the square-law effect of gear ratio. Actuator-reflected inertia scales with the square of the gear ratio, so low gearing is not just a spec choice. It changes the physical character of contact interaction. AthenaZero's ability to rely on motor current measurements for torque sensing, without separate force-torque sensors, follows from the same design direction.
+
+The third signal is backdrivability and the kinetic chain. Low gear ratios and proximal mass placement make it easier for external forces to transmit back through the geartrain, and for energy from proximal actuators to support distal joint motion. RAI uses the wind-up and pitch of a baseball player as an analogy.
+
+This does not make the software stack less important. In fact, a low-inertia robot requires control methods beyond kinematic planning or feedforward position control. Torque control and trajectory acceleration terms in feedforward dynamics become central. The body opens up the possibility space, but the controller still has to use it carefully.
+
+## Market or Product View
+
+AthenaZero reads more like a research platform than a commercial robot. Still, it asks a product-level question: if general-purpose manipulation robots are expected to move beyond repetitive pick-and-place, they may need bodies that can absorb and use contact, not only end effectors that track accurate paths.
+
+This connects naturally to RAI's other recent posts. Koala focuses on real-world handheld data collection, while AnyTask and ExpertGen focus on simulation data generation and sim-to-real expert policies. AthenaZero shows the hardware substrate that those data and policy systems could eventually serve. No matter how good the dataset or model becomes, the last contact happens through a physical body.
+
+The limitations are also clear. RAI notes that AthenaZero is not well suited for long-duration static holds requiring sustained torque, partly because of thermal dissipation. Baseball is a useful testbed for dynamic performance, but it does not by itself solve long-horizon household or factory work, broad object diversity, or perception uncertainty.
+
+## Ingus Lab Comment
+
+The strongest signal in AthenaZero is the question, "How can a robot trust and use contact instead of avoiding it?" As robot foundation models get more attention, datasets and policies naturally take center stage. But good behavior becomes much easier when it runs on a body with the right physical properties.
+
+I also like how RAI's recent posts fit together. Koala covers real-world data, AnyTask and ExpertGen cover simulation data, and AthenaZero covers the low-inertia body. Dynamic manipulation starts to look less like a single model announcement and more like a whole system design problem.
+
+</section>
+
+## Source
+
+- RAI Institute, [AthenaZero: A Bimanual Robot for Dynamic Manipulation](https://rai-inst.com/resources/blog/bimanual-robot-for-dynamic-manipulation/), 2026-04-07
+- RAI Institute, [A Dynamic Robot That Can Throw, Catch, and Hit a Baseball](https://rai-inst.com/resources/videos/dynamic-robot-that-can-throw-catch-and-hit-a-baseball/), 2025-11-19
+- Image source: RAI Institute official video page thumbnail for the AthenaZero baseball demonstration
